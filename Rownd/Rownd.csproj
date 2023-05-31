@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />  
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="BottomSheetXF" Version="1.1.0" />
+    <PackageReference Include="System.Text.Json" Version="7.0.2" />
+    <PackageReference Include="RestSharp" Version="110.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="JsonKnownTypes" Version="0.5.5" />
+    <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Core\" />
+    <None Remove="HubWebView\" />
+    <None Remove="HubWebView\HubMessage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\" />
+    <Folder Include="HubWebView\" />
+    <Folder Include="HubWebView\HubMessage\" />
+  </ItemGroup>
+</Project>
