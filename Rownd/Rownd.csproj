@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />  
+    <PackageReference Update="FSharp.Core" Version="6.0.6" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.6" />
     <PackageReference Include="BottomSheetXF" Version="1.1.0" />
     <PackageReference Include="System.Text.Json" Version="7.0.2" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
@@ -13,15 +15,21 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="JsonKnownTypes" Version="0.5.5" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
+    <PackageReference Include="JWT" Version="10.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Core\" />
     <None Remove="HubWebView\" />
     <None Remove="HubWebView\HubMessage\" />
+    <None Remove="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />
     <Folder Include="HubWebView\" />
     <Folder Include="HubWebView\HubMessage\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Rownd.Store\Rownd.Store.fsproj" />
   </ItemGroup>
 </Project>

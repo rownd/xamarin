@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RowndXamarinExample", "Rown
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rownd", "Rownd\Rownd.csproj", "{78638D85-4ED5-4921-AF2F-5E7638F40553}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Rownd.Store", "Rownd.Store\Rownd.Store.fsproj", "{AA8C3624-2F03-42B6-BD64-8D255B71C767}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,18 @@ Global
 		{78638D85-4ED5-4921-AF2F-5E7638F40553}.Debug|iPhone.Build.0 = Debug|Any CPU
 		{78638D85-4ED5-4921-AF2F-5E7638F40553}.Release|iPhone.ActiveCfg = Release|Any CPU
 		{78638D85-4ED5-4921-AF2F-5E7638F40553}.Release|iPhone.Build.0 = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{AA8C3624-2F03-42B6-BD64-8D255B71C767}.Release|iPhone.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
