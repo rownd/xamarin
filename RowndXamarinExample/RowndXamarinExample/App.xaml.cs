@@ -10,7 +10,7 @@ namespace RowndXamarinExample
     public partial class App : Application
     {
 
-        private RowndInstance rownd;
+        public RowndInstance Rownd;
 
         public App ()
         {
@@ -18,8 +18,8 @@ namespace RowndXamarinExample
             rowndConfig.apiUrl = "https://api.us-east-2.dev.rownd.io";
             rowndConfig.hubUrl = "https://hub.dev.rownd.io";
 
-            rownd = RowndInstance.GetInstance(this, rowndConfig);
-            rownd.Configure("b60bc454-c45f-47a2-8f8a-12b2062f5a77");
+            Rownd = RowndInstance.GetInstance(this, rowndConfig);
+            Rownd.Configure("b60bc454-c45f-47a2-8f8a-12b2062f5a77");
             
             InitializeComponent();
 

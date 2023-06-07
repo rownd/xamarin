@@ -11,7 +11,8 @@ namespace Rownd.Models
         public static IEnumerable<On<GlobalState>> CreateReducers()
         {
             return CombineReducers(
-                GetAppConfigReducers()
+                GetAppConfigReducers(),
+                GetAuthReducers()
             );
         }
 
@@ -24,23 +25,17 @@ namespace Rownd.Models
                         return action.AppConfig;
                     }
             ).ToList();
-            //On<GoBackAction, RootState>(
-            //    state =>
-            //    {
-            //        var newPages = state.Pages.RemoveAt(state.Pages.Length - 1);
+        }
 
-            //        return state with {
-            //            CurrentPage = newPages.LastOrDefault(),
-            //            Pages = newPages
-            //        };
-            //    }
-            //),
-            //On<ResetAction, RootState>(
-            //    state => state with {
-            //        CurrentPage = string.Empty,
-            //        Pages = ImmutableArray<string>.Empty
-            //    }
-            //)
+        public static IEnumerable<On<GlobalState>> GetAuthReducers()
+        {
+            return CreateSubReducers(StateSelectors.SelectAuthState)
+                .On<StateActions.SetAuthState>(
+                    (state, action) =>
+                    {
+                        return action.AuthState;
+                    }
+            ).ToList();
         }
     }
 }

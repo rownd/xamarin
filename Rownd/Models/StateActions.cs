@@ -5,10 +5,21 @@ namespace Rownd.Models
 {
 	public class StateActions
 	{
+		public class SetGlobalState
+		{
+			public GlobalState GlobalState { get; set; }
+		}
+
 		public class SetAppConfig
 		{
 			public AppConfigState AppConfig { get; set; }
 		}
-	}
+
+		public class SetAuthState
+		{
+			public AuthState AuthState { get; set; }
+		}
+
+    }
 }
 

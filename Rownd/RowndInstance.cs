@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using ReduxSimple;
 using Rownd.Core;
 using Rownd.Models;
+using Rownd.Models.Domain;
 using Rownd.Models.Repos;
 using Xamarin.Forms;
 
@@ -13,6 +15,13 @@ namespace Rownd
 
         public Config config;
         public StateRepo state;
+
+        public ReduxStore<GlobalState> Store {
+            get {
+                return state.Store;
+            }
+            private set { }
+        }
 
         private RowndInstance(Application app,  Config config = null){
             Shared.Init(app, config);

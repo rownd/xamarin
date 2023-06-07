@@ -36,6 +36,12 @@ namespace Rownd.Models.Domain
             //this.PropertyChanged += this.onAuthChanged;
         }
 
+        //public AuthState(string accessToken, string refreshToken)
+        //{
+        //    AccessToken = accessToken;
+        //    RefreshToken = refreshToken;
+        //}
+
         private void decodeToken()
         {
             var valParams = ValidationParameters.Default;

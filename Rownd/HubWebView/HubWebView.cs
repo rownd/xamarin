@@ -4,6 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Rownd.Core;
 using Rownd.HubWebView.HubMessage;
+using Rownd.Models;
+using Rownd.Models.Domain;
+using Rownd.Models.Repos;
 using Xamarin.Forms;
 
 namespace Rownd.HubWebView
@@ -11,6 +14,7 @@ namespace Rownd.HubWebView
     public class HubWebView : WebView
     {
         private Config config = Shared.ServiceProvider.GetService<Config>();
+        private StateRepo stateRepo = StateRepo.Get();
 
         public HubWebView()
         {
@@ -64,6 +68,14 @@ if (typeof rownd !== 'undefined') {{
                     case MessageType.Authentication:
                         {
                             Console.WriteLine($"Received auth payload: {hubMessage.Payload}");
+                            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+                            {
+                                AuthState = new AuthState()
+                                {
+                                    AccessToken = (hubMessage.Payload as PayloadAuthenticated).AccessToken,
+                                    RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
+                                }
+                            });
                             break;
                         }
                     case MessageType.HubLoaded:

@@ -11,6 +11,10 @@ namespace Rownd.Models
         public static ISelectorWithoutProps<GlobalState, AppConfigState> SelectAppConfigState = CreateSelector(
             (GlobalState state) => state.AppConfig
         );
+
+        public static ISelectorWithoutProps<GlobalState, AuthState> SelectAuthState = CreateSelector(
+            (GlobalState state) => state.Auth
+        );
     }
 }
 

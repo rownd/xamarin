@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
 using Rownd.Core;
 using Rownd.Models.Domain;
+using Xamarin.Forms;
 
 namespace Rownd.Models.Repos
 {
@@ -28,10 +29,12 @@ namespace Rownd.Models.Repos
 			try
 			{
 				var response = await apiClient.Client.GetJsonAsync<AppConfigResponse>("hub/app-config");
-				stateRepo.Store.Dispatch(new StateActions.SetAppConfig()
-				{
-					AppConfig = response.App
-				});
+				Device.BeginInvokeOnMainThread(() =>
+					stateRepo.Store.Dispatch(new StateActions.SetAppConfig()
+					{
+						AppConfig = response.App
+					})
+				);
 				return response.App;
 			} catch (Exception ex)
 			{
