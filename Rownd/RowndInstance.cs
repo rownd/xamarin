@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using Rownd.Core;
+using Rownd.Models;
+using Rownd.Models.Repos;
 using Xamarin.Forms;
-using Rownd.Store;
-using Redux;
 
 namespace Rownd
 {
@@ -12,37 +12,27 @@ namespace Rownd
         private static RowndInstance inst;
 
         public Config config;
+        public StateRepo state;
 
-        //private Redux.Types.IStore<Store.State, Store.Actions> store = Redux.Store.createStore(
-        //    Rownd.Store.Store.reducer,
-        //    new Store.State(
-        //        new Store.AuthState(null, null)
-        //    ),
-        //    Rownd.Store.Store.defaultEnhancer
-        //);
-
-        private Redux.Types.IStore<Store.State, Store.Actions> store = Store.Store.createStore(new Store.State(
-            new Store.AuthState(null, null)
-        ));
-
-        private RowndInstance(Config config = null){
-            Shared.Init(config);
+        private RowndInstance(Application app,  Config config = null){
+            Shared.Init(app, config);
             config = Shared.ServiceProvider.GetService<Config>();
+            state = StateRepo.Get();
+            state.Setup();
         }
 
-        public static RowndInstance GetInstance(Config config = null)
+        public static RowndInstance GetInstance(Application app, Config config = null)
         {
             if (inst == null)
             {
-                inst = new RowndInstance(config);
+                inst = new RowndInstance(app, config);
             }
 
             return inst;
         }
 
-        public static RowndInstance Configure(String appKey)
+        public RowndInstance Configure(String appKey)
         {
-            GetInstance();
             var config = Shared.ServiceProvider.GetService<Config>();
 
             config.appKey = appKey;

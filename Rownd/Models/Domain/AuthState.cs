@@ -5,9 +5,9 @@ using JWT;
 using JWT.Builder;
 using Xamarin.CommunityToolkit.ObjectModel;
 
-namespace Rownd.Models
+namespace Rownd.Models.Domain
 {
-    public class Auth : ObservableObject
+    public class AuthState : StateBase
     {
         public String AccessToken { get; set; }
         public String RefreshToken { get; set; }
@@ -31,7 +31,7 @@ namespace Rownd.Models
             }
         }
 
-        public Auth()
+        public AuthState()
         {
             //this.PropertyChanged += this.onAuthChanged;
         }

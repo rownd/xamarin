@@ -7,14 +7,19 @@ using Microsoft.Extensions.Logging;
 using Xamarin.Essentials;
 using Microsoft.Extensions.Logging.Console;
 using Xamarin.Forms;
+using Rownd.Models;
+using Rownd.Models.Domain;
+using Rownd.Models.Repos;
 
 namespace Rownd.Core
 {
     public static class Shared
     {
+        public static Application app;
         public static IServiceProvider ServiceProvider { get; set; }
-        public static void Init(Config config = null)
+        public static void Init(Application app, Config config = null)
         {
+            Shared.app = app;
             //var a = Assembly.GetExecutingAssembly();
             //using var stream = a.GetManifestResourceStream("MyAssemblyName.appsettings.json");
 
@@ -53,8 +58,12 @@ namespace Rownd.Core
 
             } else
             {
-                services.AddSingleton<Config, Config>();
+                services.AddSingleton<Config>(new Config());
             }
+
+            services.AddSingleton<StateRepo>(new StateRepo());
+            services.AddSingleton<ApiClient, ApiClient>();
+            services.AddSingleton<AppConfigRepo, AppConfigRepo>();
 
             // add the ViewModel, but as a Transient, which means it will create a new one each time.
             //services.AddTransient<MyViewModel>();

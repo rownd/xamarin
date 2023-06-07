@@ -16,20 +16,25 @@
     <PackageReference Include="JsonKnownTypes" Version="0.5.5" />
     <PackageReference Include="JsonSubTypes" Version="2.0.1" />
     <PackageReference Include="JWT" Version="10.0.2" />
+    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="110.2.0" />
+    <PackageReference Include="HttpTracer" Version="2.1.1" />
+    <PackageReference Include="ReduxSimple" Version="3.7.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Core\" />
     <None Remove="HubWebView\" />
     <None Remove="HubWebView\HubMessage\" />
     <None Remove="Models\" />
+    <None Remove="Models\Domain\" />
+    <None Remove="Models\Repos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\" />
     <Folder Include="HubWebView\" />
     <Folder Include="HubWebView\HubMessage\" />
     <Folder Include="Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Rownd.Store\Rownd.Store.fsproj" />
+    <Folder Include="Models\Domain\" />
+    <Folder Include="Models\Repos\" />
   </ItemGroup>
 </Project>

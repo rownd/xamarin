@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Rownd.Core
 {
@@ -20,6 +21,11 @@ namespace Rownd.Core
         public Customizations customizations = new Customizations();
 
         private JsonSerializerOptions jsonOptions = new JsonSerializerOptions() {};
+
+        public static Config GetConfig()
+        {
+            return Shared.ServiceProvider.GetService<Config>();
+        }
 
         public Config()
 		{

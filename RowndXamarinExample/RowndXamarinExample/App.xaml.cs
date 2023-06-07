@@ -18,9 +18,8 @@ namespace RowndXamarinExample
             rowndConfig.apiUrl = "https://api.us-east-2.dev.rownd.io";
             rowndConfig.hubUrl = "https://hub.dev.rownd.io";
 
-            RowndInstance.GetInstance(rowndConfig);
-
-            rownd = RowndInstance.Configure("b60bc454-c45f-47a2-8f8a-12b2062f5a77");
+            rownd = RowndInstance.GetInstance(this, rowndConfig);
+            rownd.Configure("b60bc454-c45f-47a2-8f8a-12b2062f5a77");
             
             InitializeComponent();
 
