@@ -31,6 +31,9 @@ namespace Rownd.HubWebView.HubMessage
 
         [EnumMember(Value = "hub_loaded")]
         HubLoaded,
+
+        [EnumMember(Value = "hub_resize")]
+        HubResize
     }
 }
 

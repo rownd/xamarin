@@ -48,6 +48,18 @@ namespace Rownd.Controls
         {
             InitializeComponent();
             TriggerExpand = new Command(() => Expand());
+            BindingContext = new HubContentViewModel();
+
+            if (Webview is IBottomSheetChild child)
+            {
+                child.SetBottomSheetParent(this);
+            }
+        }
+
+        public HubPageRelative(HubContentViewModel viewModel) : this()
+        {
+            BindingContext = viewModel;
+            
         }
 
         protected override void OnAppearing()
@@ -104,6 +116,16 @@ namespace Rownd.Controls
             var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetProportionCoordinate(.90)));
             Sheet.TranslateTo(Sheet.X, finalTranslation, 150, Easing.SpringIn);
         }
+        public async Task RequestHeight(int height)
+        {
+            var maxHeight = Math.Abs(GetProportionCoordinate(.90));
+            if (height > maxHeight)
+            {
+                height = (int)maxHeight;
+            }
+
+            await AnimateTo(-height);
+        }
 
         public async Task Dismiss()
         {
@@ -118,12 +140,10 @@ namespace Rownd.Controls
 
         async Task AnimateTo(double position, Easing easing = null)
         {
-            if (easing == null)
-            {
-                easing = Easing.SpringOut;
-            }
+            easing ??= Easing.SpringOut;
 
-            await Sheet.TranslateTo(0, position, duration, easing);
+            await Sheet.TranslateTo(Sheet.X, position, duration, easing);
+            currentPosition = Sheet.TranslationY;
         }
 
         async Task AnimateIn()

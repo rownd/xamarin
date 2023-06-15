@@ -41,11 +41,18 @@ namespace Rownd.HubWebView.HubMessage
 
             PayloadBase payload = null;
 
+            // TODO: There's probably a more efficient way to do this
             switch (type)
             {
                 case MessageType.Authentication:
                     {
                         payload = jo["payload"].ToObject<PayloadAuthenticated>(serializer);
+                        break;
+                    }
+
+                case MessageType.HubResize:
+                    {
+                        payload = jo["payload"].ToObject<PayloadHubResize>(serializer);
                         break;
                     }
             }

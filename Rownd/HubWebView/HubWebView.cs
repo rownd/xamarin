@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
+using Rownd.Controls;
 using Rownd.Core;
 using Rownd.HubWebView.HubMessage;
 using Rownd.Models;
@@ -11,10 +12,11 @@ using Xamarin.Forms;
 
 namespace Rownd.HubWebView
 {
-    public class HubWebView : WebView
+    public class HubWebView : WebView, IBottomSheetChild
     {
         private Config config = Shared.ServiceProvider.GetService<Config>();
         private StateRepo stateRepo = StateRepo.Get();
+        private HubPageRelative bottomSheet { get; set; }
 
         public HubWebView()
         {
@@ -83,6 +85,12 @@ if (typeof rownd !== 'undefined') {{
                             this.FadeTo(1, 500);
                             break;
                         }
+                    case MessageType.HubResize:
+                        {
+                            Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
+                            _ = bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
+                            break;
+                        }
                     default:
                         {
                             Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
@@ -102,7 +110,11 @@ if (typeof rownd !== 'undefined') {{
                 TriggerHub();
             }
         }
-        
+
+        public void SetBottomSheetParent(HubPageRelative bottomSheet)
+        {
+            this.bottomSheet = bottomSheet;
+        }
     }
 }
 

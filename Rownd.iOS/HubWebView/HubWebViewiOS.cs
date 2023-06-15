@@ -6,7 +6,7 @@ using Rownd.HubWebView;
 [assembly: Dependency(typeof(Rownd.HubWebView.iOS.HubWebViewiOS))]
 namespace Rownd.HubWebView.iOS
 {
-	public class HubWebViewiOS : WebView, IHubWebView
+	public class HubWebViewiOS : WebView
     {
 		public HubWebViewiOS()
 		{

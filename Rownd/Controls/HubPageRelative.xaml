@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Rownd.Controls.HubPageRelative"
     xmlns:controls="clr-namespace:Rownd.Controls"
+    xmlns:rownd="clr-namespace:Rownd.HubWebView;assembly=Rownd"
     BackgroundColor="Transparent"
     x:Name="BottomSheetRef">
 
@@ -31,7 +32,9 @@
                 BackgroundColor="White"
                 Opacity="0"
                 CornerRadius="12"
+                IsClippedToBounds="True"
                 HasShadow="True"
+                Padding="0"
                 RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
                     Property=Height,Factor=1,Constant=0}"
                 RelativeLayout.WidthConstraint="{ConstraintExpression
@@ -43,17 +46,33 @@
                     <PanGestureRecognizer PanUpdated="OnBottomSheetPan"/>
                 </Frame.GestureRecognizers>
 
-                <StackLayout>
-                    <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="50" BackgroundColor="Gray" HorizontalOptions="Center"/>
-                    <Label Text="This is some test content" TextColor="#333"/>
-                    <Label Text="This is some test content" TextColor="#333" />
-                    <Label Text="This is some test content" TextColor="#333" />
-                    <Label Text="This is some test content" TextColor="#333" />
-                    <Button Margin="0,10,0,0" Text="Expand"
-                        Command="{Binding TriggerExpand}"
-                        BackgroundColor="{StaticResource Primary}"
-                        TextColor="White" />
-                </StackLayout>
+                <RelativeLayout IsClippedToBounds="True">
+                    <rownd:HubWebView x:Name="Webview"
+
+                        
+                        VerticalOptions="FillAndExpand"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression
+                            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                        RelativeLayout.HeightConstraint="{ConstraintExpression
+                            Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
+                    />
+
+                    <StackLayout
+                        BackgroundColor="Transparent"
+                        HorizontalOptions="Center"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression
+                            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                    >
+                        <BoxView
+                            HeightRequest="5"
+                            CornerRadius="2"
+                            WidthRequest="100"
+                            BackgroundColor="Gray"
+                            HorizontalOptions="Center"
+                            Margin="15"
+                        />
+                    </StackLayout>
+                </RelativeLayout>
             </Frame>
         </RelativeLayout>
     </ContentPage.Content>
