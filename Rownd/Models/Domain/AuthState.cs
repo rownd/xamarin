@@ -15,6 +15,10 @@ namespace Rownd.Models.Domain
         {
             get { return AccessToken != null; }
         }
+        public Boolean IsNotAuthenticated
+        {
+            get { return AccessToken == null; }
+        }
         public Boolean IsAccessTokenValid
         {
             get

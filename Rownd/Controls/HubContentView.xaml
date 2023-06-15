@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Rownd.Controls"
+    x:Class="Rownd.Controls.HubContentView"
+    InputTransparent="True">
+
+    <ContentView.BindingContext>
+        <local:HubContentViewModel />
+    </ContentView.BindingContext>
+
+    <ContentView.Content>
+        <Frame
+            x:Name="bottomSheet"
+            HasShadow="true"
+            CornerRadius="12"
+            Padding="1,4,1,0"
+            BackgroundColor="#faf9f8"
+            RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=.9,Constant=0}"
+            RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+            RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
+
+        >
+            <Frame.GestureRecognizers>
+                <PanGestureRecognizer PanUpdated="OnPanUpdated" />
+            </Frame.GestureRecognizers>
+
+            <StackLayout>
+                <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="50" BackgroundColor="Gray" HorizontalOptions="Center"/>
+
+            </StackLayout>
+        </Frame>
+    </ContentView.Content>
+</ContentView>
+

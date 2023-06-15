@@ -20,6 +20,8 @@ namespace RowndXamarinExample
 
             Rownd = RowndInstance.GetInstance(this, rowndConfig);
             Rownd.Configure("b60bc454-c45f-47a2-8f8a-12b2062f5a77");
+
+            DependencyService.RegisterSingleton<IRowndInstance>(Rownd);
             
             InitializeComponent();
 

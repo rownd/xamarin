@@ -20,14 +20,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Rownd\" />
-    <None Remove="Rownd\Models\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Rownd\" />
-    <Folder Include="Rownd\Models\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Rownd\Rownd.csproj" />
   </ItemGroup>
 </Project>

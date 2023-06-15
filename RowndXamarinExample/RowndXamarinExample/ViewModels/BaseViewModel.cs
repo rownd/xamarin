@@ -7,12 +7,14 @@ using Xamarin.Forms;
 
 using RowndXamarinExample.Models;
 using RowndXamarinExample.Services;
+using Rownd;
 
 namespace RowndXamarinExample.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
         public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>();
+        public IRowndInstance Rownd => DependencyService.Get<IRowndInstance>();
 
         bool isBusy = false;
         public bool IsBusy
@@ -40,6 +42,8 @@ namespace RowndXamarinExample.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+
+
 
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

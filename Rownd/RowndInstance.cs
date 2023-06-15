@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
+using Rownd.Controls;
 using Rownd.Core;
 using Rownd.Models;
 using Rownd.Models.Domain;
@@ -13,21 +14,20 @@ namespace Rownd
     {
         private static RowndInstance inst;
 
-        public Config config;
-        public StateRepo state;
+        public Config Config;
+        public StateRepo State;
 
         public ReduxStore<GlobalState> Store {
             get {
-                return state.Store;
+                return State.Store;
             }
-            private set { }
         }
 
         private RowndInstance(Application app,  Config config = null){
             Shared.Init(app, config);
-            config = Shared.ServiceProvider.GetService<Config>();
-            state = StateRepo.Get();
-            state.Setup();
+            Config = Shared.ServiceProvider.GetService<Config>();
+            State = StateRepo.Get();
+            State.Setup();
         }
 
         public static RowndInstance GetInstance(Application app, Config config = null)
@@ -51,12 +51,17 @@ namespace Rownd
 
         public void RequestSignIn()
         {
-
+            DisplayHub();
         }
 
         public void RequestSignIn(SignInMethod with)
         {
 
+        }
+
+        public void SignOut()
+        {
+            Store.Dispatch(new StateActions.SetAuthState() { AuthState = new AuthState() });
         }
 
         public String GetAccessToken()
@@ -68,6 +73,14 @@ namespace Rownd
         {
             return "bar";
         }
+
+        #region Internal methods
+        private void DisplayHub()
+        {
+            Shared.app.MainPage.Navigation.PushModalAsync(new HubPageRelative(), false);
+        }
+
+        #endregion
     }
 }
 

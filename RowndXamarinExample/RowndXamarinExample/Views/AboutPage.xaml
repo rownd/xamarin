@@ -45,6 +45,21 @@
                         Command="{Binding OpenWebCommand}"
                         BackgroundColor="{StaticResource Primary}"
                         TextColor="White" />
+                <Label Text="Diagnostic info:" />
+                <Label Text="{Binding RowndState.AppConfig.Id, StringFormat=App ID: {0}}" />
+                <Label Text="{Binding RowndState.Auth.IsAuthenticated, StringFormat=Is authenticated: {0}}" />
+
+                <Button Margin="0,10,0,0" Text="Sign in"
+                        Command="{Binding RequestSignIn}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        IsVisible="{Binding RowndState.Auth.IsNotAuthenticated}" />
+
+                <Button Margin="0,10,0,0" Text="Sign out"
+                        Command="{Binding SignOut}"
+                        BackgroundColor="{StaticResource Primary}"
+                        TextColor="White"
+                        IsVisible="{Binding RowndState.Auth.IsAuthenticated}" />
             </StackLayout>
         </ScrollView>
     </Grid>
