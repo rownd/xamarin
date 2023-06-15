@@ -3,10 +3,10 @@ using System.Runtime.Serialization;
 
 namespace Rownd.HubWebView.HubMessage
 {
-	public enum MessageType
-	{
-		[EnumMember(Value = "authentication")]
-		Authentication,
+    public enum MessageType
+    {
+        [EnumMember(Value = "authentication")]
+        Authentication,
 
         [EnumMember(Value = "sign_out")]
         SignOut,
@@ -33,7 +33,9 @@ namespace Rownd.HubWebView.HubMessage
         HubLoaded,
 
         [EnumMember(Value = "hub_resize")]
-        HubResize
+        HubResize,
+
+        [EnumMember(Value = "can_touch_background_to_dismiss")]
+        CanTouchBackgroundToDismiss
     }
 }
-

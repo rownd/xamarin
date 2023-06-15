@@ -55,6 +55,12 @@ namespace Rownd.HubWebView.HubMessage
                         payload = jo["payload"].ToObject<PayloadHubResize>(serializer);
                         break;
                     }
+
+                case MessageType.CanTouchBackgroundToDismiss:
+                    {
+                        payload = jo["payload"].ToObject<PayloadCanTouchBackgroundToDismiss>(serializer);
+                        break;
+                    }
             }
 
             message.Payload = payload;

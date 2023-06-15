@@ -14,17 +14,45 @@ namespace Rownd.Controls
 
         #region Properties
 
-        public static BindableProperty InitialPositionProperty = BindableProperty.Create(
+        private static BindableProperty initialPositionProperty = BindableProperty.Create(
             nameof(InitialPosition),
             typeof(int),
-            typeof(BottomSheet),
+            typeof(HubPageRelative),
             defaultValue: 200,
             defaultBindingMode: BindingMode.OneTime);
 
         public int InitialPosition
         {
-            get { return (int)GetValue(InitialPositionProperty); }
-            set { SetValue(InitialPositionProperty, value); OnPropertyChanged(); }
+            get
+            {
+                return (int)GetValue(initialPositionProperty);
+            }
+            set
+            {
+                SetValue(initialPositionProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        private static BindableProperty isDismissableProperty = BindableProperty.Create(
+            nameof(IsDismissable),
+            typeof(bool),
+            typeof(HubPageRelative),
+            defaultValue: true,
+            defaultBindingMode: BindingMode.TwoWay
+        );
+
+        public bool IsDismissable
+        {
+            get
+            {
+                return (bool)GetValue(isDismissableProperty);
+            }
+            set
+            {
+                SetValue(isDismissableProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         //public static BindableProperty SheetContentProperty = BindableProperty.Create(
@@ -59,7 +87,7 @@ namespace Rownd.Controls
         public HubPageRelative(HubContentViewModel viewModel) : this()
         {
             BindingContext = viewModel;
-            
+
         }
 
         protected override void OnAppearing()
@@ -76,11 +104,11 @@ namespace Rownd.Controls
         {
             try
             {
-                switch(e.StatusType)
+                switch (e.StatusType)
                 {
                     case GestureStatus.Running:
                         var translateY = Math.Max(Math.Min(0, currentPosition + e.TotalY), -Math.Abs((Height * .10) - Height));
-                        await Sheet.TranslateTo(Sheet.X, translateY, 20);
+                        await Sheet.TranslateTo(Sheet.X, translateY, 20, Easing.SpringOut);
 
                         break;
 
@@ -90,6 +118,10 @@ namespace Rownd.Controls
                         if (!isSwipeUp(e) && Math.Abs(currentPosition) < InitialPosition)
                         {
                             await Dismiss();
+                        }
+                        else
+                        {
+                            // await Sheet.TranslateTo(Sheet.X, currentPosition, 150, Easing.SpringOut);
                         }
                         break;
                 }
@@ -112,7 +144,7 @@ namespace Rownd.Controls
 
         public void Expand()
         {
-            //open sheet to 90% of the view
+            // open sheet to 90% of the view
             var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetProportionCoordinate(.90)));
             Sheet.TranslateTo(Sheet.X, finalTranslation, 150, Easing.SpringIn);
         }
@@ -129,16 +161,22 @@ namespace Rownd.Controls
 
         public async Task Dismiss()
         {
+            if (!IsDismissable)
+            {
+                await Shake();
+                return;
+            }
+
             await AnimateOut();
             await Shared.app.MainPage.Navigation.PopModalAsync(false);
         }
 
-        double GetProportionCoordinate(double proportion)
+        private double GetProportionCoordinate(double proportion)
         {
             return proportion * Height;
         }
 
-        async Task AnimateTo(double position, Easing easing = null)
+        public async Task AnimateTo(double position, Easing easing = null)
         {
             easing ??= Easing.SpringOut;
 
@@ -146,7 +184,7 @@ namespace Rownd.Controls
             currentPosition = Sheet.TranslationY;
         }
 
-        async Task AnimateIn()
+        private async Task AnimateIn()
         {
             await Task.WhenAll(
                 Backdrop.FadeTo(0.5, length: duration),
@@ -156,7 +194,7 @@ namespace Rownd.Controls
             currentPosition = Sheet.TranslationY;
         }
 
-        async Task AnimateOut()
+        private async Task AnimateOut()
         {
             await Task.WhenAll(
                 Sheet.TranslateTo(x: 0, y: 0, length: duration, easing: Easing.SinIn),
@@ -166,10 +204,21 @@ namespace Rownd.Controls
             currentPosition = Sheet.TranslationY;
         }
 
-        void TapGestureRecognizer_Tapped(System.Object sender, System.EventArgs e)
+        private void TapGestureRecognizer_Tapped(object sender, System.EventArgs e)
         {
             _ = Dismiss();
         }
+
+        private async Task Shake()
+        {
+            uint timeout = 50;
+            await Sheet.TranslateTo(0, currentPosition - 15, timeout);
+            await Sheet.TranslateTo(0, currentPosition + 15, timeout);
+            await Sheet.TranslateTo(0, currentPosition - 10, timeout);
+            await Sheet.TranslateTo(0, currentPosition + 10, timeout);
+            await Sheet.TranslateTo(0, currentPosition - 5, timeout);
+            await Sheet.TranslateTo(0, currentPosition + 5, timeout);
+            Sheet.TranslationY = currentPosition;
+        }
     }
 }
-

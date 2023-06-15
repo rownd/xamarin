@@ -9,7 +9,6 @@
 		<PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />
 		<PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
 		<PackageReference Include="Xamarin.CommunityToolkit" Version="2.0.6" />
-		<PackageReference Include="BottomSheetXF" Version="1.1.0" />
 		<PackageReference Include="System.Text.Json" Version="7.0.2" />
 		<PackageReference Include="RestSharp" Version="110.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
@@ -21,7 +20,6 @@
 		<PackageReference Include="RestSharp.Serializers.NewtonsoftJson" Version="110.2.0" />
 		<PackageReference Include="HttpTracer" Version="2.1.1" />
 		<PackageReference Include="ReduxSimple" Version="3.7.0" />
-		<PackageReference Include="Xam.Plugin.SimpleBottomDrawer" Version="1.0.11" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Core\" />

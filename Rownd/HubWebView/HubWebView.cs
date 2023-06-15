@@ -30,16 +30,14 @@ namespace Rownd.HubWebView
         private async void RenderHub()
         {
             var url = await config.GetHubLoaderUrl();
-            Dispatcher.BeginInvokeOnMainThread(() => {
+            Dispatcher.BeginInvokeOnMainThread(() =>
+            {
                 this.Source = url;
             });
         }
 
         public async void TriggerHub()
         {
-            // Access the platform-specific implementation using DependencyService
-            //var customWebView = DependencyService.Get<IHubWebView>();
-            //customWebView?.AddJavascriptListener("eventName");
             this.evaluateJavaScript("rownd.requestSignIn();");
         }
 
@@ -80,24 +78,35 @@ if (typeof rownd !== 'undefined') {{
                             });
                             break;
                         }
+
                     case MessageType.HubLoaded:
                         {
                             this.FadeTo(1, 500);
                             break;
                         }
+
                     case MessageType.HubResize:
                         {
                             Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
                             _ = bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
                             break;
                         }
+
+                    case MessageType.CanTouchBackgroundToDismiss:
+                        {
+                            Console.WriteLine($"Hub dismissable chnage: {hubMessage.Payload}");
+                            bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
+                            break;
+                        }
+
                     default:
                         {
                             Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
                             break;
                         }
                 }
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine($"Failed to decode hub message: {e.Message}");
             }
@@ -117,4 +126,3 @@ if (typeof rownd !== 'undefined') {{
         }
     }
 }
-
