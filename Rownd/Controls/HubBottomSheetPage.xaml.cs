@@ -1,43 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Rownd.Core;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Rownd.Controls
 {
-    public partial class HubPageRelative : ContentPage
+    public partial class HubBottomSheetPage : ContentPage
     {
-
         #region Properties
 
-        private static BindableProperty initialPositionProperty = BindableProperty.Create(
+        private static readonly BindableProperty InitialPositionProperty = BindableProperty.Create(
             nameof(InitialPosition),
             typeof(int),
-            typeof(HubPageRelative),
-            defaultValue: 200,
+            typeof(HubBottomSheetPage),
+            defaultValue: 250,
             defaultBindingMode: BindingMode.OneTime);
 
         public int InitialPosition
         {
             get
             {
-                return (int)GetValue(initialPositionProperty);
+                return (int)GetValue(InitialPositionProperty);
             }
             set
             {
-                SetValue(initialPositionProperty, value);
+                SetValue(InitialPositionProperty, value);
                 OnPropertyChanged();
             }
         }
 
-        private static BindableProperty isDismissableProperty = BindableProperty.Create(
+        private static readonly BindableProperty IsDismissableProperty = BindableProperty.Create(
             nameof(IsDismissable),
             typeof(bool),
-            typeof(HubPageRelative),
+            typeof(HubBottomSheetPage),
             defaultValue: true,
             defaultBindingMode: BindingMode.TwoWay
         );
@@ -46,48 +43,96 @@ namespace Rownd.Controls
         {
             get
             {
-                return (bool)GetValue(isDismissableProperty);
+                return (bool)GetValue(IsDismissableProperty);
             }
             set
             {
-                SetValue(isDismissableProperty, value);
+                SetValue(IsDismissableProperty, value);
                 OnPropertyChanged();
             }
         }
 
-        //public static BindableProperty SheetContentProperty = BindableProperty.Create(
-        //    nameof(SheetContent),
-        //    typeof(View),
-        //    typeof(BottomSheet),
-        //    defaultValue: default(View),
-        //    defaultBindingMode: BindingMode.TwoWay);
+        private static readonly BindableProperty IsLoadingProperty = BindableProperty.Create(
+            nameof(IsLoading),
+            typeof(bool),
+            typeof(HubBottomSheetPage),
+            defaultValue: true,
+            defaultBindingMode: BindingMode.OneWay
+        );
 
-        //public View SheetContent
-        //{
-        //    get { return (View)GetValue(SheetContentProperty); }
-        //    set { SetValue(SheetContentProperty, value); OnPropertyChanged(); }
-        //}
+        public bool IsLoading
+        {
+            get
+            {
+                return (bool)GetValue(IsLoadingProperty);
+            }
+            set
+            {
+                SetValue(IsLoadingProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        private static readonly BindableProperty SheetBackgroundColorProperty = BindableProperty.Create(
+            nameof(SheetBackgroundColor),
+            typeof(Color),
+            typeof(HubBottomSheetPage),
+            defaultValue: Color.White,
+            defaultBindingMode: BindingMode.OneWay
+        );
+
+        public Color SheetBackgroundColor
+        {
+            get
+            {
+                return (Color)GetValue(SheetBackgroundColorProperty);
+            }
+            set
+            {
+                SetValue(SheetBackgroundColorProperty, value);
+                OnPropertyChanged();
+            }
+        }
+
+        private static readonly BindableProperty PrimaryForegroundColorProperty = BindableProperty.Create(
+            nameof(PrimaryForegroundColor),
+            typeof(Color),
+            typeof(HubBottomSheetPage),
+            defaultValue: Color.FromHex("#333333"),
+            defaultBindingMode: BindingMode.OneWay
+        );
+
+        public Color PrimaryForegroundColor
+        {
+            get
+            {
+                return (Color)GetValue(PrimaryForegroundColorProperty);
+            }
+            set
+            {
+                SetValue(PrimaryForegroundColorProperty, value);
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand TriggerExpand { get; }
 
         #endregion
 
-        public HubPageRelative()
+        public HubBottomSheetPage()
         {
+            OSAppTheme currentTheme = Shared.App.RequestedTheme;
             InitializeComponent();
             TriggerExpand = new Command(() => Expand());
-            BindingContext = new HubContentViewModel();
+            BindingContext = this;
 
             if (Webview is IBottomSheetChild child)
             {
                 child.SetBottomSheetParent(this);
             }
-        }
 
-        public HubPageRelative(HubContentViewModel viewModel) : this()
-        {
-            BindingContext = viewModel;
-
+            SheetBackgroundColor = Shared.ServiceProvider.GetService<Config>().Customizations.SheetBackgroundColor;
+            PrimaryForegroundColor = Shared.ServiceProvider.GetService<Config>().Customizations.PrimaryForegroundColor;
         }
 
         protected override void OnAppearing()
@@ -97,8 +142,8 @@ namespace Rownd.Controls
             _ = AnimateIn();
         }
 
-        readonly uint duration = 300;
-        double currentPosition = 0;
+        private readonly uint duration = 300;
+        private double currentPosition = 0;
 
         public async void OnBottomSheetPan(object sender, PanUpdatedEventArgs e)
         {
@@ -115,17 +160,13 @@ namespace Rownd.Controls
                     case GestureStatus.Completed:
                         currentPosition = Sheet.TranslationY;
 
-                        if (!isSwipeUp(e) && Math.Abs(currentPosition) < InitialPosition)
+                        if (!IsSwipeUp(e) && Math.Abs(currentPosition) < InitialPosition)
                         {
                             await Dismiss();
                         }
-                        else
-                        {
-                            // await Sheet.TranslateTo(Sheet.X, currentPosition, 150, Easing.SpringOut);
-                        }
+
                         break;
                 }
-
             }
             catch (Exception ex)
             {
@@ -133,12 +174,13 @@ namespace Rownd.Controls
             }
         }
 
-        public bool isSwipeUp(PanUpdatedEventArgs e)
+        public bool IsSwipeUp(PanUpdatedEventArgs e)
         {
             if (e.TotalY < 0)
             {
                 return true;
             }
+
             return false;
         }
 
@@ -148,6 +190,7 @@ namespace Rownd.Controls
             var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetProportionCoordinate(.90)));
             Sheet.TranslateTo(Sheet.X, finalTranslation, 150, Easing.SpringIn);
         }
+
         public async Task RequestHeight(int height)
         {
             var maxHeight = Math.Abs(GetProportionCoordinate(.90));
@@ -168,7 +211,7 @@ namespace Rownd.Controls
             }
 
             await AnimateOut();
-            await Shared.app.MainPage.Navigation.PopModalAsync(false);
+            await Shared.App.MainPage.Navigation.PopModalAsync(false);
         }
 
         private double GetProportionCoordinate(double proportion)

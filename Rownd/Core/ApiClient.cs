@@ -23,7 +23,7 @@ namespace Rownd.Core
 		public ApiClient()
 		{
 			var config = Config.GetConfig();
-			var options = new RestClientOptions(config.apiUrl)
+			var options = new RestClientOptions(config.ApiUrl)
 			{
 				Authenticator = new ApiAuthenticator(),
 				ConfigureMessageHandler = handler => new HttpTracerHandler(handler)
@@ -45,7 +45,7 @@ namespace Rownd.Core
                 configureSerialization: s => s.UseNewtonsoftJson(defaultSettings)
             );
 
-			Client.AddDefaultHeader("x-rownd-app-key", config.appKey);
+			Client.AddDefaultHeader("x-rownd-app-key", config.AppKey);
 		}
 	}
 }

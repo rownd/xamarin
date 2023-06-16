@@ -3,7 +3,7 @@ namespace Rownd.Controls
 {
 	public interface IBottomSheetChild
 	{
-        public void SetBottomSheetParent(HubPageRelative bottomSheet);
+        public void SetBottomSheetParent(HubBottomSheetPage bottomSheet);
     }
 }
 

@@ -16,11 +16,11 @@ namespace Rownd.HubWebView
     {
         private Config config = Shared.ServiceProvider.GetService<Config>();
         private StateRepo stateRepo = StateRepo.Get();
-        private HubPageRelative bottomSheet { get; set; }
+        private HubBottomSheetPage bottomSheet { get; set; }
 
         public HubWebView()
         {
-            this.Navigated += OnPageLoaded;
+            Navigated += OnPageLoaded;
 
             this.FadeTo(0, 0);
 
@@ -32,18 +32,18 @@ namespace Rownd.HubWebView
             var url = await config.GetHubLoaderUrl();
             Dispatcher.BeginInvokeOnMainThread(() =>
             {
-                this.Source = url;
+                Source = url;
             });
         }
 
-        public async void TriggerHub()
+        public void TriggerHub()
         {
-            this.evaluateJavaScript("rownd.requestSignIn();");
+            evaluateJavaScript("rownd.requestSignIn();");
         }
 
-        protected void evaluateJavaScript(String code)
+        protected void evaluateJavaScript(string code)
         {
-            String wrappedJs = $@"
+            var wrappedJs = $@"
 if (typeof rownd !== 'undefined') {{
     {code}
 }} else {{
@@ -56,7 +56,7 @@ if (typeof rownd !== 'undefined') {{
             this.EvaluateJavaScriptAsync(wrappedJs);
         }
 
-        public void HandleHubMessage(String message)
+        public async void HandleHubMessage(string message)
         {
             Console.WriteLine($"Received message: {message}");
             try
@@ -76,12 +76,17 @@ if (typeof rownd !== 'undefined') {{
                                     RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
                                 }
                             });
+
+                            await Task.Delay(2000);
+
+                            await bottomSheet.Dismiss();
                             break;
                         }
 
                     case MessageType.HubLoaded:
                         {
-                            this.FadeTo(1, 500);
+                            await this.FadeTo(1, 500);
+                            bottomSheet.IsLoading = false;
                             break;
                         }
 
@@ -94,8 +99,15 @@ if (typeof rownd !== 'undefined') {{
 
                     case MessageType.CanTouchBackgroundToDismiss:
                         {
-                            Console.WriteLine($"Hub dismissable chnage: {hubMessage.Payload}");
+                            Console.WriteLine($"Hub dismissable change: {hubMessage.Payload}");
                             bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
+                            break;
+                        }
+
+                    case MessageType.CloseHub:
+                        {
+                            Console.WriteLine($"Hub close request");
+                            _ = bottomSheet.Dismiss();
                             break;
                         }
 
@@ -120,7 +132,7 @@ if (typeof rownd !== 'undefined') {{
             }
         }
 
-        public void SetBottomSheetParent(HubPageRelative bottomSheet)
+        public void SetBottomSheetParent(HubBottomSheetPage bottomSheet)
         {
             this.bottomSheet = bottomSheet;
         }

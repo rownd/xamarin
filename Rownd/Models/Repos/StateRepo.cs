@@ -41,7 +41,7 @@ namespace Rownd.Models.Repos
         {
             try
             {
-                String existingStateJsonStr = Shared.app.Properties["rownd_state"] as string;
+                String existingStateJsonStr = Shared.App.Properties["rownd_state"] as string;
                 GlobalState existingState = JsonConvert.DeserializeObject<GlobalState>(existingStateJsonStr);
                 InitializeStore(existingState);
             }
@@ -57,7 +57,7 @@ namespace Rownd.Models.Repos
         {
             var stateJson = JsonConvert.SerializeObject(state);
             Console.WriteLine($"Saving serialized state to storage: {stateJson}");
-            Shared.app.Properties["rownd_state"] = stateJson;
+            Shared.App.Properties["rownd_state"] = stateJson;
 
         }
 

@@ -2,15 +2,12 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Rownd.Controls.HubPageRelative"
+    x:Class="Rownd.Controls.HubBottomSheetPage"
     xmlns:controls="clr-namespace:Rownd.Controls"
     xmlns:rownd="clr-namespace:Rownd.HubWebView;assembly=Rownd"
     BackgroundColor="Transparent"
-    x:Name="BottomSheetRef">
-
-    <!--<ContentPage.BindingContext>
-        <controls:HubContentViewModel />
-    </ContentPage.BindingContext>-->
+    x:Name="BottomSheetRef"
+    x:DataType="controls:HubBottomSheetPage">
 
     <ContentPage.Content>
         <RelativeLayout>
@@ -29,7 +26,7 @@
             </BoxView>
             <Frame
                 x:Name="Sheet"
-                BackgroundColor="White"
+                BackgroundColor="{Binding SheetBackgroundColor}"
                 Opacity="0"
                 CornerRadius="12"
                 IsClippedToBounds="True"
@@ -48,8 +45,6 @@
 
                 <RelativeLayout IsClippedToBounds="True">
                     <rownd:HubWebView x:Name="Webview"
-
-                        
                         VerticalOptions="FillAndExpand"
                         RelativeLayout.WidthConstraint="{ConstraintExpression
                             Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
@@ -72,6 +67,23 @@
                             Margin="15"
                         />
                     </StackLayout>
+
+                    <StackLayout
+                        IsVisible="{Binding IsLoading}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        BackgroundColor="Transparent"
+                        RelativeLayout.WidthConstraint="{ConstraintExpression
+                            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                    >
+                        <ActivityIndicator
+                            IsRunning="{Binding IsLoading}"
+                            Color="{Binding PrimaryForegroundColor}"
+                            Scale="2"
+                            Margin="0,100,0,0"
+                        />
+                    </StackLayout>
+
                 </RelativeLayout>
             </Frame>
         </RelativeLayout>

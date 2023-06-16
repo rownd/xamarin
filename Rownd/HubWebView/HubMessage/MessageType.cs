@@ -12,7 +12,7 @@ namespace Rownd.HubWebView.HubMessage
         SignOut,
 
         [EnumMember(Value = "close_hub_view_controller")]
-        CloseHubViewController,
+        CloseHub,
 
         [EnumMember(Value = "trigger_sign_in_with_apple")]
         TriggerSignInWithApple,

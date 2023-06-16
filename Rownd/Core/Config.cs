@@ -1,26 +1,26 @@
 ﻿using System;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Rownd.Core
 {
-	public class Config
-	{
-        public String appKey { get; set; }
-        public String hubUrl { get; set; } = "https://hub.rownd.io";
-        public String apiUrl { get; set; } = "https://api.rownd.io";
-        public String postSignInRedirect { get; set; } = "NATIVE_APP";
-        public String appleIdCallbackUrl { get; set; } = "https://api.rownd.io/hub/auth/apple/callback";
-        public String subdomainExtension { get; set; } = ".rownd.link";
-        public long defaultRequestTimeout { get; set; } = 15000;
-        public int defaultNumApiRetries { get; set; } = 5;
+    public class Config
+    {
+        [JsonProperty("appKey")]
+        public string AppKey { get; set; }
+        public string HubUrl { get; set; } = "https://hub.rownd.io";
+        public string ApiUrl { get; set; } = "https://api.rownd.io";
+        public string PostSignInRedirect { get; set; } = "NATIVE_APP";
+        public string AppleIdCallbackUrl { get; set; } = "https://api.rownd.io/hub/auth/apple/callback";
+        public string SubdomainExtension { get; set; } = ".rownd.link";
+        public long DefaultRequestTimeout { get; set; } = 15000;
+        public int DefaultNumApiRetries { get; set; } = 5;
 
-        public Customizations customizations = new Customizations();
-
-        private JsonSerializerOptions jsonOptions = new JsonSerializerOptions() {};
+        public Customizations Customizations = new Customizations();
 
         public static Config GetConfig()
         {
@@ -28,12 +28,19 @@ namespace Rownd.Core
         }
 
         public Config()
-		{
-		}
-
-        public async Task<String> GetHubLoaderUrl()
         {
-            var jsonConfig = JsonSerializer.Serialize(this, jsonOptions);
+        }
+
+        public async Task<string> GetHubLoaderUrl()
+        {
+            DefaultContractResolver contractResolver = new DefaultContractResolver
+            {
+                NamingStrategy = new CamelCaseNamingStrategy()
+            };
+            var jsonConfig = JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                ContractResolver = contractResolver
+            });
             var base64Config = Convert.ToBase64String(Encoding.UTF8.GetBytes(jsonConfig), Base64FormattingOptions.None);
 
             var queryString = HttpUtility.ParseQueryString(string.Empty);
@@ -43,9 +50,8 @@ namespace Rownd.Core
             // val signInInitStr = signInState.toSignInInitHash()
             // uriBuilder.appendQueryParameter("sign_in", signInInitStr)
 
-            UriBuilder uriBuilder = new UriBuilder($"{hubUrl}/mobile_app");
+            UriBuilder uriBuilder = new UriBuilder($"{HubUrl}/mobile_app");
             uriBuilder.Query = queryString.ToString();
-
 
             //try {
             //    val authState = authRepo.getLatestAuthState() ?: AuthState()
@@ -55,8 +61,9 @@ namespace Rownd.Core
             //    Log.d("Rownd.config", "Couldn't compute requested init hash: ${error.message}")
             //}
 
+            Console.WriteLine($"Hub config: {uriBuilder}");
+
             return uriBuilder.ToString();
         }
-	}
+    }
 }
-

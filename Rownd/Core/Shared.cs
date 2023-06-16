@@ -1,25 +1,19 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
-using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Xamarin.Essentials;
-using Microsoft.Extensions.Logging.Console;
-using Xamarin.Forms;
-using Rownd.Models;
-using Rownd.Models.Domain;
 using Rownd.Models.Repos;
+using Xamarin.Forms;
 
 namespace Rownd.Core
 {
     public static class Shared
     {
-        public static Application app;
+        public static Application App { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
         public static void Init(Application app, Config config = null)
         {
-            Shared.app = app;
+            App = app;
             //var a = Assembly.GetExecutingAssembly();
             //using var stream = a.GetManifestResourceStream("MyAssemblyName.appsettings.json");
 
@@ -56,12 +50,13 @@ namespace Rownd.Core
             {
                 services.AddSingleton(config);
 
-            } else
+            }
+            else
             {
-                services.AddSingleton<Config>(new Config());
+                services.AddSingleton(new Config());
             }
 
-            services.AddSingleton<StateRepo>(new StateRepo());
+            services.AddSingleton(new StateRepo());
             services.AddSingleton<ApiClient, ApiClient>();
             services.AddSingleton<AppConfigRepo, AppConfigRepo>();
 
@@ -73,4 +68,3 @@ namespace Rownd.Core
         }
     }
 }
-

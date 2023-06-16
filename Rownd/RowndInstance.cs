@@ -44,7 +44,7 @@ namespace Rownd
         {
             var config = Shared.ServiceProvider.GetService<Config>();
 
-            config.appKey = appKey;
+            config.AppKey = appKey;
 
             return inst;
         }
@@ -77,7 +77,7 @@ namespace Rownd
         #region Internal methods
         private void DisplayHub()
         {
-            Shared.app.MainPage.Navigation.PushModalAsync(new HubPageRelative(), false);
+            Shared.App.MainPage.Navigation.PushModalAsync(new HubBottomSheetPage(), false);
         }
 
         #endregion
