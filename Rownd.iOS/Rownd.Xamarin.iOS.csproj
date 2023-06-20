@@ -48,7 +48,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Rownd\Rownd.csproj">
       <Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
-      <Name>Rownd</Name>
+      <Name>Rownd.Xamarin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

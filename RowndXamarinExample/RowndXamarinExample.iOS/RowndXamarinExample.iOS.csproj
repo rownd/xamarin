@@ -143,11 +143,11 @@
     </ProjectReference>
     <ProjectReference Include="..\..\Rownd.iOS\Rownd.iOS.csproj">
       <Project>{1AFB61EA-C66D-4447-9BA8-F9B7A8F59FAA}</Project>
-      <Name>Rownd.iOS</Name>
+      <Name>Rownd.Xamarin.iOS</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Rownd\Rownd.csproj">
       <Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
-      <Name>Rownd</Name>
+      <Name>Rownd.Xamarin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
