@@ -1,10 +1,10 @@
-﻿using System;
-using Foundation;
-using WebKit;
+﻿using WebKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using Rownd.iOS.HubWebView;
+using Rownd.HubWebView;
 
-[assembly: ExportRenderer(typeof(Rownd.HubWebView.HubWebView), typeof(Rownd.iOS.HubWebView.HubWebViewRenderer))]
+[assembly: ExportRenderer(typeof(HubWebView), typeof(HubWebViewRenderer))]
 namespace Rownd.iOS.HubWebView
 {
 	public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler

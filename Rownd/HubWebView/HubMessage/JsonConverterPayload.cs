@@ -9,11 +9,11 @@ using Newtonsoft.Json.Linq;
 
 namespace Rownd.HubWebView.HubMessage
 {
-	public class JsonConverterPayload : JsonConverter
-	{
+    public class JsonConverterPayload : JsonConverter
+    {
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(Message));
+            return objectType == typeof(Message);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -59,6 +59,12 @@ namespace Rownd.HubWebView.HubMessage
                 case MessageType.CanTouchBackgroundToDismiss:
                     {
                         payload = jo["payload"].ToObject<PayloadCanTouchBackgroundToDismiss>(serializer);
+                        break;
+                    }
+
+                case MessageType.UserDataUpdate:
+                    {
+                        payload = jo["payload"].ToObject<PayloadUserDataUpdate>(serializer);
                         break;
                     }
             }
@@ -114,4 +120,3 @@ namespace Rownd.HubWebView.HubMessage
         }
     }
 }
-

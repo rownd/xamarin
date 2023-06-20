@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using ReduxSimple;
-using static ReduxSimple.Effects;
 using Rownd.Core;
 using Rownd.Models.Domain;
 
@@ -26,7 +25,6 @@ namespace Rownd.Models.Repos
 
         public StateRepo()
         {
-
         }
 
         public void Setup()
@@ -41,8 +39,9 @@ namespace Rownd.Models.Repos
         {
             try
             {
-                String existingStateJsonStr = Shared.App.Properties["rownd_state"] as string;
+                var existingStateJsonStr = Shared.App.Properties["rownd_state"] as string;
                 GlobalState existingState = JsonConvert.DeserializeObject<GlobalState>(existingStateJsonStr);
+                Console.WriteLine($"Restoring existing state: {existingState}");
                 InitializeStore(existingState);
             }
             catch (Exception ex)
@@ -58,7 +57,6 @@ namespace Rownd.Models.Repos
             var stateJson = JsonConvert.SerializeObject(state);
             Console.WriteLine($"Saving serialized state to storage: {stateJson}");
             Shared.App.Properties["rownd_state"] = stateJson;
-
         }
 
         private void InitializeStore(GlobalState existingState = null)
@@ -80,4 +78,3 @@ namespace Rownd.Models.Repos
         }
     }
 }
-

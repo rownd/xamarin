@@ -56,72 +56,88 @@ if (typeof rownd !== 'undefined') {{
             this.EvaluateJavaScriptAsync(wrappedJs);
         }
 
-        public async void HandleHubMessage(string message)
+        public void HandleHubMessage(string message)
         {
-            Console.WriteLine($"Received message: {message}");
-            try
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                var hubMessage = JsonConvert.DeserializeObject<Message>(message, new JsonConverterPayload());
-
-                switch (hubMessage.Type)
+                Console.WriteLine($"Received message: {message}");
+                try
                 {
-                    case MessageType.Authentication:
-                        {
-                            Console.WriteLine($"Received auth payload: {hubMessage.Payload}");
-                            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+                    var hubMessage = JsonConvert.DeserializeObject<Message>(message, new JsonConverterPayload());
+
+                    switch (hubMessage.Type)
+                    {
+                        case MessageType.Authentication:
                             {
-                                AuthState = new AuthState()
+                                Console.WriteLine($"Received auth payload: {hubMessage.Payload}");
+                                stateRepo.Store.Dispatch(new StateActions.SetAuthState
                                 {
-                                    AccessToken = (hubMessage.Payload as PayloadAuthenticated).AccessToken,
-                                    RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
-                                }
-                            });
+                                    AuthState = new AuthState()
+                                    {
+                                        AccessToken = (hubMessage.Payload as PayloadAuthenticated).AccessToken,
+                                        RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
+                                    }
+                                });
 
-                            await Task.Delay(2000);
+                                await Task.Delay(2000);
 
-                            await bottomSheet.Dismiss();
-                            break;
-                        }
+                                await bottomSheet.Dismiss();
+                                break;
+                            }
 
-                    case MessageType.HubLoaded:
-                        {
-                            await this.FadeTo(1, 500);
-                            bottomSheet.IsLoading = false;
-                            break;
-                        }
+                        case MessageType.HubLoaded:
+                            {
+                                await this.FadeTo(1, 500);
+                                bottomSheet.IsLoading = false;
+                                break;
+                            }
 
-                    case MessageType.HubResize:
-                        {
-                            Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
-                            _ = bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
-                            break;
-                        }
+                        case MessageType.HubResize:
+                            {
+                                Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
+                                _ = bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
+                                break;
+                            }
 
-                    case MessageType.CanTouchBackgroundToDismiss:
-                        {
-                            Console.WriteLine($"Hub dismissable change: {hubMessage.Payload}");
-                            bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
-                            break;
-                        }
+                        case MessageType.CanTouchBackgroundToDismiss:
+                            {
+                                Console.WriteLine($"Hub dismissable change: {hubMessage.Payload}");
+                                bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
+                                break;
+                            }
 
-                    case MessageType.CloseHub:
-                        {
-                            Console.WriteLine($"Hub close request");
-                            _ = bottomSheet.Dismiss();
-                            break;
-                        }
+                        case MessageType.CloseHub:
+                            {
+                                Console.WriteLine($"Hub close request");
+                                _ = bottomSheet.Dismiss();
+                                break;
+                            }
 
-                    default:
-                        {
-                            Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
-                            break;
-                        }
+                        case MessageType.UserDataUpdate:
+                            {
+                                Console.WriteLine($"User data received: {hubMessage.Payload}");
+                                stateRepo.Store.Dispatch(new StateActions.SetUserState
+                                {
+                                    UserState = new UserState()
+                                    {
+                                        Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
+                                    }
+                                });
+                                break;
+                            }
+
+                        default:
+                            {
+                                Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
+                                break;
+                            }
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine($"Failed to decode hub message: {e.Message}");
-            }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Failed to decode hub message: {e.Message}");
+                }
+            });
         }
 
         public void OnPageLoaded(object sender, WebNavigatedEventArgs e)

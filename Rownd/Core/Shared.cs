@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -14,35 +17,35 @@ namespace Rownd.Core
         public static void Init(Application app, Config config = null)
         {
             App = app;
-            //var a = Assembly.GetExecutingAssembly();
-            //using var stream = a.GetManifestResourceStream("MyAssemblyName.appsettings.json");
+
+            var root = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "root");
+            Directory.CreateDirectory(root);
 
             var host = new HostBuilder()
-                        //.ConfigureHostConfiguration(c =>
-                        //{
-                        //    // Tell the host configuration where to file the file (this is required for Xamarin apps)
-                        //    c.AddCommandLine(new string[] { $"ContentRoot={FileSystem.AppDataDirectory}" });
-
-                        //    //read in the configuration file!
-                        //    c.AddJsonStream(stream);
-                        //})
+                .ConfigureHostConfiguration(c =>
+                        {
+                            c.AddInMemoryCollection(new Dictionary<string, string>
+        {
+            { HostDefaults.ContentRootKey, root }
+        });
+                        })
                         .ConfigureServices((ctx, svcCollection) =>
                         {
                             // Configure our local services and access the host configuration
                             ConfigureServices(ctx, svcCollection, config);
                         })
-                        .ConfigureLogging(l => l.AddConsole(o =>
-                        {
-                            //setup a console logger and disable colors since they don't have any colors in VS
-                            o.DisableColors = true;
-                        }))
+                        //.ConfigureLogging(l => l.AddConsole(o =>
+                        //{
+                        //    //setup a console logger and disable colors since they don't have any colors in VS
+                        //    o.DisableColors = true;
+                        //}))
                         .Build();
 
             //Save our service provider so we can use it later.
             ServiceProvider = host.Services;
         }
 
-        static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services, Config config)
+        private static void ConfigureServices(HostBuilderContext ctx, IServiceCollection services, Config config)
         {
 
             // add as a singleton so only one ever will be created.
@@ -59,12 +62,8 @@ namespace Rownd.Core
             services.AddSingleton(new StateRepo());
             services.AddSingleton<ApiClient, ApiClient>();
             services.AddSingleton<AppConfigRepo, AppConfigRepo>();
-
-            // add the ViewModel, but as a Transient, which means it will create a new one each time.
-            //services.AddTransient<MyViewModel>();
-
-            //Another thing we can do is access variables from that json file
-            //var world = ctx.Configuration["Hello"];
+            services.AddSingleton<AuthRepo>();
+            services.AddSingleton<UserRepo>();
         }
     }
 }

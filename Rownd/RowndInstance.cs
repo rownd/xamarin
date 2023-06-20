@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
 using Rownd.Controls;
@@ -14,33 +15,35 @@ namespace Rownd
     {
         private static RowndInstance inst;
 
-        public Config Config;
-        public StateRepo State;
+        internal StateRepo State { get; set; }
+        internal AuthRepo Auth { get; set; }
 
-        public ReduxStore<GlobalState> Store {
-            get {
+        public Config Config { get; set; }
+        public ReduxStore<GlobalState> Store
+        {
+            get
+            {
                 return State.Store;
             }
         }
 
-        private RowndInstance(Application app,  Config config = null){
+        private RowndInstance(Application app, Config config = null)
+        {
             Shared.Init(app, config);
             Config = Shared.ServiceProvider.GetService<Config>();
             State = StateRepo.Get();
+            Auth = AuthRepo.Get();
             State.Setup();
         }
 
         public static RowndInstance GetInstance(Application app, Config config = null)
         {
-            if (inst == null)
-            {
-                inst = new RowndInstance(app, config);
-            }
+            inst ??= new RowndInstance(app, config);
 
             return inst;
         }
 
-        public RowndInstance Configure(String appKey)
+        public RowndInstance Configure(string appKey)
         {
             var config = Shared.ServiceProvider.GetService<Config>();
 
@@ -64,14 +67,24 @@ namespace Rownd
             Store.Dispatch(new StateActions.SetAuthState() { AuthState = new AuthState() });
         }
 
-        public String GetAccessToken()
+        public async Task<string> GetAccessToken()
         {
-            return "foo";
+            return await Auth.GetAccessToken();
         }
 
-        public String GetAccessToken(String token)
+        public async Task<string> GetAccessToken(string token)
         {
-            return "bar";
+            return await Auth.GetAccessToken(token);
+        }
+
+        [Obsolete("Use GetAccessToken() instead")]
+        public async Task _InternalTestRefreshToken()
+        {
+            await Task.WhenAll(
+                Auth.RefreshToken(),
+                Auth.RefreshToken(),
+                Auth.RefreshToken()
+            );
         }
 
         #region Internal methods
@@ -83,4 +96,3 @@ namespace Rownd
         #endregion
     }
 }
-

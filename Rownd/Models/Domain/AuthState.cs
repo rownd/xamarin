@@ -3,29 +3,36 @@ using System.ComponentModel;
 using System.Net.Sockets;
 using JWT;
 using JWT.Builder;
+using Newtonsoft.Json;
 using Xamarin.CommunityToolkit.ObjectModel;
 
 namespace Rownd.Models.Domain
 {
     public class AuthState : StateBase
     {
-        public String AccessToken { get; set; }
-        public String RefreshToken { get; set; }
-        public Boolean IsAuthenticated
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
+
+        [JsonIgnore]
+        public bool IsAuthenticated
         {
             get { return AccessToken != null; }
         }
-        public Boolean IsNotAuthenticated
+
+        [JsonIgnore]
+        public bool IsNotAuthenticated
         {
             get { return AccessToken == null; }
         }
-        public Boolean IsAccessTokenValid
+
+        [JsonIgnore]
+        public bool IsAccessTokenValid
         {
             get
             {
                 try
                 {
-                    decodeToken();
+                    DecodeToken();
                     return true;
                 }
                 catch
@@ -37,24 +44,16 @@ namespace Rownd.Models.Domain
 
         public AuthState()
         {
-            //this.PropertyChanged += this.onAuthChanged;
         }
 
-        //public AuthState(string accessToken, string refreshToken)
-        //{
-        //    AccessToken = accessToken;
-        //    RefreshToken = refreshToken;
-        //}
-
-        private void decodeToken()
+        private string DecodeToken()
         {
             var valParams = ValidationParameters.Default;
             valParams.ValidateSignature = false;
             valParams.TimeMargin = 60;
-            var json = JwtBuilder.Create()
+            return JwtBuilder.Create()
                 .WithValidationParameters(valParams)
                 .Decode(AccessToken);
         }
     }
 }
-

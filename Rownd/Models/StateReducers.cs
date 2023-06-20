@@ -1,18 +1,18 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using ReduxSimple;
-using static ReduxSimple.Reducers;
-using System.Collections.Generic;
 using Rownd.Models.Domain;
+using static ReduxSimple.Reducers;
 
 namespace Rownd.Models
 {
-	public static class StateReducers
-	{
+    public static class StateReducers
+    {
         public static IEnumerable<On<GlobalState>> CreateReducers()
         {
             return CombineReducers(
                 GetAppConfigReducers(),
-                GetAuthReducers()
+                GetAuthReducers(),
+                GetUserReducers()
             );
         }
 
@@ -37,6 +37,16 @@ namespace Rownd.Models
                     }
             ).ToList();
         }
+
+        public static IEnumerable<On<GlobalState>> GetUserReducers()
+        {
+            return CreateSubReducers(StateSelectors.SelectUserState)
+                .On<StateActions.SetUserState>(
+                    (state, action) =>
+                    {
+                        return action.UserState;
+                    }
+            ).ToList();
+        }
     }
 }
-

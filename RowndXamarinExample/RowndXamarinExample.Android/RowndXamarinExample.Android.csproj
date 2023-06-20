@@ -52,6 +52,7 @@
     <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Mono.Android.Export" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />
@@ -90,6 +91,10 @@
     <ProjectReference Include="..\RowndXamarinExample\RowndXamarinExample.csproj">
       <Project>{51525B3D-6BB6-4CA0-B6B2-01BBD1C64421}</Project>
       <Name>RowndXamarinExample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Rownd.Android\Rownd.Android.csproj">
+      <Project>{386BB27F-4C22-4362-ABFA-4FE16B023C20}</Project>
+      <Name>Rownd.Android</Name>
     </ProjectReference>
   </ItemGroup>
  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

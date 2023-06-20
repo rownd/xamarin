@@ -7,7 +7,6 @@ namespace Rownd.Core
 {
     public class Customizations
     {
-
         [JsonConverter(typeof(JsonColorHexConverter))]
         public Color SheetBackgroundColor { get; set; }
 

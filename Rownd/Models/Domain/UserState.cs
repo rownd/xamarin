@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using Rownd.Models.Repos;
 
 namespace Rownd.Models.Domain
 {
     public class UserState
     {
+        [JsonIgnore]
         public bool IsLoading { get; set; }
         public Dictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
 
@@ -26,13 +29,19 @@ namespace Rownd.Models.Domain
         public void Set(string field, dynamic value)
         {
             Data[field] = value;
-            // TODO: Persist to state
+            StateRepo.Get().Store.Dispatch(new StateActions.SetUserState
+            {
+                UserState = this
+            });
         }
 
         public void Set(Dictionary<string, dynamic> data)
         {
             Data = data;
-            // TODO: Persist to state
+            StateRepo.Get().Store.Dispatch(new StateActions.SetUserState
+            {
+                UserState = this
+            });
         }
     }
 }

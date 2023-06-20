@@ -43,7 +43,6 @@
   <ItemGroup>
     <Compile Include="Stub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HubWebView\HubWebViewiOS.cs" />
     <Compile Include="HubWebView\HubWebViewRenderer.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,7 @@ namespace RowndXamarinExample.ViewModels
             OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
             RequestSignIn = new Command(() => Rownd.RequestSignIn());
             SignOut = new Command(() => Rownd.SignOut());
+            RefreshToken = new Command(() => Rownd._InternalTestRefreshToken());
             Rownd.Store.Select().Subscribe((state) =>
             {
                 RowndState = state;
@@ -32,6 +33,8 @@ namespace RowndXamarinExample.ViewModels
         public ICommand RequestSignIn { get; }
 
         public ICommand SignOut { get; }
+
+        public ICommand RefreshToken { get; }
 
         //public event PropertyChangedEventHandler PropertyChanged;
         //private void NotifyPropertyChanged(string property)
