@@ -35,7 +35,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Remove="Core\" />
-		<None Remove="HubWebView\HubMessage\" />
 		<None Remove="Models\" />
 		<None Remove="Models\Domain\" />
 		<None Remove="Models\Repos\" />
@@ -46,7 +45,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Core\" />
-		<Folder Include="HubWebView\HubMessage\" />
 		<Folder Include="Models\" />
 		<Folder Include="Models\Domain\" />
 		<Folder Include="Models\Repos\" />
