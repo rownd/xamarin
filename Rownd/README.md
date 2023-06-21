@@ -42,7 +42,7 @@ dotnet add package Rownd.Xamarin.Android
 
 In your shared app project, open the main entry point (usually `App.xaml.cs`) and add the following code to the constructor. A basic example might look something like this:
 
-```
+```C#
 using Rownd.Xamarin;
 using RowndXamarinExample.Services;
 using Xamarin.Forms;
