@@ -5,10 +5,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Rownd.Models.Repos;
+using Rownd.Xamarin.Models.Repos;
 using Xamarin.Forms;
 
-namespace Rownd.Core
+namespace Rownd.Xamarin.Core
 {
     public static class Shared
     {

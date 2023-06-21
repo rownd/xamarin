@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-
-using Xamarin.Forms;
-
+using Rownd.Xamarin;
 using RowndXamarinExample.Models;
 using RowndXamarinExample.Services;
-using Rownd;
+using Xamarin.Forms;
 
 namespace RowndXamarinExample.ViewModels
 {
@@ -31,7 +29,7 @@ namespace RowndXamarinExample.ViewModels
         }
 
         protected bool SetProperty<T>(ref T backingStore, T value,
-            [CallerMemberName]string propertyName = "",
+            [CallerMemberName] string propertyName = "",
             Action onChanged = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingStore, value))
@@ -42,9 +40,6 @@ namespace RowndXamarinExample.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
-
-
-
         #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -58,4 +53,3 @@ namespace RowndXamarinExample.ViewModels
         #endregion
     }
 }
-

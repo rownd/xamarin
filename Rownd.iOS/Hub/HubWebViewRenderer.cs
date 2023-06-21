@@ -1,19 +1,19 @@
-﻿using WebKit;
+﻿using Rownd.Xamarin.Hub;
+using Rownd.Xamarin.iOS.Hub;
+using WebKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using Rownd.iOS.HubWebView;
-using Rownd.HubWebView;
 
 [assembly: ExportRenderer(typeof(HubWebView), typeof(HubWebViewRenderer))]
-namespace Rownd.iOS.HubWebView
+namespace Rownd.Xamarin.iOS.Hub
 {
-	public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
+    public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
         WKUserContentController userController;
 
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
-		{
-		}
+        {
+        }
 
         public HubWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
@@ -23,8 +23,7 @@ namespace Rownd.iOS.HubWebView
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
-            ((Rownd.HubWebView.HubWebView)Element).HandleHubMessage(message.Body.ToString());
+            ((HubWebView)Element).HandleHubMessage(message.Body.ToString());
         }
     }
 }
-

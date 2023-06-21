@@ -3,14 +3,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Rownd.Controls;
-using Rownd.Core;
-using Rownd.HubWebView.HubMessage;
-using Rownd.Models;
-using Rownd.Models.Domain;
-using Rownd.Models.Repos;
+using Rownd.Xamarin.Models;
+using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Models.Repos;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Hub.HubMessage;
 using Xamarin.Forms;
 
-namespace Rownd.HubWebView
+namespace Rownd.Xamarin.Hub
 {
     public class HubWebView : WebView, IBottomSheetChild
     {

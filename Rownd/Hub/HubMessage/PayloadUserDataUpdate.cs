@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Rownd.HubWebView.HubMessage
+namespace Rownd.Xamarin.Hub.HubMessage
 {
     public class PayloadUserDataUpdate : PayloadBase
     {

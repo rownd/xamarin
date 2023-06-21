@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using ReduxSimple;
-using Rownd.Core;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Models.Domain;
 
-namespace Rownd
+namespace Rownd.Xamarin
 {
     public interface IRowndInstance
     {

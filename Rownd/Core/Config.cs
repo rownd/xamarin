@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace Rownd.Core
+namespace Rownd.Xamarin.Core
 {
     public class Config
     {

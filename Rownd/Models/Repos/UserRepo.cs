@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
-using Rownd.Core;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Models.Domain;
 using Xamarin.Forms;
 
-namespace Rownd.Models.Repos
+namespace Rownd.Xamarin.Models.Repos
 {
     public class UserRepo
     {

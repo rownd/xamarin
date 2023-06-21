@@ -1,4 +1,4 @@
-﻿namespace Rownd.HubWebView.HubMessage
+﻿namespace Rownd.Xamarin.Hub.HubMessage
 {
     public class PayloadBase
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Rownd.Core;
+using Rownd.Xamarin.Core;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 

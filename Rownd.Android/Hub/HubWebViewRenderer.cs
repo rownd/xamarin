@@ -2,13 +2,13 @@
 using Android.Content;
 using Android.Webkit;
 using Java.Interop;
-using Rownd.Android.HubWebView;
-using Rownd.HubWebView;
+using Rownd.Xamarin.Android.Hub;
+using Rownd.Xamarin.Hub;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
 
 [assembly: ExportRenderer(typeof(HubWebView), typeof(HubWebViewRenderer))]
-namespace Rownd.Android.HubWebView
+namespace Rownd.Xamarin.Android.Hub
 {
     public class HubWebViewRenderer : WebViewRenderer
     {

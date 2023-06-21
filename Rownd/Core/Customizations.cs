@@ -1,9 +1,9 @@
 ﻿using System;
 using Newtonsoft.Json;
-using Rownd.Utils;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 
-namespace Rownd.Core
+namespace Rownd.Xamarin.Core
 {
     public class Customizations
     {

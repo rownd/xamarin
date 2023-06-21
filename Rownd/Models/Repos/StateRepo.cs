@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using ReduxSimple;
-using Rownd.Core;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Models.Domain;
 
-namespace Rownd.Models.Repos
+namespace Rownd.Xamarin.Models.Repos
 {
     public class StateRepo
     {
@@ -33,6 +33,12 @@ namespace Rownd.Models.Repos
             var appConfigRepo = AppConfigRepo.Get();
             var task = new Task(async () => { await appConfigRepo.LoadAppConfigAsync(); });
             task.Start();
+        }
+
+        // TODO: Provide a generic interface for specific portions of the state tree.
+        public IDisposable Subscribe(Action<StateBase> action)
+        {
+            return Store.Select(state => state.Auth).Subscribe(action);
         }
 
         private void LoadState()

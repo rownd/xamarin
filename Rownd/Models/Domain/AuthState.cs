@@ -1,12 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using System.Net.Sockets;
-using JWT;
+﻿using JWT;
 using JWT.Builder;
 using Newtonsoft.Json;
-using Xamarin.CommunityToolkit.ObjectModel;
 
-namespace Rownd.Models.Domain
+namespace Rownd.Xamarin.Models.Domain
 {
     public class AuthState : StateBase
     {

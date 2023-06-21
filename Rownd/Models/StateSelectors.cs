@@ -1,8 +1,8 @@
 ﻿using ReduxSimple;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Models.Domain;
 using static ReduxSimple.Selectors;
 
-namespace Rownd.Models
+namespace Rownd.Xamarin.Models
 {
     public static class StateSelectors
     {

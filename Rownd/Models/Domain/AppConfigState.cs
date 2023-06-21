@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Rownd.Models.Domain
+namespace Rownd.Xamarin.Models.Domain
 {
     public class AppConfigState
     {

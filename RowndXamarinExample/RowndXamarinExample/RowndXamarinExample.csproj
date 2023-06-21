@@ -21,6 +21,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Rownd\Rownd.csproj" />
+    <ProjectReference Include="..\..\Rownd\Rownd.Xamarin.csproj" />
   </ItemGroup>
 </Project>

@@ -1,33 +1,29 @@
-﻿using System;
+﻿using HttpTracer;
 using Microsoft.Extensions.DependencyInjection;
-using RestSharp;
-using RestSharp.Serializers.NewtonsoftJson;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.Threading;
-using HttpTracer;
+using RestSharp;
+using RestSharp.Serializers.NewtonsoftJson;
 
-namespace Rownd.Core
+namespace Rownd.Xamarin.Core
 {
-	public class ApiClient
-	{
-		public RestClient Client;
+    public class ApiClient
+    {
+        public RestClient Client;
 
-		public static ApiClient Get()
-		{
-			return Shared.ServiceProvider.GetService<ApiClient>();
+        public static ApiClient Get()
+        {
+            return Shared.ServiceProvider.GetService<ApiClient>();
         }
 
-		public ApiClient()
-		{
-			var config = Config.GetConfig();
-			var options = new RestClientOptions(config.ApiUrl)
-			{
-				Authenticator = new ApiAuthenticator(),
-				ConfigureMessageHandler = handler => new HttpTracerHandler(handler)
-			};
+        public ApiClient()
+        {
+            var config = Config.GetConfig();
+            var options = new RestClientOptions(config.ApiUrl)
+            {
+                Authenticator = new ApiAuthenticator(),
+                ConfigureMessageHandler = handler => new HttpTracerHandler(handler)
+            };
 
             JsonSerializerSettings defaultSettings = new JsonSerializerSettings
             {
@@ -39,13 +35,12 @@ namespace Rownd.Core
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor
             };
 
-
             Client = new RestClient(
-				options,
+                options,
                 configureSerialization: s => s.UseNewtonsoftJson(defaultSettings)
             );
 
-			Client.AddDefaultHeader("x-rownd-app-key", config.AppKey);
-		}
-	}
+            Client.AddDefaultHeader("x-rownd-app-key", config.AppKey);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-﻿using Rownd;
+﻿using Rownd.Xamarin;
 using RowndXamarinExample.Services;
 using Xamarin.Forms;
 
@@ -10,7 +10,7 @@ namespace RowndXamarinExample
 
         public App()
         {
-            var rowndConfig = new Rownd.Core.Config();
+            var rowndConfig = new Rownd.Xamarin.Core.Config();
             rowndConfig.ApiUrl = "https://api.us-east-2.dev.rownd.io";
             rowndConfig.HubUrl = "https://hub.dev.rownd.io";
             rowndConfig.SubdomainExtension = ".dev.rownd.link";

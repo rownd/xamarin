@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Rownd.HubWebView.HubMessage
+namespace Rownd.Xamarin.Hub.HubMessage
 {
     public enum MessageType
     {

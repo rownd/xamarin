@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
 using Rownd.Controls;
-using Rownd.Core;
-using Rownd.Models;
-using Rownd.Models.Domain;
-using Rownd.Models.Repos;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Models;
+using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Models.Repos;
 using Xamarin.Forms;
 
-namespace Rownd
+namespace Rownd.Xamarin
 {
     public class RowndInstance : IRowndInstance
     {

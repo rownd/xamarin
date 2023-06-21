@@ -2,11 +2,10 @@
 using Rownd.Controls;
 using Xamarin.Forms;
 
-namespace Rownd.HubWebView
+namespace Rownd.Xamarin.Hub
 {
-	public interface IHubWebView
-	{
+    public interface IHubWebView
+    {
         //void AddJavascriptListener(string eventName);
     }
 }
-

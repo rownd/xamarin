@@ -1,13 +1,12 @@
 ﻿using System;
 using Xamarin.CommunityToolkit.ObjectModel;
 
-namespace Rownd.Models.Domain
+namespace Rownd.Xamarin.Models.Domain
 {
-	public class StateBase : ObservableObject
-	{
-		public StateBase()
-		{
-		}
-	}
+    public class StateBase : ObservableObject
+    {
+        public StateBase()
+        {
+        }
+    }
 }
-

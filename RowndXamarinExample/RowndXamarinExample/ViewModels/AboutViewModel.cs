@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Input;
 using Rownd;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Models.Domain;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 

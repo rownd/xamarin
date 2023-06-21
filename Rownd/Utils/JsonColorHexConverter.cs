@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using Xamarin.Forms;
 
-namespace Rownd.Utils
+namespace Rownd.Xamarin.Utils
 {
     internal class JsonColorHexConverter : JsonConverter
     {

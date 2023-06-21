@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BottomSheetXF.Implementations;
-using Rownd.Core;
+using Rownd.Xamarin.Core;
 using RowndXamarinExample.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;

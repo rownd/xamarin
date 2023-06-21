@@ -2,7 +2,7 @@
 using Android.Webkit;
 using Java.Interop;
 
-namespace Rownd.Android.HubWebView
+namespace Rownd.Xamarin.Android.Hub
 {
     public class JSBridge : Java.Lang.Object
     {
@@ -19,7 +19,7 @@ namespace Rownd.Android.HubWebView
         {
             if (this.renderer != null && this.renderer.TryGetTarget(out var renderer) && renderer?.Element != null)
             {
-                ((Rownd.HubWebView.HubWebView)renderer.Element).HandleHubMessage(message);
+                ((Rownd.Xamarin.Hub.HubWebView)renderer.Element).HandleHubMessage(message);
             }
         }
     }

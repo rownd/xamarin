@@ -65,8 +65,8 @@
 	<ItemGroup>
 		<Compile Include="Resources\Resource.designer.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
-		<Compile Include="HubWebView\HubWebViewRenderer.cs" />
-		<Compile Include="HubWebView\JSBridge.cs" />
+		<Compile Include="Hub\HubWebViewRenderer.cs" />
+		<Compile Include="Hub\JSBridge.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\AboutResources.txt" />
@@ -88,14 +88,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Folder Include="Resources\drawable\" />
-		<Folder Include="HubWebView\" />
 		<Folder Include="assets\" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Rownd\Rownd.csproj">
-			<Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
-			<Name>Rownd.Xamarin</Name>
-		</ProjectReference>
+		<Folder Include="Hub\" />
 	</ItemGroup>
 	<ItemGroup>
 	  <AndroidAsset Include="assets/rownd-android-icon.png">
@@ -104,6 +98,12 @@
 	    <DefaultPackFolder>none</DefaultPackFolder>
 	    <BuildAction>None</BuildAction>
 	  </AndroidAsset>
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Rownd\Rownd.Xamarin.csproj">
+	    <Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
+	    <Name>Rownd.Xamarin</Name>
+	  </ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

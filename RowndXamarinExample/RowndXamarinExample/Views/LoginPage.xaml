@@ -6,7 +6,7 @@
              xmlns:bottomSheet="clr-namespace:BottomSheetXF.Implementations;assembly=BottomSheetXF" xmlns:viewmodels="clr-namespace:RowndXamarinExample.ViewModels" x:DataType="viewmodels:LoginViewModel"
              mc:Ignorable="d"
              x:Class="RowndXamarinExample.Views.LoginPage"
-             xmlns:rownd="clr-namespace:Rownd.HubWebView;assembly=Rownd"
+             xmlns:rownd="clr-namespace:Rownd.Xamarin.Hub;assembly=Rownd.Xamarin"
              Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <rownd:HubWebView x:Name="Webview"  

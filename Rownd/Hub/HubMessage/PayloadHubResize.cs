@@ -1,7 +1,7 @@
 ﻿using JsonKnownTypes;
 using Newtonsoft.Json;
 
-namespace Rownd.HubWebView.HubMessage
+namespace Rownd.Xamarin.Hub.HubMessage
 {
     [JsonKnownThisType("hub_resize")]
     public class PayloadHubResize : PayloadBase

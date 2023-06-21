@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using ReduxSimple;
-using Rownd.Models.Domain;
+using Rownd.Xamarin.Models.Domain;
 using static ReduxSimple.Reducers;
 
-namespace Rownd.Models
+namespace Rownd.Xamarin.Models
 {
     public static class StateReducers
     {
