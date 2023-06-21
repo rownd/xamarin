@@ -107,7 +107,7 @@ Once the state subscription is initialized, the lambda function will fire any ti
 
 The following properties are available as portions of the state:
 
-#### .AuthState
+#### `.AuthState`
 
 ```C#
 class AuthState
@@ -119,7 +119,7 @@ class AuthState
 }
 ```
 
-#### .UserState
+#### `.UserState`
 
 ```C#
 class UserState
@@ -133,11 +133,11 @@ class UserState
 
 In addition to the state APIs, Rownd provides imperative APIs that you can call to request sign in, get and retrieve user profile information, retrieve a current access token, and so on.
 
-### void Rownd.RequestSignIn()
+### `void Rownd.RequestSignIn()`
 Opens the Rownd sign-in dialog to begin authentication.
 
 
-### void Rownd.RequestSignIn(RowndSignInOpts(...))
+### `void Rownd.RequestSignIn(RowndSignInOpts(...))`
 Opens the Rownd sign-in dialog for authentication, as before, but allows passing additional context options as shown below.
 
 `intent: RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are .SignIn or .SignUp. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to support@rownd.io to enable.
@@ -152,10 +152,10 @@ Rownd.requestSignIn(RowndSignInOpts(
 ))
 ```
 
-### async Task<string> Rownd.GetAccessToken()
+### `async Task<string> Rownd.GetAccessToken()`
 Assuming a user is signed-in, returns a valid access token, refreshing the current one if needed. If an access token cannot be returned due to a temporary condition (e.g., inaccessible network), this function will throw. If an access token cannot be returned because the refresh token is invalid, null will be returned and the Rownd authentication state will flip to `IsAuthenticated = false`.
 
-### async Task<string> Rownd.GetAccessToken(token: String)
+### `async Task<string> Rownd.GetAccessToken(token: String)`
 When possible, exchanges a non-Rownd access token for a Rownd access token. This is primarily used in scenarios where an app is migrating from some other authentication mechanism to Rownd. Using Rownd integrations, the system will accept a third-party token. If it successfully validates, Rownd will sign-in the user and return a fresh Rownd access token to the caller.
 
 This API returns null if the token could not be validated and exchanged. If that occurs, it's likely that the user should sign-in normally via Rownd.requestSignIn().
@@ -177,16 +177,16 @@ Example:
 
 > NOTE: The following user profile APIs technically accept `dynamic` as the value of a field. However, that value **must** be serializable using the [Newtonsoft JSON.NET library](https://www.newtonsoft.com/json). If the value is not serializable out of the box, you'll need to serialize it to a string prior to storing it in the user object, then deserialize it when getting it back out.
 
-### Dictionary<string, dynamic> Rownd.User.Get()
+### `Dictionary<string, dynamic> Rownd.User.Get()`
 Returns the entire user profile as a Dictionary
 
-### <T> Rownd.User.Get<T>(field: string)
+### `<T> Rownd.User.Get<T>(field: string)`
 Returns the value of a specific field in the user's data Dictionary. "id" is a special case that will return the user's ID, even though it's technically not in the Dictionary itself.
 
 Your application code is responsible for knowing which type the value should cast to. If the cast fails or the entry doesn't exist, a null value will be returned.
 
-### void Rownd.User.Set(data: Dictionary<string, dynamic>)
+### `void Rownd.User.Set(data: Dictionary<string, dynamic>)`
 Replaces the user's data with that contained in the Dictionary. This may overwrite existing values, but must match the schema you defined within your Rownd application dashboard.
 
-### void Rownd.User.Set(field: string, value: dynamic)
+### `void Rownd.User.Set(field: string, value: dynamic)`
 Sets a specific user profile field to the provided value, overwriting if a value already exists.
