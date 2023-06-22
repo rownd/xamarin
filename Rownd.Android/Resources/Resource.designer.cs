@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("Rownd.Android.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Rownd.Xamarin.Android.Resource", IsApplication=false)]
 
-namespace Rownd.Android
+namespace Rownd.Xamarin.Android
 {
 	
 	
