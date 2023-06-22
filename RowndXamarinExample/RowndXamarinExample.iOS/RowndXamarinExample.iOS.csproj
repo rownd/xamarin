@@ -141,13 +141,9 @@
       <Project>{51525B3D-6BB6-4CA0-B6B2-01BBD1C64421}</Project>
       <Name>RowndXamarinExample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Rownd.iOS\Rownd.iOS.csproj">
+    <ProjectReference Include="..\..\Rownd.iOS\Rownd.Xamarin.iOS.csproj">
       <Project>{1AFB61EA-C66D-4447-9BA8-F9B7A8F59FAA}</Project>
       <Name>Rownd.Xamarin.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Rownd\Rownd.csproj">
-      <Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
-      <Name>Rownd.Xamarin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ReduxSimple;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Utils;
 
 namespace Rownd.Xamarin
 {
@@ -10,6 +11,7 @@ namespace Rownd.Xamarin
     {
         void RequestSignIn();
         void RequestSignIn(SignInMethod with);
+        void RequestSignIn(SignInOptions opts);
         void SignOut();
         Task<string> GetAccessToken();
         Task<string> GetAccessToken(string token);

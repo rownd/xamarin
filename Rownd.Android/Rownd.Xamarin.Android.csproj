@@ -70,18 +70,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\AboutResources.txt" />
-		<None Include="assets/rownd-android-icon.png" Pack="true" PackagePath="assets" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Xamarin.Forms">
-			<Version>5.0.0.2578</Version>
-		</PackageReference>
-		<PackageReference Include="NuGetizer">
-		  <Version>1.0.4</Version>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		  <PrivateAssets>all</PrivateAssets>
-		  <GeneratePathProperty></GeneratePathProperty>
-		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<AndroidResource Include="Resources\values\strings.xml" />
@@ -98,12 +86,21 @@
 	    <DefaultPackFolder>none</DefaultPackFolder>
 	    <BuildAction>None</BuildAction>
 	  </AndroidAsset>
+	  <AndroidAsset Include="assets/rownd-android-icon.png">
+	    <Pack>true</Pack>
+	    <PackagePath>assets</PackagePath>
+	  </AndroidAsset>
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Rownd\Rownd.Xamarin.csproj">
 	    <Project>{78638D85-4ED5-4921-AF2F-5E7638F40553}</Project>
 	    <Name>Rownd.Xamarin</Name>
 	  </ProjectReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="Xamarin.Forms">
+	    <Version>5.0.0.2578</Version>
+	  </PackageReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

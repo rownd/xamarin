@@ -41,9 +41,9 @@
     <Folder Include="Hub\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Stub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Hub\HubWebViewRenderer.cs" />
+    <Compile Include="Boot.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms">

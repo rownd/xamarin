@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Rownd.Controls;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Hub.HubMessage;
 using Rownd.Xamarin.Models;
 using Rownd.Xamarin.Models.Domain;
 using Rownd.Xamarin.Models.Repos;
-using Rownd.Xamarin.Core;
-using Rownd.Xamarin.Hub.HubMessage;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 
 namespace Rownd.Xamarin.Hub
@@ -17,17 +18,23 @@ namespace Rownd.Xamarin.Hub
         private Config config = Shared.ServiceProvider.GetService<Config>();
         private StateRepo stateRepo = StateRepo.Get();
         private HubBottomSheetPage bottomSheet { get; set; }
+        internal RowndSignInJsOptions HubOpts { get; set; } = new RowndSignInJsOptions();
+        internal HubPageSelector TargetPage { get; set; } = HubPageSelector.SignIn;
 
         public HubWebView()
         {
             Navigated += OnPageLoaded;
 
             this.FadeTo(0, 0);
-
-            RenderHub();
         }
 
-        private async void RenderHub()
+        public HubWebView(HubPageSelector page, RowndSignInJsOptions opts) : this()
+        {
+            HubOpts = opts;
+            TargetPage = page;
+        }
+
+        internal async void RenderHub()
         {
             var url = await config.GetHubLoaderUrl();
             Dispatcher.BeginInvokeOnMainThread(() =>
@@ -38,11 +45,37 @@ namespace Rownd.Xamarin.Hub
 
         public void TriggerHub()
         {
-            evaluateJavaScript("rownd.requestSignIn();");
+            switch (TargetPage)
+            {
+                case HubPageSelector.SignIn:
+                    {
+                        EvaluateJavaScript($"rownd.requestSignIn({HubOpts?.ToJsonString()});");
+                        break;
+                    }
+
+                case HubPageSelector.SignOut:
+                    {
+                        EvaluateJavaScript("rownd.signOut({\"show_success\":true});");
+                        break;
+                    }
+
+                case HubPageSelector.Profile:
+                    {
+                        EvaluateJavaScript("rownd.user.manageAccount();");
+                        break;
+                    }
+
+                case HubPageSelector.ConnectAuthenticator:
+                    {
+                        EvaluateJavaScript($"rownd.connectAuthenticator({HubOpts?.ToJsonString()})");
+                        break;
+                    }
+            }
         }
 
-        protected void evaluateJavaScript(string code)
+        protected void EvaluateJavaScript(string code)
         {
+            Console.WriteLine($"Executing JS: {code}");
             var wrappedJs = $@"
 if (typeof rownd !== 'undefined') {{
     {code}
@@ -53,7 +86,7 @@ if (typeof rownd !== 'undefined') {{
 }}
 ".Replace(System.Environment.NewLine, "");
 
-            this.EvaluateJavaScriptAsync(wrappedJs);
+            EvaluateJavaScriptAsync(wrappedJs);
         }
 
         public void HandleHubMessage(string message)

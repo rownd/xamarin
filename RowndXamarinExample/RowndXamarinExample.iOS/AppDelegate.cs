@@ -22,9 +22,9 @@ namespace RowndXamarinExample.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            Rownd.Xamarin.iOS.Boot.Init();
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
-
             return base.FinishedLaunching(app, options);
         }
     }

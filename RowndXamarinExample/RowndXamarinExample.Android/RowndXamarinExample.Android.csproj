@@ -32,7 +32,7 @@
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
 		<AndroidLinkMode>None</AndroidLinkMode>
-		<EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+		<EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugSymbols>true</DebugSymbols>
@@ -94,9 +94,9 @@
 			<Project>{51525B3D-6BB6-4CA0-B6B2-01BBD1C64421}</Project>
 			<Name>RowndXamarinExample</Name>
 		</ProjectReference>
-		<ProjectReference Include="..\..\Rownd.Android\Rownd.Android.csproj">
-			<Project>{386BB27F-4C22-4362-ABFA-4FE16B023C20}</Project>
-			<Name>Rownd.Xamarin.Android</Name>
+		<ProjectReference Include="..\..\Rownd.Android\Rownd.Xamarin.Android.csproj">
+		  <Project>{386BB27F-4C22-4362-ABFA-4FE16B023C20}</Project>
+		  <Name>Rownd.Xamarin.Android</Name>
 		</ProjectReference>
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

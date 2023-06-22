@@ -4,9 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
 using Rownd.Controls;
 using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Hub;
 using Rownd.Xamarin.Models;
 using Rownd.Xamarin.Models.Domain;
 using Rownd.Xamarin.Models.Repos;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 
 namespace Rownd.Xamarin
@@ -54,12 +56,16 @@ namespace Rownd.Xamarin
 
         public void RequestSignIn()
         {
-            DisplayHub();
+            DisplayHub(HubPageSelector.SignIn);
         }
 
         public void RequestSignIn(SignInMethod with)
         {
+            RequestSignIn(new SignInOptions());
+        }
 
+        public void RequestSignIn(SignInOptions opts) {
+            
         }
 
         public void SignOut()
@@ -88,9 +94,15 @@ namespace Rownd.Xamarin
         }
 
         #region Internal methods
-        private void DisplayHub()
+        private void DisplayHub(HubPageSelector page, RowndSignInJsOptions opts = null)
         {
-            Shared.App.MainPage.Navigation.PushModalAsync(new HubBottomSheetPage(), false);
+            var hubBottomSheet = new HubBottomSheetPage();
+            var webView = hubBottomSheet.GetHubWebView();
+            webView.TargetPage = page;
+            webView.HubOpts = opts;
+            webView.RenderHub();
+
+            Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
         }
 
         #endregion

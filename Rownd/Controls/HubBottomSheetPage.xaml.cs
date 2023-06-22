@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Hub;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -114,17 +115,22 @@ namespace Rownd.Controls
                 OnPropertyChanged();
             }
         }
-
-        public ICommand TriggerExpand { get; }
-
         #endregion
 
         public HubBottomSheetPage()
         {
-            OSAppTheme currentTheme = Shared.App.RequestedTheme;
             InitializeComponent();
-            TriggerExpand = new Command(() => Expand());
-            BindingContext = this;
+            Setup();
+        }
+
+        public HubWebView GetHubWebView()
+        {
+            return Webview;
+        }
+
+        private void Setup()
+        {
+            // OSAppTheme currentTheme = Shared.App.RequestedTheme;
 
             if (Webview is IBottomSheetChild child)
             {
@@ -139,6 +145,7 @@ namespace Rownd.Controls
         {
             base.OnAppearing();
             BackgroundColor = new Color(0, 0, 0, 0.01);
+
             _ = AnimateIn();
         }
 

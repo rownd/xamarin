@@ -73,6 +73,33 @@ If you're using `DependencyService`, you might want to add Rownd to make it easi
 DependencyService.RegisterSingleton<IRowndInstance>(Rownd);
 ```
 
+### iOS only - pre-init
+In order to ensure that certain native extensions get loaded early enough, add the following line to your `AppDelegate.cs` file:
+
+```C#
+Rownd.Xamarin.iOS.Boot.Init();
+```
+
+Example:
+
+```C#
+namespace RowndXamarinExample.iOS
+{
+    [Register("AppDelegate")]
+    public partial class AppDelegate : global::Xamarin.Forms.Platform.iOS.FormsApplicationDelegate
+    {
+        public override bool FinishedLaunching(UIApplication app, NSDictionary options)
+        {
+            Rownd.Xamarin.iOS.Boot.Init();  // <-- ADD THIS BEFORE XAMARIN FORMS INIT
+
+            global::Xamarin.Forms.Forms.Init();
+            LoadApplication(new App());
+            return base.FinishedLaunching(app, options);
+        }
+    }
+}
+```
+
 ### Handling authentication state
 
 Rownd leverages the concept of observables so that your app can react to changes in state without requiring complex logic.

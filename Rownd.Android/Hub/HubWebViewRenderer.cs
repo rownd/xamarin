@@ -1,7 +1,4 @@
-﻿using System;
-using Android.Content;
-using Android.Webkit;
-using Java.Interop;
+﻿using Android.Content;
 using Rownd.Xamarin.Android.Hub;
 using Rownd.Xamarin.Hub;
 using Xamarin.Forms;
@@ -14,7 +11,7 @@ namespace Rownd.Xamarin.Android.Hub
     {
         private Context _context;
 
-        protected override void OnElementChanged(ElementChangedEventArgs<Xamarin.Forms.WebView> e)
+        protected override void OnElementChanged(ElementChangedEventArgs<WebView> e)
         {
             base.OnElementChanged(e);
 

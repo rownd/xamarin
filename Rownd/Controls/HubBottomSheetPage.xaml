@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="Rownd.Controls.HubBottomSheetPage"
     xmlns:controls="clr-namespace:Rownd.Controls"
-    xmlns:rownd="clr-namespace:Rownd.Xamarin.Hub;assembly=Rownd"
+    xmlns:rownd="clr-namespace:Rownd.Xamarin.Hub;assembly=Rownd.Xamarin"
     BackgroundColor="Transparent"
     x:Name="BottomSheetRef"
     x:DataType="controls:HubBottomSheetPage">
@@ -43,7 +43,7 @@
                     <PanGestureRecognizer PanUpdated="OnBottomSheetPan"/>
                 </Frame.GestureRecognizers>
 
-                <RelativeLayout IsClippedToBounds="True">
+                <RelativeLayout IsClippedToBounds="True" x:Name="WebViewContainer">
                     <rownd:HubWebView x:Name="Webview"
                         VerticalOptions="FillAndExpand"
                         RelativeLayout.WidthConstraint="{ConstraintExpression

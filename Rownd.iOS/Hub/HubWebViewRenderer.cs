@@ -1,4 +1,5 @@
-﻿using Rownd.Xamarin.Hub;
+﻿using System;
+using Rownd.Xamarin.Hub;
 using Rownd.Xamarin.iOS.Hub;
 using WebKit;
 using Xamarin.Forms;
@@ -9,14 +10,16 @@ namespace Rownd.Xamarin.iOS.Hub
 {
     public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
-        WKUserContentController userController;
+        private WKUserContentController userController;
 
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
         {
+            Console.WriteLine("iOS base constructor");
         }
 
         public HubWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
+            Console.WriteLine("iOS config constructor");
             userController = config.UserContentController;
             userController.AddScriptMessageHandler(this, "rowndIosSDK");
         }
