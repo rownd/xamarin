@@ -2,12 +2,9 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RowndXamarinExample.Views.AboutPage"
+             x:DataType="vm:AboutViewModel"
              xmlns:vm="clr-namespace:RowndXamarinExample.ViewModels"
              Title="{Binding Title}">
-    
-    <ContentPage.BindingContext>
-        <vm:AboutViewModel />
-    </ContentPage.BindingContext>
     
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -30,8 +27,9 @@
         <ScrollView Grid.Row="1">
             <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
                 <Label Text="Diagnostic info:" />
-                <Label Text="{Binding RowndState.AppConfig.Id, StringFormat=App ID: {0}}" />
-                <Label Text="{Binding RowndState.Auth.IsAuthenticated, StringFormat=Is authenticated: {0}}" />
+                <Label Text="{Binding RowndState.AppConfig.Id, StringFormat='App ID: {0}'}" />
+                <Label Text="{Binding RowndState.Auth.IsAuthenticated, StringFormat='Is authenticated: {0}'}" />
+                <Label Text="{Binding FirstName, StringFormat='First name: {0}'}" />
 
                 <Button Margin="0,10,0,0" Text="Sign in"
                         Command="{Binding RequestSignIn}"
@@ -46,6 +44,10 @@
                             TextColor="White" />
                     <Button Margin="0,10,0,0" Text="Refresh token"
                             Command="{Binding RefreshToken}"
+                            BackgroundColor="{StaticResource Accent}"
+                            TextColor="White" />
+                    <Button Margin="0,10,0,0" Text="Update name"
+                            Command="{Binding UpdateName}"
                             BackgroundColor="{StaticResource Accent}"
                             TextColor="White" />
                 </StackLayout>

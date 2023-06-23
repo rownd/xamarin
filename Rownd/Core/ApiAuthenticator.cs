@@ -8,16 +8,15 @@ namespace Rownd.Xamarin.Core
 {
     public class ApiAuthenticator : IAuthenticator
     {
-        public ValueTask Authenticate(IRestClient client, RestRequest request)
+        public async ValueTask Authenticate(IRestClient client, RestRequest request)
         {
             var stateRepo = StateRepo.Get();
 
-            if (!string.IsNullOrEmpty(stateRepo.Store.State.Auth.AccessToken))
+            if (stateRepo.Store.State.Auth.IsAuthenticated && !request.Resource.Contains("/token"))
             {
-                request.AddHeader(KnownHeaders.Authorization, $"Bearer {stateRepo.Store.State.Auth.AccessToken}");
+                var accessToken = await AuthRepo.Get().GetAccessToken();
+                request.AddHeader(KnownHeaders.Authorization, $"Bearer {accessToken}");
             }
-
-            return default;
         }
     }
 }

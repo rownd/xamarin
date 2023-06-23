@@ -1,6 +1,7 @@
 ﻿using JWT;
 using JWT.Builder;
 using Newtonsoft.Json;
+using Rownd.Xamarin.Utils;
 
 namespace Rownd.Xamarin.Models.Domain
 {
@@ -26,15 +27,7 @@ namespace Rownd.Xamarin.Models.Domain
         {
             get
             {
-                try
-                {
-                    DecodeToken();
-                    return true;
-                }
-                catch
-                {
-                    return false;
-                }
+                return Jwt.IsJwtValid(AccessToken);
             }
         }
 

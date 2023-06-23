@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 using Rownd.Xamarin.Models.Repos;
 
@@ -11,9 +10,9 @@ namespace Rownd.Xamarin.Models.Domain
         public bool IsLoading { get; set; }
         public Dictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
 
-        public dynamic Get(string field)
+        public Dictionary<string, dynamic> Get()
         {
-            return Data[field];
+            return new Dictionary<string, dynamic>(Data);
         }
 
         public T Get<T>(string field)
@@ -33,15 +32,17 @@ namespace Rownd.Xamarin.Models.Domain
             {
                 UserState = this
             });
+            _ = UserRepo.GetInstance().SaveUser(this);
         }
 
         public void Set(Dictionary<string, dynamic> data)
         {
-            Data = data;
+            Data = new Dictionary<string, dynamic>(data);
             StateRepo.Get().Store.Dispatch(new StateActions.SetUserState
             {
                 UserState = this
             });
+            _ = UserRepo.GetInstance().SaveUser(this);
         }
     }
 }

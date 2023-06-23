@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
@@ -12,21 +13,39 @@ namespace Rownd.Xamarin.Models.Repos
     {
         private readonly StateRepo stateRepo = StateRepo.Get();
 
-        public static UserRepo Get()
+        public static UserRepo GetInstance()
         {
             return Shared.ServiceProvider.GetService<UserRepo>();
         }
 
-        public UserRepo()
+        public UserRepo() { }
+
+        public Dictionary<string, dynamic> Get()
         {
+            return stateRepo.Store.State.User.Data;
         }
 
-        public async Task<UserState> SaveUser(UserState user)
+        public T Get<T>(string field)
+        {
+            return stateRepo.Store.State.User.Get<T>(field);
+        }
+
+        public void Set(Dictionary<string, dynamic> data)
+        {
+            stateRepo.Store.State.User.Set(data);
+        }
+
+        public void Set(string field, dynamic value)
+        {
+            stateRepo.Store.State.User.Set(field, value);
+        }
+
+        internal async Task<UserState> SaveUser(UserState user)
         {
             var apiClient = ApiClient.Get();
             try
             {
-                var request = new RestRequest($"me/applications/${stateRepo.Store.State.AppConfig.Id}/data")
+                var request = new RestRequest($"me/applications/{stateRepo.Store.State.AppConfig.Id}/data")
                     .AddBody(user);
                 var response = await apiClient.Client.ExecutePutAsync<UserState>(request);
                 Device.BeginInvokeOnMainThread(() =>
@@ -44,12 +63,12 @@ namespace Rownd.Xamarin.Models.Repos
             }
         }
 
-        public async Task<UserState> GetUser()
+        internal async Task<UserState> FetchUser()
         {
             var apiClient = ApiClient.Get();
             try
             {
-                var response = await apiClient.Client.GetJsonAsync<UserState>($"me/applications/${stateRepo.Store.State.AppConfig.Id}/data");
+                var response = await apiClient.Client.GetJsonAsync<UserState>($"me/applications/{stateRepo.Store.State.AppConfig.Id}/data");
                 Device.BeginInvokeOnMainThread(() =>
                     stateRepo.Store.Dispatch(new StateActions.SetUserState()
                     {
@@ -60,7 +79,7 @@ namespace Rownd.Xamarin.Models.Repos
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to save the user: {ex}");
+                Console.WriteLine($"Failed to fetch the user: {ex}");
                 return null;
             }
         }

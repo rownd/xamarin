@@ -120,6 +120,7 @@ namespace Rownd.Controls
         public HubBottomSheetPage()
         {
             InitializeComponent();
+            BindingContext = this;
             Setup();
         }
 

@@ -31,7 +31,18 @@ namespace Rownd.Xamarin.Models.Repos
         {
             LoadState();
             var appConfigRepo = AppConfigRepo.Get();
-            var task = new Task(async () => { await appConfigRepo.LoadAppConfigAsync(); });
+            var task = new Task(async () =>
+            {
+                await appConfigRepo.LoadAppConfigAsync();
+
+                if (Store.State.Auth.IsAuthenticated)
+                {
+                    // Ensure we have a valid access token
+                    await AuthRepo.Get().GetAccessToken();
+
+                    await UserRepo.GetInstance().FetchUser();
+                }
+            });
             task.Start();
         }
 
@@ -63,6 +74,7 @@ namespace Rownd.Xamarin.Models.Repos
             var stateJson = JsonConvert.SerializeObject(state);
             Console.WriteLine($"Saving serialized state to storage: {stateJson}");
             Shared.App.Properties["rownd_state"] = stateJson;
+            Shared.App.SavePropertiesAsync();
         }
 
         private void InitializeStore(GlobalState existingState = null)

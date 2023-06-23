@@ -11,9 +11,15 @@ namespace Rownd.Xamarin.Models.Repos
 {
     public class AuthRepo
     {
+        public class RefreshTokenExpiredException : Exception
+        {
+            public RefreshTokenExpiredException() { }
+            public RefreshTokenExpiredException(string message) : base(message) { }
+        }
+
         private readonly StateRepo stateRepo = StateRepo.Get();
 
-        private Task<RestResponse<AuthState>> refreshTask;
+        private Task<AuthState> refreshTask;
 
         private class TokenRequestBody
         {
@@ -45,7 +51,7 @@ namespace Rownd.Xamarin.Models.Repos
                 authState = await RefreshToken();
             }
 
-            return authState.AccessToken;
+            return authState?.AccessToken;
         }
 
         public async Task<string> GetAccessToken(string token)
@@ -64,7 +70,7 @@ namespace Rownd.Xamarin.Models.Repos
                 Device.BeginInvokeOnMainThread(() =>
                     stateRepo.Store.Dispatch(new StateActions.SetAuthState()
                     {
-                        AuthState = refreshTask.Result.Data
+                        AuthState = response.Data
                     })
                 );
 
@@ -82,39 +88,61 @@ namespace Rownd.Xamarin.Models.Repos
             if (refreshTask != null)
             {
                 await refreshTask;
-                return refreshTask.Result.Data;
+                return refreshTask.Result;
             }
 
-            var apiClient = ApiClient.Get();
             try
             {
-                var request = new RestRequest("hub/auth/token")
-                    .AddBody(new TokenRequestBody
-                    {
-                        AppId = stateRepo.Store.State.AppConfig.Id,
-                        RefreshToken = stateRepo.Store.State.Auth.RefreshToken
-                    });
-                refreshTask = apiClient.Client.ExecutePostAsync<AuthState>(request);
-                await refreshTask;
+                refreshTask = MakeRefreshTokenRequest();
+                return await refreshTask.ContinueWith(task =>
+                {
+                    var result = refreshTask.Result;
+                    refreshTask = null;
 
-                Device.BeginInvokeOnMainThread(() =>
+                    Device.BeginInvokeOnMainThread(() =>
                     stateRepo.Store.Dispatch(new StateActions.SetAuthState()
                     {
-                        AuthState = refreshTask.Result.Data
+                        AuthState = result
                     })
                 );
 
-                return refreshTask.Result.Data;
+                    return result;
+                });
+            }
+            catch (RefreshTokenExpiredException ex)
+            {
+                Console.WriteLine($"Failed to refresh token. It was likely expired. User will be signed out. Reason: {ex}");
+                Device.BeginInvokeOnMainThread(() => stateRepo.Store.Dispatch(new StateActions.SetAuthState()));
+                return null;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to refresh access token: {ex}");
-                return null;
+                Console.WriteLine($"Failed to refresh token. This may be recoverable. Reason: {ex}");
+                throw ex;
             }
-            finally
+        }
+
+        private async Task<AuthState> MakeRefreshTokenRequest()
+        {
+            var request = new RestRequest("hub/auth/token")
+                .AddBody(new TokenRequestBody
+                {
+                    AppId = stateRepo.Store.State.AppConfig.Id,
+                    RefreshToken = stateRepo.Store.State.Auth.RefreshToken
+                });
+            var apiClient = ApiClient.Get();
+            var result = await apiClient.Client.ExecutePostAsync<AuthState>(request);
+
+            if (result.ResponseStatus == ResponseStatus.Completed)
             {
-                refreshTask = null;
+                return result.Data;
             }
+            else if (result.ResponseStatus == ResponseStatus.Error && result.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                throw new RefreshTokenExpiredException(result.Content);
+            }
+
+            throw new Exception(result.Content);
         }
     }
 }

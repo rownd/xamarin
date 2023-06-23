@@ -13,7 +13,7 @@ namespace RowndXamarinExample.Views
         public AboutPage()
         {
             InitializeComponent();
-            ViewModel = new();
+            ViewModel = new(this);
             BindingContext = ViewModel;
         }
     }

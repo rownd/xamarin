@@ -17,8 +17,9 @@ namespace Rownd.Xamarin
     {
         private static RowndInstance inst;
 
-        internal StateRepo State { get; set; }
-        internal AuthRepo Auth { get; set; }
+        internal StateRepo State { get; private set; }
+        internal AuthRepo Auth { get; private set; }
+        public UserRepo User { get; private set; }
 
         public Config Config { get; set; }
         public ReduxStore<GlobalState> Store
@@ -35,6 +36,7 @@ namespace Rownd.Xamarin
             Config = Shared.ServiceProvider.GetService<Config>();
             State = StateRepo.Get();
             Auth = AuthRepo.Get();
+            User = UserRepo.GetInstance();
             State.Setup();
         }
 

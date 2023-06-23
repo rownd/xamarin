@@ -9,7 +9,7 @@ namespace Rownd.Xamarin.Core
 {
     public class ApiClient
     {
-        public RestClient Client;
+        public RestClient Client { get; private set; }
 
         public static ApiClient Get()
         {
@@ -22,12 +22,16 @@ namespace Rownd.Xamarin.Core
             var options = new RestClientOptions(config.ApiUrl)
             {
                 Authenticator = new ApiAuthenticator(),
-                ConfigureMessageHandler = handler => new HttpTracerHandler(handler)
+                ConfigureMessageHandler = handler => new HttpTracerHandler(handler),
+                UserAgent = Constants.DEFAULT_API_USER_AGENT
             };
 
             JsonSerializerSettings defaultSettings = new JsonSerializerSettings
             {
-                ContractResolver = new DefaultContractResolver(),
+                ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                },
                 DefaultValueHandling = DefaultValueHandling.Include,
                 TypeNameHandling = TypeNameHandling.None,
                 NullValueHandling = NullValueHandling.Ignore,
