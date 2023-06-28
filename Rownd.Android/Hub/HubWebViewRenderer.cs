@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Rownd.Xamarin.Android.Hub;
+using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
@@ -23,6 +24,7 @@ namespace Rownd.Xamarin.Android.Hub
             if (e.NewElement != null)
             {
                 Control.AddJavascriptInterface(new JSBridge(this), "rowndAndroidSDK");
+                Control.Settings.UserAgentString = Constants.DEFAULT_WEB_USER_AGENT;
             }
         }
 

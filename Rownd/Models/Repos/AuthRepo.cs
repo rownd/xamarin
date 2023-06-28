@@ -83,7 +83,14 @@ namespace Rownd.Xamarin.Models.Repos
             }
         }
 
-        public async Task<AuthState> RefreshToken()
+        public async Task AuthenticateUsingSignInLink(string link)
+        {
+            var apiClient = ApiClient.Get();
+            var request = new RestRequest(link);
+            var response = await apiClient.Client.ExecuteGetAsync(request);
+        }
+
+        internal async Task<AuthState> RefreshToken()
         {
             if (refreshTask != null)
             {

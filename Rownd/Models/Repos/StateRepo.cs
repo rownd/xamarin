@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using ReduxSimple;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Utils;
 
 namespace Rownd.Xamarin.Models.Repos
 {
@@ -21,7 +22,7 @@ namespace Rownd.Xamarin.Models.Repos
             return Shared.ServiceProvider.GetService<StateRepo>();
         }
 
-        IDisposable statePersistenceListener;
+        private IDisposable statePersistenceListener;
 
         public StateRepo()
         {
@@ -31,7 +32,7 @@ namespace Rownd.Xamarin.Models.Repos
         {
             LoadState();
             var appConfigRepo = AppConfigRepo.Get();
-            var task = new Task(async () =>
+            Task.Run(async () =>
             {
                 await appConfigRepo.LoadAppConfigAsync();
 
@@ -42,8 +43,11 @@ namespace Rownd.Xamarin.Models.Repos
 
                     await UserRepo.GetInstance().FetchUser();
                 }
+                else
+                {
+                    SignInLinkHandler.Get().HandleSignInLinkIfPresent();
+                }
             });
-            task.Start();
         }
 
         // TODO: Provide a generic interface for specific portions of the state tree.
@@ -83,6 +87,13 @@ namespace Rownd.Xamarin.Models.Repos
             {
                 return;
             }
+
+            if (existingState == null)
+            {
+                existingState = new GlobalState();
+            }
+
+            existingState.IsInitialized = true;
 
             Store = new ReduxStore<GlobalState>(StateReducers.CreateReducers(), existingState);
 

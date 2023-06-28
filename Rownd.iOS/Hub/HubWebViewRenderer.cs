@@ -1,4 +1,5 @@
 ﻿using System;
+using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
 using Rownd.Xamarin.iOS.Hub;
 using WebKit;
@@ -14,12 +15,11 @@ namespace Rownd.Xamarin.iOS.Hub
 
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
         {
-            Console.WriteLine("iOS base constructor");
+            CustomUserAgent = Constants.DEFAULT_WEB_USER_AGENT;
         }
 
         public HubWebViewRenderer(WKWebViewConfiguration config) : base(config)
         {
-            Console.WriteLine("iOS config constructor");
             userController = config.UserContentController;
             userController.AddScriptMessageHandler(this, "rowndIosSDK");
         }

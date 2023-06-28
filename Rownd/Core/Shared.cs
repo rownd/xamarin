@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Rownd.Xamarin.Models.Repos;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 
 namespace Rownd.Xamarin.Core
@@ -62,6 +63,7 @@ namespace Rownd.Xamarin.Core
             services.AddSingleton<AppConfigRepo, AppConfigRepo>();
             services.AddSingleton<AuthRepo>();
             services.AddSingleton<UserRepo>();
+            services.AddSingleton<SignInLinkHandler>();
 
             Task.Run(async () =>
                 {
