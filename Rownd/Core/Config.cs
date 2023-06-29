@@ -5,6 +5,7 @@ using System.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Rownd.Xamarin.Models.Repos;
 
 namespace Rownd.Xamarin.Core
 {
@@ -46,20 +47,24 @@ namespace Rownd.Xamarin.Core
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString.Add("config", base64Config);
 
-            // val signInState = signInRepo.get()
+            //var signInState = .get()
             // val signInInitStr = signInState.toSignInInitHash()
             // uriBuilder.appendQueryParameter("sign_in", signInInitStr)
 
             UriBuilder uriBuilder = new UriBuilder($"{HubUrl}/mobile_app");
             uriBuilder.Query = queryString.ToString();
 
-            //try {
-            //    val authState = authRepo.getLatestAuthState() ?: AuthState()
-            //    val rphInitStr = authState.toRphInitHash(userRepo)
-            //    uriBuilder.encodedFragment("rph_init=$rphInitStr")
-            //} catch (error: Exception) {
-            //    Log.d("Rownd.config", "Couldn't compute requested init hash: ${error.message}")
-            //}
+            try
+            {
+                var stateRepo = StateRepo.Get();
+                var authState = stateRepo.Store.State.Auth;
+                var rphInitStr = authState.ToRphInitHash();
+                uriBuilder.Fragment = $"rph_init={rphInitStr}";
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine($"Couldn't compute requested init hash: {error.Message}");
+            }
 
             Console.WriteLine($"Hub config: {uriBuilder}");
 

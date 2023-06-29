@@ -1,6 +1,10 @@
-﻿using JWT;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using JWT;
 using JWT.Builder;
 using Newtonsoft.Json;
+using Rownd.Xamarin.Models.Repos;
 using Rownd.Xamarin.Utils;
 
 namespace Rownd.Xamarin.Models.Domain
@@ -31,8 +35,19 @@ namespace Rownd.Xamarin.Models.Domain
             }
         }
 
-        public AuthState()
+        public string ToRphInitHash()
         {
+            var stateRepo = StateRepo.Get();
+            var data = new Dictionary<string, string>
+            {
+                { "access_token", AccessToken },
+                { "refresh_token", RefreshToken },
+                { "app_id", stateRepo.Store.State.AppConfig.Id },
+                { "app_user_id", stateRepo.Store.State.User.Id }
+            };
+
+            var json = JsonConvert.SerializeObject(data);
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes(json), Base64FormattingOptions.None);
         }
 
         private string DecodeToken()

@@ -73,6 +73,7 @@ namespace Rownd.Xamarin
         public void SignOut()
         {
             Store.Dispatch(new StateActions.SetAuthState() { AuthState = new AuthState() });
+            Store.Dispatch(new StateActions.SetUserState() { UserState = new UserState() });
         }
 
         public async Task<string> GetAccessToken()

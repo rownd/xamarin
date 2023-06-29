@@ -8,6 +8,14 @@ namespace Rownd.Xamarin.Models.Domain
     {
         [JsonIgnore]
         public bool IsLoading { get; set; }
+        public string Id
+        {
+            get
+            {
+                return Data["user_id"] as string;
+            }
+        }
+
         public Dictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
 
         public Dictionary<string, dynamic> Get()
