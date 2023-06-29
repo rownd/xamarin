@@ -24,5 +24,10 @@ namespace Rownd.Xamarin.Models
         {
             public UserState UserState { get; set; }
         }
+
+        public class SetSignInState
+        {
+            public SignInState SignInState { get; set; }
+        }
     }
 }

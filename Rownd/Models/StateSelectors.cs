@@ -17,5 +17,9 @@ namespace Rownd.Xamarin.Models
         public static ISelectorWithoutProps<GlobalState, UserState> SelectUserState { get; } = CreateSelector(
             (GlobalState state) => state.User
         );
+
+        public static ISelectorWithoutProps<GlobalState, SignInState> SelectSignInState { get; } = CreateSelector(
+            (GlobalState state) => state.SignIn
+        );
     }
 }

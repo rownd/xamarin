@@ -112,6 +112,9 @@ if (typeof rownd !== 'undefined') {{
                                     }
                                 });
 
+                                // Reset last sign in state
+                                stateRepo.Store.Dispatch(new StateActions.SetSignInState { SignInState = new SignInState() });
+
                                 await Task.Delay(2000);
 
                                 await bottomSheet.Dismiss();

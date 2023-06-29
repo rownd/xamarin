@@ -47,16 +47,25 @@ namespace Rownd.Xamarin.Core
             var queryString = HttpUtility.ParseQueryString(string.Empty);
             queryString.Add("config", base64Config);
 
-            //var signInState = .get()
-            // val signInInitStr = signInState.toSignInInitHash()
-            // uriBuilder.appendQueryParameter("sign_in", signInInitStr)
-
-            UriBuilder uriBuilder = new UriBuilder($"{HubUrl}/mobile_app");
-            uriBuilder.Query = queryString.ToString();
+            var stateRepo = StateRepo.Get();
 
             try
             {
-                var stateRepo = StateRepo.Get();
+                var signInState = stateRepo.Store.State.SignIn;
+                var signInInitStr = signInState.ToSignInInitHash();
+                queryString.Add("sign_in", signInInitStr);
+            } catch (Exception error)
+            {
+                Console.WriteLine($"Couldn't compute last sign-in info: {error.Message}");
+            }
+
+            UriBuilder uriBuilder = new UriBuilder($"{HubUrl}/mobile_app")
+            {
+                Query = queryString.ToString()
+            };
+
+            try
+            {
                 var authState = stateRepo.Store.State.Auth;
                 var rphInitStr = authState.ToRphInitHash();
                 uriBuilder.Fragment = $"rph_init={rphInitStr}";

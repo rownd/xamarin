@@ -8,11 +8,20 @@ namespace Rownd.Xamarin.Models.Domain
     {
         [JsonIgnore]
         public bool IsLoading { get; set; }
+
+        [JsonIgnore]
         public string Id
         {
             get
             {
-                return Data["user_id"] as string;
+                Data.TryGetValue("user_id", out var userId);
+
+                if (userId == null)
+                {
+                    return null;
+                }
+
+                return userId as string;
             }
         }
 

@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using GuerrillaNtp;
+using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
+using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Utils;
 using static ReduxSimple.Reducers;
 
 namespace Rownd.Xamarin.Models
@@ -12,7 +16,8 @@ namespace Rownd.Xamarin.Models
             return CombineReducers(
                 GetAppConfigReducers(),
                 GetAuthReducers(),
-                GetUserReducers()
+                GetUserReducers(),
+                GetSignInStateReducers()
             );
         }
 
@@ -47,6 +52,24 @@ namespace Rownd.Xamarin.Models
                         return action.UserState;
                     }
             ).ToList();
+        }
+
+        public static IEnumerable<On<GlobalState>> GetSignInStateReducers()
+        {
+            return CreateSubReducers(StateSelectors.SelectSignInState)
+                .On<StateActions.SetSignInState>(
+                    (state, action) =>
+                    {
+                        if (action.SignInState.LastSignIn != null)
+                        {
+                            var ntpClient = Shared.ServiceProvider.GetService<NtpClient>();
+                            var currentTime = (ntpClient.Last ?? NtpClock.LocalFallback).UtcNow.UtcDateTime;
+                            action.SignInState.LastSignInDate = currentTime.ToUniversalISO8601();
+                        }
+
+                        return action.SignInState;
+                    }
+                ).ToList();
         }
     }
 }
