@@ -1,0 +1,41 @@
+{
+  "npm": false,
+  "git": {
+    "commitMessage": "chore: release v${version}",
+    "tagName": "${version}"
+  },
+  "github": {
+    "release": true
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    },
+    "@release-it/bumper": {
+      "in": "VERSION",
+      "out": [
+        "Rownd/Rownd.Xamarin.csproj",
+        "Rownd.Android/Rownd.Xamarin.Android.csproj",
+        "Rownd.Android/Properties/AssemblyInfo.cs",
+        "Rownd.iOS/Rownd.Xamarin.iOS.csproj",
+        "Rownd.iOS/Properties/AssemblyInfo.cs",
+        "Rownd/README.md",
+        "VERSION"
+      ]
+    }
+  },
+  "hooks": {
+    "after:bump": [
+      "mkdir -p pack",
+      "cd Rownd && dotnet build",
+      "cd Rownd.Android && nuget pack -prop configuration=release -OutputDirectory ../pack",
+      "cd Rownd.iOS && nuget pack -prop configuration=release -OutputDirectory ../pack"
+    ],
+    "after:github:release": [
+      "cd pack && nuget push Rownd.Xamarin.iOS.${version}.nupkg",
+      "cd pack && nuget push Rownd.Xamarin.Android.${version}.nupkg",
+      "cd pack && nuget push Rownd.Xamarin.${version}.nupkg"
+    ]
+  }
+}
