@@ -6,7 +6,7 @@ using Rownd.Xamarin.Utils;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
-[assembly: Dependency(typeof(Rownd.Xamarin.Android.SignInLinkHandler))]
+//[assembly: Dependency(typeof(Rownd.Xamarin.Android.SignInLinkHandler))]
 namespace Rownd.Xamarin.Android
 {
     public class SignInLinkHandler : ISignInLinkHandler

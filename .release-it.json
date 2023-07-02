@@ -28,14 +28,14 @@
   "hooks": {
     "after:bump": [
       "mkdir -p pack",
-      "cd Rownd && dotnet build",
-      "cd Rownd.Android && nuget pack -prop configuration=release -OutputDirectory ../pack",
-      "cd Rownd.iOS && nuget pack -prop configuration=release -OutputDirectory ../pack"
+      "cd Rownd && dotnet pack --configuration Release -o ../pack",
+      "cd Rownd.Android && msbuild /p:Configuration=Release && nuget pack -prop configuration=release -OutputDirectory ../pack -Version ${version}",
+      "cd Rownd.iOS && msbuild /p:Configuration=Release && nuget pack -prop configuration=release -OutputDirectory ../pack -Version ${version}"
     ],
     "after:github:release": [
-      "cd pack && nuget push Rownd.Xamarin.iOS.${version}.nupkg",
-      "cd pack && nuget push Rownd.Xamarin.Android.${version}.nupkg",
-      "cd pack && nuget push Rownd.Xamarin.${version}.nupkg"
+      "nuget push ./pack/Rownd.Xamarin.iOS.${version}.nupkg",
+      "nuget push ./pack/Rownd.Xamarin.Android.${version}.nupkg",
+      "nuget push ./pack/Rownd.Xamarin.${version}.nupkg"
     ]
   }
 }
