@@ -33,9 +33,9 @@
       "cd Rownd.iOS && msbuild /p:Configuration=Release && nuget pack -prop configuration=release -OutputDirectory ../pack -Version ${version}"
     ],
     "after:github:release": [
-      "nuget push ./pack/Rownd.Xamarin.iOS.${version}.nupkg",
-      "nuget push ./pack/Rownd.Xamarin.Android.${version}.nupkg",
-      "nuget push ./pack/Rownd.Xamarin.${version}.nupkg"
+      "nuget push ./pack/Rownd.Xamarin.iOS.${version}.nupkg -src https://nuget.org",
+      "nuget push ./pack/Rownd.Xamarin.Android.${version}.nupkg -src https://nuget.org",
+      "nuget push ./pack/Rownd.Xamarin.${version}.nupkg -src https://nuget.org"
     ]
   }
 }
