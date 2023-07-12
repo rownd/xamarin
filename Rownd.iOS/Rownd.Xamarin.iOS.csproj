@@ -37,6 +37,7 @@
 		<DefineConstants>DEBUG;</DefineConstants>
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<DebugType>portable</DebugType>
@@ -44,6 +45,7 @@
 		<OutputPath>bin\Release</OutputPath>
 		<ErrorReport>prompt</ErrorReport>
 		<WarningLevel>4</WarningLevel>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
 		<Reference Include="System" />
@@ -64,6 +66,7 @@
 		<Compile Include="Hub\HubWebViewRenderer.cs" />
 		<Compile Include="Boot.cs" />
 		<Compile Include="SignInLinkHandler.cs" />
+		<Compile Include="SignInWithApple.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Xamarin.Forms">

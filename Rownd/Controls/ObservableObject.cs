@@ -7,7 +7,7 @@ using Xamarin.Forms.Internals;
 namespace Rownd.Controls
 {
     /// <summary>
-    /// Observable object with INotifyPropertyChanged implementation
+    /// Observable object with INotifyPropertyChanged implementation.
     /// </summary>
     [Preserve(AllMembers = true)]
     public class ObservableObject : INotifyPropertyChanged
@@ -80,6 +80,4 @@ namespace Rownd.Controls
 
         #endregion
     }
-
 }
-

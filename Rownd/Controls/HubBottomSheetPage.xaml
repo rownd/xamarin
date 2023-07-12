@@ -24,68 +24,80 @@
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
                 </BoxView.GestureRecognizers>
             </BoxView>
-            <Frame
-                x:Name="Sheet"
-                BackgroundColor="{Binding SheetBackgroundColor}"
-                Opacity="0"
-                CornerRadius="12"
-                IsClippedToBounds="True"
-                HasShadow="True"
-                Padding="0"
-                RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
-                    Property=Height,Factor=1,Constant=0}"
-                RelativeLayout.WidthConstraint="{ConstraintExpression
-                    Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
-                RelativeLayout.HeightConstraint="{ConstraintExpression
-                    Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
-            >
-                <Frame.GestureRecognizers>
-                    <PanGestureRecognizer PanUpdated="OnBottomSheetPan"/>
-                </Frame.GestureRecognizers>
 
-                <RelativeLayout IsClippedToBounds="True" x:Name="WebViewContainer">
-                    <rownd:HubWebView x:Name="Webview"
-                        VerticalOptions="FillAndExpand"
+            <controls:PanContainer x:Name="PanContainerRef"
+                                   RelativeLayout.WidthConstraint="{ConstraintExpression
+                                        Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                                   RelativeLayout.HeightConstraint="{ConstraintExpression
+                                        Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
+                                   >
+
+                <controls:PanContainer.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="OnBottomSheetPan"/>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
+                </controls:PanContainer.GestureRecognizers>
+
+                <RelativeLayout>
+                    <Frame
+                        x:Name="Sheet"
+                        BackgroundColor="{Binding SheetBackgroundColor}"
+                        Opacity="0"
+                        CornerRadius="12"
+                        IsClippedToBounds="True"
+                        HasShadow="True"
+                        Padding="0"
+                        RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                            Property=Height,Factor=1,Constant=0}"
                         RelativeLayout.WidthConstraint="{ConstraintExpression
                             Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                         RelativeLayout.HeightConstraint="{ConstraintExpression
                             Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
-                    />
-
-                    <StackLayout
-                        BackgroundColor="Transparent"
-                        HorizontalOptions="Center"
-                        RelativeLayout.WidthConstraint="{ConstraintExpression
-                            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                     >
-                        <BoxView
-                            HeightRequest="5"
-                            CornerRadius="2"
-                            WidthRequest="100"
-                            BackgroundColor="Gray"
+                        <RelativeLayout IsClippedToBounds="True" x:Name="WebViewContainer">
+                            <rownd:HubWebView x:Name="Webview"
+                            VerticalOptions="FillAndExpand"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression
+                                Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                            RelativeLayout.HeightConstraint="{ConstraintExpression
+                                Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
+                        />
+
+                            <StackLayout
+                            BackgroundColor="Transparent"
                             HorizontalOptions="Center"
-                            Margin="15"
-                        />
-                    </StackLayout>
+                            RelativeLayout.WidthConstraint="{ConstraintExpression
+                                Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                        >
+                                <BoxView
+                                HeightRequest="5"
+                                CornerRadius="2"
+                                WidthRequest="100"
+                                BackgroundColor="Gray"
+                                HorizontalOptions="Center"
+                                Margin="15"
+                            />
+                            </StackLayout>
 
-                    <StackLayout
-                        IsVisible="{Binding IsLoading}"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        BackgroundColor="Transparent"
-                        RelativeLayout.WidthConstraint="{ConstraintExpression
-                            Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
-                    >
-                        <ActivityIndicator
-                            IsRunning="{Binding IsLoading}"
-                            Color="{Binding PrimaryForegroundColor}"
-                            Scale="2"
-                            Margin="0,100,0,0"
-                        />
-                    </StackLayout>
+                            <StackLayout
+                            IsVisible="{Binding IsLoading}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            BackgroundColor="Transparent"
+                            RelativeLayout.WidthConstraint="{ConstraintExpression
+                                Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                        >
+                                <ActivityIndicator
+                                IsRunning="{Binding IsLoading}"
+                                Color="{Binding PrimaryForegroundColor}"
+                                Scale="2"
+                                Margin="0,100,0,0"
+                            />
+                            </StackLayout>
 
+                        </RelativeLayout>
+                    </Frame>
                 </RelativeLayout>
-            </Frame>
+            </controls:PanContainer>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

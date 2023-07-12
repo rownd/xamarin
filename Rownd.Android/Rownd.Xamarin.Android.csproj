@@ -70,6 +70,7 @@
 		<Compile Include="Hub\JSBridge.cs" />
 		<Compile Include="SignInLinkHandler.cs" />
 		<Compile Include="Boot.cs" />
+		<Compile Include="Hub\CustomLayoutListener.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\AboutResources.txt" />
