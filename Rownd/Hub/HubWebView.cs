@@ -131,7 +131,7 @@ if (typeof rownd !== 'undefined') {{
                         case MessageType.HubResize:
                             {
                                 Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
-                                _ = bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
+                                bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
                                 break;
                             }
 
@@ -174,6 +174,16 @@ if (typeof rownd !== 'undefined') {{
                     Console.WriteLine($"Failed to decode hub message: {e.Message}");
                 }
             });
+        }
+
+        public void HandleKeyboardStateChange(bool isKeyboardOpen)
+        {
+            if (!isKeyboardOpen)
+            {
+                return;
+            }
+
+            bottomSheet.Expand();
         }
 
         public void OnPageLoaded(object sender, WebNavigatedEventArgs e)

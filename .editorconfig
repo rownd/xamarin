@@ -87,3 +87,6 @@ dotnet_diagnostic.SA1111.severity = None
 
 # Braces should not be ommitted
 dotnet_diagnostic.SA1503.severity = None
+
+# SA1124: Do not use regions
+dotnet_diagnostic.SA1124.severity = none

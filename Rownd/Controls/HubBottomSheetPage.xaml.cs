@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -117,6 +118,8 @@ namespace Rownd.Controls
         }
         #endregion
 
+        private bool isPanning = false;
+
         public HubBottomSheetPage()
         {
             InitializeComponent();
@@ -152,6 +155,7 @@ namespace Rownd.Controls
 
         private readonly uint duration = 300;
         private double currentPosition = 0;
+        private double detentPoint = 500;
 
         public async void OnBottomSheetPan(object sender, PanUpdatedEventArgs e)
         {
@@ -160,17 +164,35 @@ namespace Rownd.Controls
                 switch (e.StatusType)
                 {
                     case GestureStatus.Running:
-                        var translateY = Math.Max(Math.Min(0, currentPosition + e.TotalY), -Math.Abs((Height * .10) - Height));
+                        isPanning = true;
+                        var translateY = Math.Max(Math.Min(0, currentPosition + e.TotalY), -Math.Abs((Height * .05) - Height));
                         await Sheet.TranslateTo(Sheet.X, translateY, 20, Easing.SpringOut);
 
                         break;
 
                     case GestureStatus.Completed:
                         currentPosition = Sheet.TranslationY;
+                        isPanning = false;
 
-                        if (!IsSwipeUp(e) && Math.Abs(currentPosition) < InitialPosition)
+                        if (!IsSwipeUp(e) && (Math.Abs(currentPosition) < InitialPosition || Math.Abs(currentPosition) < Math.Abs(detentPoint + 100)))
                         {
                             await Dismiss();
+                        }
+                        else
+                        {
+                            // Snap to top or last detent
+                            var currentHeight = Math.Abs(currentPosition);
+                            var maxHeight = GetMaxHeight();
+                            var maxDiff = Math.Abs(currentHeight - maxHeight);
+                            var detentDiff = Math.Abs(currentHeight - Math.Abs(detentPoint));
+
+                            double targetHeight = Math.Abs(detentPoint);
+                            if (maxDiff < detentDiff)
+                            {
+                                targetHeight = maxHeight;
+                            }
+
+                            _ = AnimateTo(-targetHeight);
                         }
 
                         break;
@@ -192,22 +214,36 @@ namespace Rownd.Controls
             return false;
         }
 
+        // open sheet to 95% of the view
         public void Expand()
         {
-            // open sheet to 90% of the view
-            var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetProportionCoordinate(.90)));
-            Sheet.TranslateTo(Sheet.X, finalTranslation, 150, Easing.SpringIn);
+            RequestHeight(GetProportionCoordinate(.95));
         }
 
-        public async Task RequestHeight(int height)
+        /**
+         * <summary>
+         * Request a height for the sheet in device-independent pixels.
+         * </summary>
+         * <param name="height">A positive number to which the sheet height should adjust.</param>
+         * */
+        public void RequestHeight(double height)
         {
-            var maxHeight = Math.Abs(GetProportionCoordinate(.90));
-            if (height > maxHeight)
+            if (isPanning)
             {
-                height = (int)maxHeight;
+                return;
             }
 
-            await AnimateTo(-height);
+            height = NormalizeHeight(height);
+
+            // Ignore small, negative adjustments in height
+            if (height > Math.Abs(currentPosition) - 50 && height < Math.Abs(currentPosition))
+            {
+                return;
+            }
+
+            detentPoint = -height;
+
+            _ = AnimateTo(-height);
         }
 
         public async Task Dismiss()
@@ -227,6 +263,30 @@ namespace Rownd.Controls
             return proportion * Height;
         }
 
+        /**
+         * <summary>
+         * Normalize the requested sheet height so that it never exceeds the maximum.
+         * </summary>
+         * <param name="height">A positive number that will cap at the max height of the screen.</param>
+         * */
+        private double NormalizeHeight(double height)
+        {
+            height = Math.Abs(height);
+
+            var maxHeight = GetMaxHeight();
+            if (height > maxHeight)
+            {
+                height = maxHeight;
+            }
+
+            return height;
+        }
+
+        private double GetMaxHeight()
+        {
+            return Math.Abs(GetProportionCoordinate(.95));
+        }
+
         public async Task AnimateTo(double position, Easing easing = null)
         {
             easing ??= Easing.SpringOut;
@@ -239,8 +299,8 @@ namespace Rownd.Controls
         {
             await Task.WhenAll(
                 Backdrop.FadeTo(0.5, length: duration),
-                Sheet.TranslateTo(0, -InitialPosition, length: duration, easing: Easing.SinOut),
-                Sheet.FadeTo(1, duration, Easing.SinOut)
+                Sheet.TranslateTo(0, -InitialPosition, length: duration, easing: Easing.SpringOut),
+                Sheet.FadeTo(1, duration, Easing.SpringOut)
             );
             currentPosition = Sheet.TranslationY;
         }

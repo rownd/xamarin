@@ -1,7 +1,5 @@
-﻿
-using Xamarin.Forms;
-using System;
- 
+﻿using Xamarin.Forms;
+
 namespace Rownd.Controls
 {
     public class PanContainer : ContentView
