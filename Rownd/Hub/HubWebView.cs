@@ -39,7 +39,19 @@ namespace Rownd.Xamarin.Hub
             var url = await config.GetHubLoaderUrl();
             Dispatcher.BeginInvokeOnMainThread(() =>
             {
-                Source = url;
+                if (Source == null)
+                {
+                    Source = url;
+                }
+                else if (Source is UrlWebViewSource source && source.Url != url)
+                {
+                    Source = url;
+                    TriggerHub();
+                }
+                else
+                {
+                    TriggerHub();
+                }
             });
         }
 
@@ -159,6 +171,12 @@ if (typeof rownd !== 'undefined') {{
                                         Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
                                     }
                                 });
+                                break;
+                            }
+
+                        case MessageType.TriggerSignInWithApple:
+                            {
+                                Shared.Rownd.RequestSignIn(SignInMethod.Apple);
                                 break;
                             }
 

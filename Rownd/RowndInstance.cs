@@ -15,7 +15,8 @@ namespace Rownd.Xamarin
 {
     public class RowndInstance : IRowndInstance
     {
-        private static RowndInstance inst;
+        private HubBottomSheetPage hubBottomSheet = null;
+        internal static RowndInstance inst;
 
         internal StateRepo State { get; private set; }
         internal AuthRepo Auth { get; private set; }
@@ -32,12 +33,17 @@ namespace Rownd.Xamarin
 
         private RowndInstance(Application app, Config config = null)
         {
-            Shared.Init(app, config);
+            Shared.Init(this, app, config);
             Config = Shared.ServiceProvider.GetService<Config>();
             State = StateRepo.Get();
             Auth = AuthRepo.Get();
             User = UserRepo.GetInstance();
             State.Setup();
+
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                DependencyService.Get<IAppleAuthCoordinator>().Inject(this, Auth);
+            }
         }
 
         public static RowndInstance GetInstance(Application app, Config config = null)
@@ -63,11 +69,31 @@ namespace Rownd.Xamarin
 
         public void RequestSignIn(SignInMethod with)
         {
-            RequestSignIn(new SignInOptions());
+
+            switch (with)
+            {
+                case SignInMethod.Apple:
+                    Console.WriteLine("RequestSignIn(.apple)");
+                    var appleAuthCoord = DependencyService.Get<IAppleAuthCoordinator>();
+
+                    Console.WriteLine("RequestSignIn(.apple): call .SignIn()");
+                    appleAuthCoord.SignIn();
+                    break;
+
+                default:
+                    RequestSignIn(new SignInOptions());
+                    break;
+            }
         }
 
-        public void RequestSignIn(SignInOptions opts) {
+        public void RequestSignIn(SignInOptions opts)
+        {
             
+        }
+
+        public void RequestSignIn(RowndSignInJsOptions opts)
+        {
+            DisplayHub(HubPageSelector.SignIn, opts);
         }
 
         public void SignOut()
@@ -83,7 +109,8 @@ namespace Rownd.Xamarin
 
         public async Task<string> GetAccessToken(string token)
         {
-            return await Auth.GetAccessToken(token);
+            var tokens = await Auth.GetAccessToken(token);
+            return tokens.AccessToken;
         }
 
         [Obsolete("Use GetAccessToken() instead")]
@@ -99,13 +126,21 @@ namespace Rownd.Xamarin
         #region Internal methods
         private void DisplayHub(HubPageSelector page, RowndSignInJsOptions opts = null)
         {
-            var hubBottomSheet = new HubBottomSheetPage();
+            if (hubBottomSheet == null)
+            {
+                hubBottomSheet = new HubBottomSheetPage();
+                hubBottomSheet.OnDismiss += (object sender, EventArgs e) =>
+                {
+                    hubBottomSheet = null;
+                };
+
+                Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
+            }
+
             var webView = hubBottomSheet.GetHubWebView();
             webView.TargetPage = page;
             webView.HubOpts = opts;
             webView.RenderHub();
-
-            Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
         }
 
         #endregion

@@ -1,27 +1,39 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
+using System.Collections.Generic;
 using System.Text;
 using AuthenticationServices;
 using Foundation;
-using Newtonsoft.Json;
+using Rownd.Xamarin.Core;
+using Rownd.Xamarin.Models.Repos;
 using Rownd.Xamarin.Utils;
 using UIKit;
+using Xamarin.Forms;
 
+[assembly: Dependency(typeof(Rownd.Xamarin.iOS.AppleAuthCoordinator))]
 namespace Rownd.Xamarin.iOS
 {
-    public class AppleSignInData
+    public class AppleAuthCoordinator : NSObject, IAppleAuthCoordinator, IASAuthorizationControllerDelegate, IASAuthorizationControllerPresentationContextProviding
     {
-        public string Email { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string FullName { get; set; }
-    }
+        private RowndInstance? rownd;
+        private AuthRepo? authRepo;
+        private SignInIntent? intent;
 
-    public partial class AppleSignUpCoordinator : NSObject, IASAuthorizationControllerDelegate, IASAuthorizationControllerPresentationContextProviding
-    {
-        private SignInIntent intent;
-
-        public void SignIn(SignInIntent intent)
+        public void Inject(RowndInstance rownd, AuthRepo authRepo)
         {
+            this.rownd = rownd;
+            this.authRepo = authRepo;
+        }
+
+        public void SignIn()
+        {
+            SignIn(null);
+        }
+
+        public void SignIn(SignInIntent? intent)
+        {
+            Console.WriteLine("AppleAuthCoordinator.SignIn(intent)");
             this.intent = intent;
 
             // Create an object of the ASAuthorizationAppleIDProvider
@@ -47,7 +59,7 @@ namespace Rownd.Xamarin.iOS
         public UIWindow GetPresentationAnchor(ASAuthorizationController controller)
         {
             var vc = UIApplication.SharedApplication.Windows[^1].RootViewController;
-            return vc?.View.Window!;
+            return vc?.View?.Window!;
         }
 
         private string GetFullName(string firstName, string lastName)
@@ -62,43 +74,36 @@ namespace Rownd.Xamarin.iOS
         public void DidComplete(ASAuthorizationController controller, ASAuthorization authorization)
         {
             // TODO: Send "completing" notification to Rownd shared lib
-            // Rownd.requestSignIn(jsFnOptions: RowndSignInJsOptions(
-            //        loginStep: .completing
-            // ))
+            rownd?.RequestSignIn(new RowndSignInJsOptions
+            {
+                SignInStep = SignInStep.Completing
+            });
 
             if (authorization.GetCredential<ASAuthorizationAppleIdCredential>() is ASAuthorizationAppleIdCredential appleIdCredential)
             {
-
                 // Create an account in your system.
                 // let userIdentifier = appleIDCredential.user
                 var fullName = appleIdCredential.FullName;
                 var email = appleIdCredential.Email;
                 var identityToken = appleIdCredential.IdentityToken;
 
-                if (email != null)
-                {
-                    // Store email and fullName in AppleSignInData struct if available
-                    var userAppleSignInData = new AppleSignInData
-                    {
-                        Email = email,
-                        FirstName = fullName?.GivenName,
-                        LastName = fullName?.FamilyName,
-                        FullName = GetFullName(fullName?.GivenName, fullName?.FamilyName)
-                    };
-
-                    JsonConvert.SerializeObject(userAppleSignInData);
-
-                    // TODO: Temporarily persist for later access
-                    // var defaults = UserDefaults.standard;
-                    // defaults.set(encoded, forKey: appleSignInDataKey)
-                }
-
                 if (identityToken != null && new NSString(identityToken, NSStringEncoding.ASCIIStringEncoding) is NSString urlContent)
                 {
                     var idToken = urlContent.ToString();
 
-                    // TODO: Pass to shared code for handling
-
+                    _ = authRepo?.HandleThirdPartySignIn(new Models.ThirdPartySignInData
+                    {
+                        Token = idToken,
+                        Intent = intent,
+                        SignInMethod = SignInMethod.Apple,
+                        UserData = new Dictionary<string, string>
+                        {
+                            { "email", email },
+                            { "first_name", fullName?.GivenName },
+                            { "last_name", fullName?.FamilyName },
+                            { "full_name", GetFullName(fullName?.GivenName, fullName?.FamilyName) }
+                        }
+                    });
                     //Task {
                     //    do
                     //    {
@@ -132,16 +137,13 @@ namespace Rownd.Xamarin.iOS
                     //                )
                     //            ))
 
-
                     //    store.dispatch(SetLastSignInMethod(payload: SignInMethodTypes.apple))
-
 
                     //    store.dispatch(Thunk<RowndState> {
                     //                dispatch, getState in
                     //        guard let state = getState() else { return }
 
                     //                var userData = state.user.data
-
 
                     //        let defaults = UserDefaults.standard
                     //        //use UserDefault values for Email and fullName if available
@@ -243,31 +245,25 @@ namespace Rownd.Xamarin.iOS
         public void DidComplete(ASAuthorizationController controller, NSError error)
         {
             // If there is any error, we'll get it here
-            //logger.error("An error occurred while signing in with Apple. Error: \(String(describing: error))")
+            Console.WriteLine($"An error occurred while signing in with Apple. Error: {error}");
 
             if (error == null)
             {
                 return;
             }
-            //    var authorizationError = error as ASAuthorizationError;
-            //if (authorizationError != null)
-            //    {
-            //        Rownd.requestSignIn(jsFnOptions: RowndSignInJsOptions(
-            //            loginStep: .error,
-            //            signInType: .apple
-            //        ))
-            //    return
-            //}
 
-            //    switch (authorizationError.) {
-            //        case .canceled:
-            //            return
-            //        default:
-            //    Rownd.requestSignIn(jsFnOptions: RowndSignInJsOptions(
-            //        loginStep: .error,
-            //        signInType: .apple
-            //    ))
-            //                    }
+            // Error is a user cancellation
+            if (error.Domain == "com.apple.AuthenticationServices.AuthorizationError" && error.Code == 1001)
+            {
+                return;
+            }
+
+            rownd?.RequestSignIn(new RowndSignInJsOptions
+            {
+                SignInStep = SignInStep.Error,
+                SignInType = SignInType.Apple,
+            });
+            return;
         }
 
         #endregion

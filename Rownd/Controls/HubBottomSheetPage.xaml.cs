@@ -120,6 +120,8 @@ namespace Rownd.Controls
 
         private bool isPanning = false;
 
+        public event EventHandler OnDismiss;
+
         public HubBottomSheetPage()
         {
             InitializeComponent();
@@ -256,6 +258,7 @@ namespace Rownd.Controls
 
             await AnimateOut();
             await Shared.App.MainPage.Navigation.PopModalAsync(false);
+            OnDismiss(this, null);
         }
 
         private double GetProportionCoordinate(double proportion)

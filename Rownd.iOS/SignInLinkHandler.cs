@@ -46,7 +46,7 @@ namespace Rownd.Xamarin.iOS
 
                 var launchUrl = UIPasteboard.General.String;
 
-                if (!launchUrl.ToLower().StartsWith("http"))
+                if (launchUrl != null && !launchUrl.ToLower().StartsWith("http"))
                 {
                     launchUrl = $"https://{launchUrl}";
                 }

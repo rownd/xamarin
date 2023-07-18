@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RestSharp;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Models.Domain;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 
 namespace Rownd.Xamarin.Models.Repos
@@ -54,7 +56,7 @@ namespace Rownd.Xamarin.Models.Repos
             return authState?.AccessToken;
         }
 
-        public async Task<string> GetAccessToken(string token)
+        public async Task<AuthState> GetAccessToken(string token)
         {
             var apiClient = ApiClient.Get();
             try
@@ -74,7 +76,7 @@ namespace Rownd.Xamarin.Models.Repos
                     })
                 );
 
-                return response.Data.AccessToken;
+                return response.Data;
             }
             catch (Exception ex)
             {
@@ -150,6 +152,49 @@ namespace Rownd.Xamarin.Models.Repos
             }
 
             throw new Exception(result.Content);
+        }
+
+        public async Task HandleThirdPartySignIn(ThirdPartySignInData data)
+        {
+            var tokenResp = await GetAccessToken(data.Token);
+
+            RowndInstance.inst.RequestSignIn(new RowndSignInJsOptions
+            {
+                SignInStep = SignInStep.Success,
+                Intent = data.Intent,
+                UserType = tokenResp.UserType,
+            });
+
+            // Prevents too-rapid UI state changes
+            await Task.Delay(TimeSpan.FromSeconds(2));
+
+            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+            {
+                AuthState = new AuthState
+                {
+                    AccessToken = tokenResp.AccessToken,
+                    RefreshToken = tokenResp.RefreshToken,
+                    UserType = tokenResp.UserType
+                }
+            });
+
+            // TODO: Set last sign-in method
+
+            var userRepo = UserRepo.GetInstance();
+            await userRepo.FetchUser();
+            var userData = userRepo.Get();
+
+            foreach (var field in data.UserData)
+            {
+                if (string.IsNullOrEmpty(field.Value))
+                {
+                    continue;
+                }
+
+                userData[field.Key] = field.Value;
+            }
+
+            userRepo.Set(userData);
         }
     }
 }
