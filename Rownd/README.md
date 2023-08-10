@@ -74,7 +74,7 @@ DependencyService.RegisterSingleton<IRowndInstance>(Rownd);
 ```
 
 ### iOS only - pre-init
-In order to ensure that certain native extensions get loaded early enough, add the following line to your `AppDelegate.cs` file:
+In order to ensure that certain native extensions get loaded early enough, add the following line to your `AppDelegate.cs` file in your iOS project:
 
 ```C#
 Rownd.Xamarin.iOS.Boot.Init();
@@ -95,6 +95,33 @@ namespace RowndXamarinExample.iOS
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
             return base.FinishedLaunching(app, options);
+        }
+    }
+}
+```
+
+### Android only - pre-init
+In order to ensure that certain native extensions get loaded early enough, add the following line to your `MainActivity.cs` file in your Android project:
+
+```C#
+Rownd.Xamarin.Android.Boot.Init();
+```
+
+Example:
+
+```C#
+namespace RowndXamarinExample.Droid
+{
+    [Activity(Label = "RowndXamarinExample", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
+    public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
+    {
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            base.OnCreate(savedInstanceState);
+            Rownd.Xamarin.Android.Boot.Init();
+
+            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            LoadApplication(new App());
         }
     }
 }
