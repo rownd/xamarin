@@ -238,7 +238,8 @@ namespace Rownd.Controls
             height = NormalizeHeight(height);
 
             // Ignore small, negative adjustments in height
-            if (height > Math.Abs(currentPosition) - 50 && height < Math.Abs(currentPosition))
+            var heightDifference = Math.Abs(height - Math.Abs(currentPosition));
+            if (heightDifference < 30)
             {
                 return;
             }

@@ -9,6 +9,7 @@ using Rownd.Xamarin.Models;
 using Rownd.Xamarin.Models.Domain;
 using Rownd.Xamarin.Models.Repos;
 using Rownd.Xamarin.Utils;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Rownd.Xamarin.Hub
@@ -24,6 +25,7 @@ namespace Rownd.Xamarin.Hub
         public HubWebView()
         {
             Navigated += OnPageLoaded;
+            Navigating += WebView_Navigating;
 
             this.FadeTo(0, 0);
         }
@@ -126,10 +128,6 @@ if (typeof rownd !== 'undefined') {{
 
                                 // Reset last sign in state
                                 stateRepo.Store.Dispatch(new StateActions.SetSignInState { SignInState = new SignInState() });
-
-                                await Task.Delay(2000);
-
-                                await bottomSheet.Dismiss();
                                 break;
                             }
 
@@ -157,6 +155,7 @@ if (typeof rownd !== 'undefined') {{
                         case MessageType.CloseHub:
                             {
                                 Console.WriteLine($"Hub close request");
+                                bottomSheet.IsDismissable = true;
                                 _ = bottomSheet.Dismiss();
                                 break;
                             }
@@ -206,7 +205,7 @@ if (typeof rownd !== 'undefined') {{
 
         public void OnPageLoaded(object sender, WebNavigatedEventArgs e)
         {
-            if (e.Url.Contains("rownd.io"))
+            if (e.Url.StartsWith(config.HubUrl))
             {
                 TriggerHub();
             }
@@ -215,6 +214,27 @@ if (typeof rownd !== 'undefined') {{
         public void SetBottomSheetParent(HubBottomSheetPage bottomSheet)
         {
             this.bottomSheet = bottomSheet;
+        }
+
+        public void WebView_Navigating(object sender, WebNavigatingEventArgs args)
+        {
+            string[] allowedWebViewUrls =
+            {
+                "https://appleid.apple.com/auth/authorize",
+                config.HubUrl
+            };
+
+            foreach (string url in allowedWebViewUrls)
+            {
+                if (args.Url.StartsWith(url))
+                {
+                    return;
+                }
+            }
+
+            Launcher.OpenAsync(new Uri(args.Url));
+
+            args.Cancel = true;
         }
     }
 }

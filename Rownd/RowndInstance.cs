@@ -69,7 +69,6 @@ namespace Rownd.Xamarin
 
         public void RequestSignIn(SignInMethod with)
         {
-
             switch (with)
             {
                 case SignInMethod.Apple:

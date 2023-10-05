@@ -24,6 +24,7 @@ namespace Rownd.Xamarin.Android.Hub
 
             if (e.NewElement != null)
             {
+                Control.Settings.SetSupportMultipleWindows(false);
                 Control.AddJavascriptInterface(new JSBridge(this), "rowndAndroidSDK");
                 Control.Settings.UserAgentString = Constants.DEFAULT_WEB_USER_AGENT;
 
