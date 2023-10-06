@@ -1,5 +1,14 @@
 
 
+# [1.3.0](https://github.com/rownd/xamarin/compare/1.2.0...1.3.0) (2023-10-06)
+
+
+### Features
+
+* **auth:** support sign-in with apple ([24e80da](https://github.com/rownd/xamarin/commit/24e80daa004ea0e5d1c0328dcfa2b036d3993f83))
+* **automations:** handle new elements from hub ([a8398c4](https://github.com/rownd/xamarin/commit/a8398c4b5a33c18412d68a1a1297df4ef0177d74))
+* **automations:** invoke hub automations when needed ([e0db79f](https://github.com/rownd/xamarin/commit/e0db79f2a7b27890e5e220284262f3c873841344))
+
 # 1.2.0 (2023-07-13)
 
 
