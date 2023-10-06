@@ -84,6 +84,11 @@ namespace Rownd.Xamarin.Hub
                         EvaluateJavaScript($"rownd.connectAuthenticator({HubOpts?.ToJsonString()})");
                         break;
                     }
+
+                case HubPageSelector.None:
+                    {
+                        break;
+                    }
             }
         }
 

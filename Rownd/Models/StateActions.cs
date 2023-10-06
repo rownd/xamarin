@@ -12,7 +12,7 @@ namespace Rownd.Xamarin.Models
 
         public class SetAppConfig
         {
-            public AppConfigState AppConfig { get; set; }
+            public AppState AppConfig { get; set; }
         }
 
         public class SetAuthState

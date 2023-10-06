@@ -26,6 +26,7 @@ namespace Rownd.Xamarin.Models.Domain
         }
 
         public Dictionary<string, dynamic> Data { get; set; } = new Dictionary<string, dynamic>();
+        public Dictionary<string, dynamic> Meta { get; set; } = new Dictionary<string, dynamic>();
 
         public Dictionary<string, dynamic> Get()
         {

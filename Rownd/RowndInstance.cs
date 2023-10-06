@@ -87,7 +87,7 @@ namespace Rownd.Xamarin
 
         public void RequestSignIn(SignInOptions opts)
         {
-            
+
         }
 
         public void RequestSignIn(RowndSignInJsOptions opts)
@@ -123,23 +123,31 @@ namespace Rownd.Xamarin
         }
 
         #region Internal methods
-        private void DisplayHub(HubPageSelector page, RowndSignInJsOptions opts = null)
+        internal async void DisplayHub(HubPageSelector page, RowndSignInJsOptions opts = null)
         {
-            if (hubBottomSheet == null)
+            await Device.InvokeOnMainThreadAsync(async () =>
             {
-                hubBottomSheet = new HubBottomSheetPage();
-                hubBottomSheet.OnDismiss += (object sender, EventArgs e) =>
+                if (hubBottomSheet == null)
                 {
-                    hubBottomSheet = null;
-                };
+                    hubBottomSheet = new HubBottomSheetPage();
+                    hubBottomSheet.OnDismiss += (object sender, EventArgs e) =>
+                    {
+                        hubBottomSheet = null;
+                    };
 
-                Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
-            }
+                    await Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
 
-            var webView = hubBottomSheet.GetHubWebView();
-            webView.TargetPage = page;
-            webView.HubOpts = opts;
-            webView.RenderHub();
+                    var webView = hubBottomSheet.GetHubWebView();
+                    webView.TargetPage = page;
+                    webView.HubOpts = opts;
+                    webView.RenderHub();
+                }
+            });
+        }
+
+        internal bool IsHubOpen()
+        {
+            return hubBottomSheet != null;
         }
 
         #endregion

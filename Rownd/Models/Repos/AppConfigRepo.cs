@@ -14,7 +14,7 @@ namespace Rownd.Xamarin.Models.Repos
 
         private class AppConfigResponse
         {
-            public AppConfigState App;
+            public AppState App;
         }
 
         public static AppConfigRepo Get()
@@ -22,7 +22,7 @@ namespace Rownd.Xamarin.Models.Repos
             return Shared.ServiceProvider.GetService<AppConfigRepo>();
         }
 
-        public async Task<AppConfigState> LoadAppConfigAsync()
+        public async Task<AppState> LoadAppConfigAsync()
         {
             var apiClient = ApiClient.Get();
             try

@@ -6,7 +6,7 @@ namespace Rownd.Xamarin.Models
 {
     public static class StateSelectors
     {
-        public static ISelectorWithoutProps<GlobalState, AppConfigState> SelectAppConfigState { get; } = CreateSelector(
+        public static ISelectorWithoutProps<GlobalState, AppState> SelectAppConfigState { get; } = CreateSelector(
             (GlobalState state) => state.AppConfig
         );
 
