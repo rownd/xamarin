@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -47,6 +48,13 @@ namespace Rownd.Xamarin.Models.Repos
                 {
                     SignInLinkHandler.Get().HandleSignInLinkIfPresent();
                 }
+
+                // Initialization complete
+                Store.State.IsReady = true;
+                Store.Dispatch(new StateActions.SetGlobalState()
+                {
+                    GlobalState = Store.State
+                });
             });
         }
 
@@ -101,8 +109,13 @@ namespace Rownd.Xamarin.Models.Repos
                 .Subscribe(state =>
                 {
                     // Listening to the full state (when any property changes)
-                    Console.WriteLine($"Updating state: {state}");
+                    Console.WriteLine($"Storing Rownd state: {state}");
                     SaveState(state);
+
+                    if (state.IsReady)
+                    {
+                        AutomationProcessor.RunAutomationsIfNeeded(state);
+                    }
                 });
         }
     }

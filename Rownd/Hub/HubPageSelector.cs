@@ -7,6 +7,7 @@ namespace Rownd.Xamarin.Hub
         SignOut,
         QrCode,
         Profile,
-        ConnectAuthenticator
+        ConnectAuthenticator,
+        None
     }
 }

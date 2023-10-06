@@ -8,11 +8,14 @@ namespace Rownd.Xamarin.Utils
         [JsonProperty("init")]
         Init,
 
+        [JsonProperty("no_account")]
+        NoAccount,
+
         [JsonProperty("success")]
         Success,
 
-        [JsonProperty("no_account")]
-        NoAccount,
+        [JsonProperty("completing")]
+        Completing,
 
         [JsonProperty("error")]
         Error,

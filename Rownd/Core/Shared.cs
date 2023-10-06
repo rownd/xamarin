@@ -15,11 +15,14 @@ namespace Rownd.Xamarin.Core
 {
     public static class Shared
     {
+        public static RowndInstance Rownd { get; private set; }
         public static Application App { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
-        public static void Init(Application app, Config config = null)
+
+        public static void Init(RowndInstance inst, Application app, Config config = null)
         {
             App = app;
+            Rownd = inst;
 
             var root = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "root");
             Directory.CreateDirectory(root);

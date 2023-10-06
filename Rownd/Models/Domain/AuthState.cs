@@ -13,6 +13,7 @@ namespace Rownd.Xamarin.Models.Domain
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public UserType UserType { get; set; }
 
         [JsonIgnore]
         public bool IsAuthenticated

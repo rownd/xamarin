@@ -13,6 +13,7 @@ namespace Rownd.Xamarin.Core
     {
         [JsonProperty("appKey")]
         public string AppKey { get; set; }
+        [JsonProperty("baseUrl")]
         public string HubUrl { get; set; } = "https://hub.rownd.io";
         public string ApiUrl { get; set; } = "https://api.rownd.io";
         public string PostSignInRedirect { get; set; } = "NATIVE_APP";
