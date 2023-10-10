@@ -101,6 +101,16 @@ namespace Rownd.Xamarin
             Store.Dispatch(new StateActions.SetUserState() { UserState = new UserState() });
         }
 
+        public void ManageAccount()
+        {
+            DisplayHub(HubPageSelector.Profile);
+        }
+
+        public void ManageAccount(RowndSignInJsOptions opts)
+        {
+            DisplayHub(HubPageSelector.Profile, opts);
+        }
+
         public async Task<string> GetAccessToken()
         {
             return await Auth.GetAccessToken();
@@ -112,7 +122,13 @@ namespace Rownd.Xamarin
             return tokens.AccessToken;
         }
 
-        [Obsolete("Use GetAccessToken() instead")]
+        public async Task<string> GetAccessToken(RowndTokenOpts opts)
+        {
+            var authState = await Auth.RefreshToken();
+            return authState.AccessToken;
+        }
+
+        [Obsolete("Use GetAccessToken(opts) instead")]
         public async Task _InternalTestRefreshToken()
         {
             await Task.WhenAll(
@@ -139,7 +155,7 @@ namespace Rownd.Xamarin
 
                     var webView = hubBottomSheet.GetHubWebView();
                     webView.TargetPage = page;
-                    webView.HubOpts = opts;
+                    webView.HubOpts = opts ?? new RowndSignInJsOptions();
                     webView.RenderHub();
                 }
             });

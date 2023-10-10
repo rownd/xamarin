@@ -30,6 +30,9 @@ namespace Rownd.Xamarin.Utils
         [JsonProperty("error_message")]
         public string ErrorMessage { get; set; } = null;
 
+        [JsonProperty("visible_profile_fields")]
+        public string[] VisibleProfileFields { get; set; }
+
         public string ToJsonString()
         {
             return JsonConvert.SerializeObject(this);

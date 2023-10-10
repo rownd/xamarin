@@ -32,7 +32,7 @@ namespace Rownd.Xamarin.Hub
 
         public HubWebView(HubPageSelector page, RowndSignInJsOptions opts) : this()
         {
-            HubOpts = opts;
+            HubOpts = opts ?? new RowndSignInJsOptions();
             TargetPage = page;
         }
 
@@ -75,7 +75,7 @@ namespace Rownd.Xamarin.Hub
 
                 case HubPageSelector.Profile:
                     {
-                        EvaluateJavaScript("rownd.user.manageAccount();");
+                        EvaluateJavaScript($"rownd.user.manageAccount({HubOpts?.ToJsonString()});");
                         break;
                     }
 
