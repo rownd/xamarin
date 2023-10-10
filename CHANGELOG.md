@@ -1,5 +1,12 @@
 
 
+## [1.3.1](https://github.com/rownd/xamarin/compare/1.3.0...1.3.1) (2023-10-10)
+
+
+### Bug Fixes
+
+* ios webview nav; date automation check ([e6b9d95](https://github.com/rownd/xamarin/commit/e6b9d953389719d9c8d49040015b106624195836))
+
 # 1.2.0 (2023-07-13)
 
 
