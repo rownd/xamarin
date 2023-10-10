@@ -69,7 +69,7 @@ namespace Rownd.Xamarin.Core
                         DateTime conditionDate, dataDate;
                         DateTime.TryParse(aRule.Value, out conditionDate);
                         DateTime.TryParse(value, out dataDate);
-                        return dataDate < conditionDate;
+                        return dataDate == null || dataDate < conditionDate;
                     }
                     catch (Exception)
                     {

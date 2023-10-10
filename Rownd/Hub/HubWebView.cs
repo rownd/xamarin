@@ -223,6 +223,7 @@ if (typeof rownd !== 'undefined') {{
 
         public void WebView_Navigating(object sender, WebNavigatingEventArgs args)
         {
+            // Load only Rownd-related URLs in the webview
             string[] allowedWebViewUrls =
             {
                 "https://appleid.apple.com/auth/authorize",
@@ -237,8 +238,26 @@ if (typeof rownd !== 'undefined') {{
                 }
             }
 
-            Launcher.OpenAsync(new Uri(args.Url));
+            // On iOS, some elements within the webview seem to trigger
+            // the `Navigating` event. Ignore certain patterns here.
+            string[] ignoredWebViewUrlPatterns =
+            {
+                "https://www.google.com/recaptcha",
+                "about:"
+            };
 
+            foreach (string url in ignoredWebViewUrlPatterns)
+            {
+                if (args.Url.StartsWith(url))
+                {
+                    args.Cancel = true;
+                    return;
+                }
+            }
+
+            // Open any other links in the system browser
+            Console.WriteLine($"Navigating to: {args.Url}");
+            Launcher.OpenAsync(new Uri(args.Url));
             args.Cancel = true;
         }
     }
