@@ -59,6 +59,8 @@ namespace Rownd.Xamarin.Hub
 
         public void TriggerHub()
         {
+            SetFeatureFlagsJS();
+
             switch (TargetPage)
             {
                 case HubPageSelector.SignIn:
@@ -184,6 +186,12 @@ if (typeof rownd !== 'undefined') {{
                                 break;
                             }
 
+                        case MessageType.Event:
+                            {
+                                Shared.Rownd.FireEvent((PayloadEvent)hubMessage.Payload);
+                                break;
+                            }
+
                         default:
                             {
                                 Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
@@ -221,44 +229,58 @@ if (typeof rownd !== 'undefined') {{
             this.bottomSheet = bottomSheet;
         }
 
-        public void WebView_Navigating(object sender, WebNavigatingEventArgs args)
+        public bool HandleLinkActivation(string linkUrl)
         {
             // Load only Rownd-related URLs in the webview
             string[] allowedWebViewUrls =
             {
                 "https://appleid.apple.com/auth/authorize",
-                config.HubUrl
+                config.HubUrl,
+                "about:"
             };
 
             foreach (string url in allowedWebViewUrls)
             {
-                if (args.Url.StartsWith(url))
+                if (linkUrl.StartsWith(url))
                 {
-                    return;
+                    return true;
                 }
             }
 
-            // On iOS, some elements within the webview seem to trigger
-            // the `Navigating` event. Ignore certain patterns here.
-            string[] ignoredWebViewUrlPatterns =
+            Device.InvokeOnMainThreadAsync(async () =>
             {
-                "https://www.google.com/recaptcha",
-                "about:"
-            };
+                await Launcher.OpenAsync(new Uri(linkUrl));
+            });
 
-            foreach (string url in ignoredWebViewUrlPatterns)
+            return false;
+        }
+
+        public void WebView_Navigating(object sender, WebNavigatingEventArgs args)
+        {
+            // iOS WKWebView uses a special handler in its custom renderer
+            // due to behavioral differences
+            if (Device.RuntimePlatform == Device.iOS)
             {
-                if (args.Url.StartsWith(url))
-                {
-                    args.Cancel = true;
-                    return;
-                }
+                return;
             }
 
-            // Open any other links in the system browser
-            Console.WriteLine($"Navigating to: {args.Url}");
-            Launcher.OpenAsync(new Uri(args.Url));
+            if (HandleLinkActivation(args.Url))
+            {
+                return;
+            }
+
             args.Cancel = true;
+        }
+
+        private void SetFeatureFlagsJS()
+        {
+            var supportedFeaturesStr = Constants.GetSupportedFeatures();
+            var code = @$"
+if (rownd?.setSessionStorage) {{
+    rownd.setSessionStorage('rph_feature_flags',`{supportedFeaturesStr}`);
+}}
+";
+            EvaluateJavaScript(code);
         }
     }
 }

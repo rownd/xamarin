@@ -5,6 +5,7 @@ using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Models.Domain;
 using Rownd.Xamarin.Models.Repos;
 using Rownd.Xamarin.Utils;
+using static Rownd.Xamarin.RowndInstance;
 
 namespace Rownd.Xamarin
 {
@@ -24,5 +25,7 @@ namespace Rownd.Xamarin
 #pragma warning disable SA1300 // Element should begin with upper-case letter
         Task _InternalTestRefreshToken();
 #pragma warning restore SA1300 // Element should begin with upper-case letter
+
+        event EventHandler<RowndEventArgs> Events;
     }
 }

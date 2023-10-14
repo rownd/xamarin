@@ -10,4 +10,3 @@ namespace Rownd.Xamarin.Hub.HubMessage
         public int Height { get; set; }
     }
 }
-

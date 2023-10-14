@@ -7,8 +7,6 @@ namespace Rownd.Xamarin.Hub.HubMessage
     {
         public Dictionary<string, dynamic> Data { get; set; }
 
-        public PayloadUserDataUpdate()
-        {
-        }
+        public Dictionary<string, dynamic> Meta { get; set; } = null;
     }
 }

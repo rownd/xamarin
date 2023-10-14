@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
 using Rownd.Controls;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
+using Rownd.Xamarin.Hub.HubMessage;
 using Rownd.Xamarin.Models;
 using Rownd.Xamarin.Models.Domain;
 using Rownd.Xamarin.Models.Repos;
@@ -20,6 +22,7 @@ namespace Rownd.Xamarin
 
         internal StateRepo State { get; private set; }
         internal AuthRepo Auth { get; private set; }
+
         public UserRepo User { get; private set; }
 
         public Config Config { get; set; }
@@ -30,6 +33,8 @@ namespace Rownd.Xamarin
                 return State.Store;
             }
         }
+
+        public event EventHandler<RowndEventArgs> Events;
 
         private RowndInstance(Application app, Config config = null)
         {
@@ -103,12 +108,16 @@ namespace Rownd.Xamarin
 
         public void ManageAccount()
         {
-            DisplayHub(HubPageSelector.Profile);
+            ManageAccount(null);
         }
 
         public void ManageAccount(RowndSignInJsOptions opts)
         {
-            DisplayHub(HubPageSelector.Profile, opts);
+            Task.Run(async () =>
+            {
+                await GetAccessToken();
+                DisplayHub(HubPageSelector.Profile, opts);
+            });
         }
 
         public async Task<string> GetAccessToken()
@@ -164,6 +173,23 @@ namespace Rownd.Xamarin
         internal bool IsHubOpen()
         {
             return hubBottomSheet != null;
+        }
+
+        internal void FireEvent(PayloadEvent payload)
+        {
+            var evt = new RowndEventArgs
+            {
+                Event = payload.Event,
+                Data = payload.Data
+            };
+
+            Events?.Invoke(this, evt);
+        }
+
+        public class RowndEventArgs : EventArgs
+        {
+            public string Event { get; set; }
+            public Dictionary<string, dynamic> Data { get; set; }
         }
 
         #endregion
