@@ -1,5 +1,13 @@
 
 
+# [1.4.0](https://github.com/rownd/xamarin/compare/1.3.1...1.4.0) (2023-10-16)
+
+
+### Features
+
+* **events:** handle/emit auth lifecycle events ([5f23695](https://github.com/rownd/xamarin/commit/5f2369533ed54aa07f11fee1f062405c02d28c6c))
+* **profile:** enable profile ui ([5f8f48c](https://github.com/rownd/xamarin/commit/5f8f48c8181d080ced1cedbf61b5f5f1b6b7f7d8))
+
 ## [1.3.1](https://github.com/rownd/xamarin/compare/1.3.0...1.3.1) (2023-10-10)
 
 
