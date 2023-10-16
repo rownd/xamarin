@@ -191,19 +191,37 @@ In addition to the state APIs, Rownd provides imperative APIs that you can call 
 Opens the Rownd sign-in dialog to begin authentication.
 
 
-### `void Rownd.RequestSignIn(RowndSignInOpts(...))`
+### `void Rownd.RequestSignIn(new RowndSignInOpts(...))`
 Opens the Rownd sign-in dialog for authentication, as before, but allows passing additional context options as shown below.
 
-`intent: RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are .SignIn or .SignUp. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to support@rownd.io to enable.
+`Intent (Not recommended): RowndSignInIntent` - This option applies only when you have opted to split the sign-up/sign-in flow via the Rownd dashboard. Valid values are .SignIn or .SignUp. If you don’t set this value, the user will be presented with the unified sign-in/sign-up flow. Please reach out to support@rownd.io to enable.
 
-`postSignInRedirect (Not recommended): String` - If a subdomain is provided in the Rownd dashboard, this behavior will work by default. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an Android App Link, it will redirect the user back to your app.
+`PostSignInRedirect (Not recommended): String` - If a subdomain is provided in the Rownd dashboard, this behavior will work by default. When the user completes the authentication challenge via email or SMS, they'll be redirected to the URL set for postSignInRedirect. If this is an Android App Link, it will redirect the user back to your app.
 
 Example:
 
 ```C#
-Rownd.requestSignIn(RowndSignInOpts(
-    intent = RowndSignInIntent.SignUp
-))
+Rownd.RequestSignIn(new RowndSignInOpts(
+    Intent = RowndSignInIntent.SignUp
+));
+```
+
+### `void ManageAccount()`
+Opens the Rownd user-facing profile editor, enabling the user to change information associated with them (e.g., email, phone, names, passkeys, etc.).
+
+### `void ManageAccount(new RowndManageAccountOpts(...))`
+Opens the Rownd user-facing profile editor, enabling the user to change information associated with them (e.g., email, phone, names, passkeys, etc.).
+
+Supports additional context items as shown below.
+
+`VisibleProfileFields: string[]` - Array of field names that limit what should be shown on the profile editor. These names should match the Rownd app schema.
+
+Example:
+
+```C#
+Rownd.ManageAccount(new RowndManageAccountOpts {
+    VisibleProfileFields = { "email", "phone_number" }
+});
 ```
 
 ### `async Task<string> Rownd.GetAccessToken()`

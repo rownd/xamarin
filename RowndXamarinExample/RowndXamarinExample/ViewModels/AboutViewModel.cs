@@ -30,7 +30,7 @@ namespace RowndXamarinExample.ViewModels
             SignOut = new Command(() => Rownd.SignOut());
             RefreshToken = new Command(() => Rownd._InternalTestRefreshToken());
 
-            EditProfile = new Command(() => Rownd.ManageAccount(new Rownd.Xamarin.Utils.RowndSignInJsOptions
+            EditProfile = new Command(() => Rownd.ManageAccount(new Rownd.Xamarin.Utils.RowndManageAccountOpts
             {
                 VisibleProfileFields = new string[] { "phone_number" }
             }));

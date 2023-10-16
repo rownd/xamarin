@@ -16,7 +16,7 @@ namespace Rownd.Xamarin
         void RequestSignIn(SignInOptions opts);
         void SignOut();
         void ManageAccount();
-        void ManageAccount(RowndSignInJsOptions opts);
+        void ManageAccount(RowndManageAccountOpts opts);
         Task<string> GetAccessToken();
         Task<string> GetAccessToken(string token);
         Task<string> GetAccessToken(RowndTokenOpts opts);

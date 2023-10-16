@@ -111,12 +111,16 @@ namespace Rownd.Xamarin
             ManageAccount(null);
         }
 
-        public void ManageAccount(RowndSignInJsOptions opts)
+        public void ManageAccount(RowndManageAccountOpts opts)
         {
             Task.Run(async () =>
             {
                 await GetAccessToken();
-                DisplayHub(HubPageSelector.Profile, opts);
+                var hubOpts = opts != null ? new RowndSignInJsOptions
+                {
+                    VisibleProfileFields = opts.VisibleProfileFields
+                } : null;
+                DisplayHub(HubPageSelector.Profile, hubOpts);
             });
         }
 
