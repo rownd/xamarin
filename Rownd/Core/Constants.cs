@@ -1,5 +1,7 @@
-﻿using System.Reflection;
-using Xamarin.Forms;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using Newtonsoft.Json;
+using Rownd.Xamarin.Utils;
 using Xamarin.Essentials;
 
 namespace Rownd.Xamarin.Core
@@ -10,5 +12,24 @@ namespace Rownd.Xamarin.Core
 
         public static readonly string DEFAULT_API_USER_AGENT = $"Rownd SDK for Xamarin/{sdkVersion} (Language C#; Platform={DeviceInfo.Platform} {DeviceInfo.VersionString}; (SDK {sdkVersion});)";
         public static readonly string DEFAULT_WEB_USER_AGENT = $"Rownd SDK for Xamarin/{sdkVersion} (Language C#; Platform={DeviceInfo.Platform} {DeviceInfo.VersionString}; (SDK {sdkVersion});)";
+
+        public static string GetSupportedFeatures()
+        {
+            var supportedFeatures = new List<SupportedFeature>()
+            {
+                new SupportedFeature
+                {
+                    Name = "openEmailInbox",
+                    Enabled = "true"
+                },
+                new SupportedFeature
+                {
+                    Name = "can_receive_event_messages",
+                    Enabled = "true"
+                }
+            };
+
+            return JsonConvert.SerializeObject(supportedFeatures);
+        }
     }
 }

@@ -29,6 +29,12 @@ namespace RowndXamarinExample.ViewModels
             RequestSignIn = new Command(() => Rownd.RequestSignIn());
             SignOut = new Command(() => Rownd.SignOut());
             RefreshToken = new Command(() => Rownd._InternalTestRefreshToken());
+
+            EditProfile = new Command(() => Rownd.ManageAccount(new Rownd.Xamarin.Utils.RowndSignInJsOptions
+            {
+                VisibleProfileFields = new string[] { "phone_number" }
+            }));
+
             UpdateName = new Command(async () =>
             {
                 RowndState.User.Data.TryGetValue("first_name", out var firstName);
@@ -52,6 +58,8 @@ namespace RowndXamarinExample.ViewModels
         public ICommand RefreshToken { get; }
 
         public ICommand UpdateName { get; }
+
+        public ICommand EditProfile { get; }
 
         //public event PropertyChangedEventHandler PropertyChanged;
         //private void NotifyPropertyChanged(string property)

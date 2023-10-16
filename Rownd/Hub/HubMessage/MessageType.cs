@@ -36,6 +36,9 @@ namespace Rownd.Xamarin.Hub.HubMessage
         HubResize,
 
         [EnumMember(Value = "can_touch_background_to_dismiss")]
-        CanTouchBackgroundToDismiss
+        CanTouchBackgroundToDismiss,
+
+        [EnumMember(Value = "event")]
+        Event,
     }
 }

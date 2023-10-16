@@ -66,6 +66,12 @@ namespace Rownd.Xamarin.Hub.HubMessage
                         payload = jo["payload"].ToObject<PayloadUserDataUpdate>(serializer);
                         break;
                     }
+
+                case MessageType.Event:
+                    {
+                        payload = jo["payload"].ToObject<PayloadEvent>(serializer);
+                        break;
+                    }
             }
 
             message.Payload = payload;
