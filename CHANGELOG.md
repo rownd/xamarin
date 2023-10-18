@@ -1,5 +1,12 @@
 
 
+## [1.4.1](https://github.com/rownd/xamarin/compare/1.4.0...1.4.1) (2023-10-18)
+
+
+### Bug Fixes
+
+* **ux:** prevent sending null values ([de663f1](https://github.com/rownd/xamarin/commit/de663f10e04cee28492f0703ccf709b0a7234a45))
+
 # [1.4.0](https://github.com/rownd/xamarin/compare/1.3.1...1.4.0) (2023-10-16)
 
 
