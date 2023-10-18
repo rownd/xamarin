@@ -25,7 +25,7 @@ namespace Rownd.Xamarin.Utils
 
         [JsonProperty("sign_in_type")]
         [JsonConverter(typeof(StringEnumConverter), typeof(SnakeCaseNamingStrategy))]
-        public SignInType SignInType { get; set; }
+        public SignInType? SignInType { get; set; }
 
         [JsonProperty("error_message")]
         public string ErrorMessage { get; set; } = null;
@@ -35,7 +35,10 @@ namespace Rownd.Xamarin.Utils
 
         public string ToJsonString()
         {
-            return JsonConvert.SerializeObject(this);
+            return JsonConvert.SerializeObject(this, new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            });
         }
     }
 }
