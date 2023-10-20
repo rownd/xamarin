@@ -4,7 +4,7 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<PackageId>Rownd.Xamarin</PackageId>
-		<PackageVersion>1.4.1</PackageVersion>
+		<PackageVersion>1.4.2</PackageVersion>
 		<AssemblyVersion>2</AssemblyVersion>
 		<Title>Rownd.Xamarin</Title>
 		<Description>Integrate simple, frictionless authentication into your Xamarin app.</Description>

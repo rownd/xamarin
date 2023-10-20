@@ -1,5 +1,12 @@
 
 
+## [1.4.2](https://github.com/rownd/xamarin/compare/1.4.1...1.4.2) (2023-10-20)
+
+
+### Bug Fixes
+
+* **auth:** auto-fetch user profile on sign-in ([9d8716f](https://github.com/rownd/xamarin/commit/9d8716f7771aa18f72d759390e7e5fbd418e9088))
+
 ## [1.4.1](https://github.com/rownd/xamarin/compare/1.4.0...1.4.1) (2023-10-18)
 
 
