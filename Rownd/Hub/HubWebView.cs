@@ -133,6 +133,8 @@ if (typeof rownd !== 'undefined') {{
                                     }
                                 });
 
+                                await UserRepo.GetInstance().FetchUser();
+
                                 // Reset last sign in state
                                 stateRepo.Store.Dispatch(new StateActions.SetSignInState { SignInState = new SignInState() });
                                 break;
