@@ -1,5 +1,12 @@
 
 
+## [1.4.3](https://github.com/rownd/xamarin/compare/1.4.2...1.4.3) (2023-10-24)
+
+
+### Bug Fixes
+
+* **hub:** ensure sheet state reset on close ([da453d6](https://github.com/rownd/xamarin/commit/da453d6ffc1a8cce86df2933f67346800f4fb3a8))
+
 ## [1.4.2](https://github.com/rownd/xamarin/compare/1.4.1...1.4.2) (2023-10-20)
 
 
