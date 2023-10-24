@@ -179,6 +179,11 @@ if (typeof rownd !== 'undefined') {{
                                         Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
                                     }
                                 });
+                                Shared.Rownd.FireEvent(new PayloadEvent
+                                {
+                                    Event = "user_data_update",
+                                    Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
+                                });
                                 break;
                             }
 

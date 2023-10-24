@@ -155,6 +155,12 @@ namespace Rownd.Controls
             _ = AnimateIn();
         }
 
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            OnDismiss(this, null);
+        }
+
         private readonly uint duration = 300;
         private double currentPosition = 0;
         private double detentPoint = 500;
@@ -239,7 +245,7 @@ namespace Rownd.Controls
 
             // Ignore small, negative adjustments in height
             var heightDifference = Math.Abs(height - Math.Abs(currentPosition));
-            if (heightDifference < 30)
+            if (heightDifference < 50)
             {
                 return;
             }
@@ -259,7 +265,6 @@ namespace Rownd.Controls
 
             await AnimateOut();
             await Shared.App.MainPage.Navigation.PopModalAsync(false);
-            OnDismiss(this, null);
         }
 
         private double GetProportionCoordinate(double proportion)
