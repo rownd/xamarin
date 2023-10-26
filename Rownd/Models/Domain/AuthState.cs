@@ -39,12 +39,13 @@ namespace Rownd.Xamarin.Models.Domain
         public string ToRphInitHash()
         {
             var stateRepo = StateRepo.Get();
-            var data = new Dictionary<string, string>
+            var data = new Dictionary<string, dynamic>
             {
                 { "access_token", AccessToken },
                 { "refresh_token", RefreshToken },
                 { "app_id", stateRepo.Store.State.AppConfig.Id },
-                { "app_user_id", stateRepo.Store.State.User.Id }
+                { "app_user_id", stateRepo.Store.State.User.Id },
+                { "reset_post_sign_in_reqs", AccessToken == null }
             };
 
             var json = JsonConvert.SerializeObject(data);
