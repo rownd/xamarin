@@ -1,5 +1,12 @@
 
 
+## [1.4.4](https://github.com/rownd/xamarin/compare/1.4.3...1.4.4) (2023-10-26)
+
+
+### Bug Fixes
+
+* **auth:** cond. reset hub state ([ba2d77b](https://github.com/rownd/xamarin/commit/ba2d77bbc07b24ddf840594553fc2718643e65ae))
+
 ## [1.4.3](https://github.com/rownd/xamarin/compare/1.4.2...1.4.3) (2023-10-24)
 
 
