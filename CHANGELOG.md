@@ -1,5 +1,12 @@
 
 
+# [1.5.0](https://github.com/rownd/xamarin/compare/1.4.4...1.5.0) (2023-10-30)
+
+
+### Features
+
+* better offline handling ([1d1b68f](https://github.com/rownd/xamarin/commit/1d1b68f35d41ecf1632c02a8a06c3e250155340e))
+
 ## [1.4.4](https://github.com/rownd/xamarin/compare/1.4.3...1.4.4) (2023-10-26)
 
 
