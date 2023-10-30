@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -16,8 +17,8 @@ namespace Rownd.Xamarin.Hub
 {
     public class HubWebView : WebView, IBottomSheetChild
     {
-        private Config config = Shared.ServiceProvider.GetService<Config>();
-        private StateRepo stateRepo = StateRepo.Get();
+        private readonly Config config = Shared.ServiceProvider.GetService<Config>();
+        private readonly StateRepo stateRepo = StateRepo.Get();
         private HubBottomSheetPage bottomSheet { get; set; }
         internal RowndSignInJsOptions HubOpts { get; set; } = new RowndSignInJsOptions();
         internal HubPageSelector TargetPage { get; set; } = HubPageSelector.SignIn;
@@ -39,8 +40,21 @@ namespace Rownd.Xamarin.Hub
         internal async void RenderHub()
         {
             var url = await config.GetHubLoaderUrl();
-            Dispatcher.BeginInvokeOnMainThread(() =>
+            await Device.InvokeOnMainThreadAsync(async () =>
             {
+                var connectionState = Connectivity.NetworkAccess;
+                if (connectionState != NetworkAccess.Internet)
+                {
+                    Source = new HtmlWebViewSource
+                    {
+                        Html = NoInternet.Build(Shared.Rownd)
+                    };
+                    await this.FadeTo(1, 500);
+                    bottomSheet.IsLoading = false;
+                    bottomSheet.RequestHeight(400);
+                    return;
+                }
+
                 if (Source == null)
                 {
                     Source = url;
@@ -196,6 +210,13 @@ if (typeof rownd !== 'undefined') {{
                         case MessageType.Event:
                             {
                                 Shared.Rownd.FireEvent((PayloadEvent)hubMessage.Payload);
+                                break;
+                            }
+
+                        case MessageType.TryAgain:
+                            {
+                                Source = null;
+                                RenderHub();
                                 break;
                             }
 

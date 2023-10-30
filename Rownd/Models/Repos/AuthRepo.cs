@@ -69,6 +69,13 @@ namespace Rownd.Xamarin.Models.Repos
                     });
                 var response = await apiClient.Client.ExecutePostAsync<AuthState>(request);
 
+                if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+                {
+                    // This is the only case where the user should be signed out automatically, b/c the app
+                    // won't be able to continue.
+                    Shared.Rownd.SignOut();
+                }
+
                 Device.BeginInvokeOnMainThread(() =>
                     stateRepo.Store.Dispatch(new StateActions.SetAuthState()
                     {
@@ -80,7 +87,7 @@ namespace Rownd.Xamarin.Models.Repos
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to refresh access token: {ex}");
+                Console.WriteLine($"Failed to exchange or refresh access token: {ex}");
                 return null;
             }
         }
@@ -90,6 +97,8 @@ namespace Rownd.Xamarin.Models.Repos
             var apiClient = ApiClient.Get();
             var request = new RestRequest(link);
             var response = await apiClient.Client.ExecuteGetAsync(request);
+
+            // TODO: Handle response payload
         }
 
         internal async Task<AuthState> RefreshToken()

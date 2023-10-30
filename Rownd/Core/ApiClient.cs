@@ -24,7 +24,6 @@ namespace Rownd.Xamarin.Core
                 Authenticator = new ApiAuthenticator(),
                 ConfigureMessageHandler = handler => new HttpTracerHandler(handler),
                 UserAgent = Constants.DEFAULT_API_USER_AGENT,
-                
             };
 
             JsonSerializerSettings defaultSettings = new JsonSerializerSettings

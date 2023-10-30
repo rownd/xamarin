@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using ReduxSimple;
@@ -156,6 +157,12 @@ namespace Rownd.Xamarin
         {
             await Device.InvokeOnMainThreadAsync(async () =>
             {
+                // If the modal stack already includes a bottom sheet page, don't show another
+                if (Shell.Current.Navigation.ModalStack.FirstOrDefault(el => el is HubBottomSheetPage) != null)
+                {
+                    return;
+                }
+
                 if (hubBottomSheet == null)
                 {
                     hubBottomSheet = new HubBottomSheetPage();
@@ -163,14 +170,14 @@ namespace Rownd.Xamarin
                     {
                         hubBottomSheet = null;
                     };
-
-                    await Shared.App.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
-
-                    var webView = hubBottomSheet.GetHubWebView();
-                    webView.TargetPage = page;
-                    webView.HubOpts = opts ?? new RowndSignInJsOptions();
-                    webView.RenderHub();
                 }
+
+                await Shell.Current.Navigation.PushModalAsync(hubBottomSheet, false);
+
+                var webView = hubBottomSheet.GetHubWebView();
+                webView.TargetPage = page;
+                webView.HubOpts = opts ?? new RowndSignInJsOptions();
+                webView.RenderHub();
             });
         }
 

@@ -40,5 +40,8 @@ namespace Rownd.Xamarin.Hub.HubMessage
 
         [EnumMember(Value = "event")]
         Event,
+
+        [EnumMember(Value = "try_again")]
+        TryAgain,
     }
 }

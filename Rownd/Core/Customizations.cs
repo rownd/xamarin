@@ -11,8 +11,25 @@ namespace Rownd.Xamarin.Core
         public Color SheetBackgroundColor { get; set; }
 
         [JsonIgnore]
+        public Color DynamicSheetBackgroundColor
+        {
+            get
+            {
+                OSAppTheme currentTheme = Application.Current.RequestedTheme;
+                return SheetBackgroundColor != null
+                    ? SheetBackgroundColor
+                    : (currentTheme == OSAppTheme.Dark
+                        ? Color.FromHex("#1c1c1e")
+                        : Color.FromHex("#ffffff"));
+            }
+        }
+
+        [JsonIgnore]
         public Color PrimaryForegroundColor { get; set; }
+
         public int SheetCornerBorderRadius { get; set; } = 12;
+
+        public double DefaultFontSize { get; set; } = Device.GetNamedSize(NamedSize.Medium, typeof(Label)) * 0.6;
 
         public Customizations()
         {

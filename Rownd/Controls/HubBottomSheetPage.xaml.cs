@@ -264,7 +264,7 @@ namespace Rownd.Controls
             }
 
             await AnimateOut();
-            await Shared.App.MainPage.Navigation.PopModalAsync(false);
+            await Shell.Current.Navigation.PopModalAsync(false);
         }
 
         private double GetProportionCoordinate(double proportion)

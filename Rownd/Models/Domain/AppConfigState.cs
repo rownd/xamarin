@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -18,6 +19,30 @@ namespace Rownd.Xamarin.Models.Domain
     public class AppConfig
     {
         public IList<Automation> Automations { get; set; } = new List<Automation>();
+        public HubConfig Hub = new();
+        public CustomizationsConfig Customizations = new();
+        public string? Subdomain = null;
+    }
+
+    public class CustomizationsConfig
+    {
+        public string? PrimaryColor = null;
+    }
+
+    public class HubConfig
+    {
+        public HubCustomizationsConfig? Customizations = new();
+    }
+
+    public class HubCustomizationsConfig
+    {
+        public string? FontFamily { get; set; } = null;
+        public string? DarkMode { get; set; } = null;
+}
+
+    public class Customizations
+    {
+        public string PrimaryColor { get; set; }
     }
 
     public class Automation
