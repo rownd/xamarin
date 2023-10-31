@@ -1,5 +1,7 @@
 
 
+## [1.5.2](https://github.com/rownd/xamarin/compare/1.5.1...1.5.2) (2023-10-31)
+
 ## [1.5.1](https://github.com/rownd/xamarin/compare/1.5.0...1.5.1) (2023-10-31)
 
 
