@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -136,7 +135,7 @@ namespace Rownd.Xamarin.Models.Repos
             catch (Exception ex)
             {
                 Console.WriteLine($"Failed to refresh token. This may be recoverable. Reason: {ex}");
-                throw ex;
+                throw new RowndException("Failed to refresh token. This may be recoverable.", ex);
             }
         }
 
