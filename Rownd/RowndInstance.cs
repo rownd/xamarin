@@ -158,7 +158,7 @@ namespace Rownd.Xamarin
             await Device.InvokeOnMainThreadAsync(async () =>
             {
                 // If the modal stack already includes a bottom sheet page, don't show another
-                if (Shell.Current.Navigation.ModalStack.FirstOrDefault(el => el is HubBottomSheetPage) != null)
+                if (Application.Current.MainPage.Navigation.ModalStack.FirstOrDefault(el => el is HubBottomSheetPage) != null)
                 {
                     return;
                 }
@@ -172,7 +172,7 @@ namespace Rownd.Xamarin
                     };
                 }
 
-                await Shell.Current.Navigation.PushModalAsync(hubBottomSheet, false);
+                await Application.Current.MainPage.Navigation.PushModalAsync(hubBottomSheet, false);
 
                 var webView = hubBottomSheet.GetHubWebView();
                 webView.TargetPage = page;

@@ -21,10 +21,12 @@
 		<SynchReleaseVersion>false</SynchReleaseVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-	  <LangVersion>11.0</LangVersion>
+	  <LangVersion>default</LangVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-	  <LangVersion>11.0</LangVersion>
+	  <LangVersion>default</LangVersion>
+	  <DebugSymbols>true</DebugSymbols>
+	  <DebugType>embedded</DebugType>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Update="FSharp.Core" Version="6.0.6" />
