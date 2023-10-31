@@ -1,5 +1,12 @@
 
 
+## [1.5.3](https://github.com/rownd/xamarin/compare/1.5.2...1.5.3) (2023-10-31)
+
+
+### Bug Fixes
+
+* **api:** improved api exception handling ([a74bbe0](https://github.com/rownd/xamarin/commit/a74bbe09308a72a37a81ddf52b2f0e3610d3f30a))
+
 ## [1.5.2](https://github.com/rownd/xamarin/compare/1.5.1...1.5.2) (2023-10-31)
 
 ## [1.5.1](https://github.com/rownd/xamarin/compare/1.5.0...1.5.1) (2023-10-31)
