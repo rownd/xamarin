@@ -28,7 +28,7 @@
   "hooks": {
     "after:bump": [
       "mkdir -p pack",
-      "cd Rownd && dotnet pack --configuration Release -o ../pack",
+      "cd Rownd && dotnet pack --configuration Release -o ../pack --include-source --include-symbols",
       "cd Rownd.Android && msbuild /p:Configuration=Release && nuget pack -prop configuration=release -OutputDirectory ../pack -Version ${version}",
       "cd Rownd.iOS && msbuild /p:Configuration=Release && nuget pack -prop configuration=release -OutputDirectory ../pack -Version ${version}"
     ],
