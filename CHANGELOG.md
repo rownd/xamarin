@@ -1,5 +1,12 @@
 
 
+## [1.5.1](https://github.com/rownd/xamarin/compare/1.5.0...1.5.1) (2023-10-31)
+
+
+### Bug Fixes
+
+* **ui:** don't assume appshell ([8492e2d](https://github.com/rownd/xamarin/commit/8492e2d567a64eca1c77db3e6b3b5532ab4ddaec))
+
 # [1.5.0](https://github.com/rownd/xamarin/compare/1.4.4...1.5.0) (2023-10-30)
 
 
