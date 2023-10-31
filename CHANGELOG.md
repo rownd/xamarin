@@ -1,5 +1,12 @@
 
 
+## [1.5.4](https://github.com/rownd/xamarin/compare/1.5.3...1.5.4) (2023-10-31)
+
+
+### Bug Fixes
+
+* **auth:** refresh token throws generic exception ([37cbe38](https://github.com/rownd/xamarin/commit/37cbe38350d51a3c403d69bb9b8515c4c613d87c))
+
 ## [1.5.3](https://github.com/rownd/xamarin/compare/1.5.2...1.5.3) (2023-10-31)
 
 
