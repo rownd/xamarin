@@ -20,7 +20,8 @@ namespace Rownd.Xamarin.Models.Repos
 
         private readonly StateRepo stateRepo = StateRepo.Get();
 
-        private Task<AuthState> refreshTask;
+        private readonly object refreshLock = new();
+        private Task refreshTask = Task.CompletedTask;
 
         private class TokenRequestBody
         {
@@ -100,42 +101,48 @@ namespace Rownd.Xamarin.Models.Repos
             // TODO: Handle response payload
         }
 
-        internal async Task<AuthState> RefreshToken()
+        internal Task<AuthState> RefreshToken()
         {
-            if (refreshTask != null)
+            lock (refreshLock)
             {
-                await refreshTask;
-                return refreshTask.Result;
-            }
-
-            try
-            {
-                refreshTask = MakeRefreshTokenRequest();
-                return await refreshTask.ContinueWith(task =>
+                if (!refreshTask.IsCompleted)
                 {
-                    var result = refreshTask.Result;
-                    refreshTask = null;
+                    return refreshTask as Task<AuthState>;
+                }
 
-                    Device.BeginInvokeOnMainThread(() =>
-                    stateRepo.Store.Dispatch(new StateActions.SetAuthState()
+                refreshTask = Task.Run(async () =>
+                {
+                    try
                     {
-                        AuthState = result
-                    })
-                );
+                        var result = await MakeRefreshTokenRequest();
 
-                    return result;
+                        Device.BeginInvokeOnMainThread(() =>
+                            stateRepo.Store.Dispatch(new StateActions.SetAuthState()
+                            {
+                                AuthState = result
+                            })
+                        );
+
+                        return result;
+                    }
+                    catch (RefreshTokenExpiredException ex)
+                    {
+                        Console.WriteLine($"Failed to refresh token. It was likely expired. User will be signed out. Reason: {ex}");
+                        Device.BeginInvokeOnMainThread(() => stateRepo.Store.Dispatch(new StateActions.SetAuthState()));
+                        return null;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Failed to refresh token. This may be recoverable. Reason: {ex}");
+                        throw new RowndException("Failed to refresh token. This may be recoverable.", ex.InnerException);
+                    }
+                    finally
+                    {
+                        refreshTask = Task.CompletedTask;
+                    }
                 });
-            }
-            catch (RefreshTokenExpiredException ex)
-            {
-                Console.WriteLine($"Failed to refresh token. It was likely expired. User will be signed out. Reason: {ex}");
-                Device.BeginInvokeOnMainThread(() => stateRepo.Store.Dispatch(new StateActions.SetAuthState()));
-                return null;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to refresh token. This may be recoverable. Reason: {ex}");
-                throw new RowndException("Failed to refresh token. This may be recoverable.", ex);
+
+                return refreshTask as Task<AuthState>;
             }
         }
 
@@ -159,7 +166,7 @@ namespace Rownd.Xamarin.Models.Repos
                 throw new RefreshTokenExpiredException(result.Content);
             }
 
-            throw new Exception(result.Content);
+            throw new RowndException(result.Content);
         }
 
         public async Task HandleThirdPartySignIn(ThirdPartySignInData data)
