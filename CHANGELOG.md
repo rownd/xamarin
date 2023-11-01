@@ -1,5 +1,12 @@
 
 
+## [1.5.5](https://github.com/rownd/xamarin/compare/1.5.4...1.5.5) (2023-11-01)
+
+
+### Bug Fixes
+
+* **android:** bottom sheet ui padding ([4aa7d4a](https://github.com/rownd/xamarin/commit/4aa7d4ac96963b158245ad194d404217cb537983))
+
 ## [1.5.4](https://github.com/rownd/xamarin/compare/1.5.3...1.5.4) (2023-10-31)
 
 
