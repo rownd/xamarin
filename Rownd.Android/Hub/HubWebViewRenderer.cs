@@ -1,9 +1,12 @@
 ﻿using Android.Content;
+using Android.Util;
 using Rownd.Xamarin.Android.Hub;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.Android;
+using static Android.Content.Res.Resources;
 using XEssentials = Xamarin.Essentials;
 
 [assembly: ExportRenderer(typeof(HubWebView), typeof(HubWebViewRenderer))]
@@ -12,6 +15,13 @@ namespace Rownd.Xamarin.Android.Hub
     public class HubWebViewRenderer : WebViewRenderer
     {
         private Context _context;
+
+        private static int PixelsToDp(float pixelValue)
+        {
+            var density = DeviceDisplay.MainDisplayInfo.Density;
+            var dp = (int)(pixelValue / density);
+            return dp;
+        }
 
         protected override void OnElementChanged(ElementChangedEventArgs<WebView> e)
         {
@@ -31,6 +41,19 @@ namespace Rownd.Xamarin.Android.Hub
                 // Listen for layout changes like the soft keyboard opening
                 var rootView = XEssentials.Platform.CurrentActivity.Window.DecorView.RootView;
                 rootView.ViewTreeObserver.AddOnGlobalLayoutListener(new CustomLayoutListener(this));
+
+                // Set bottom margin to prevent system nav overlap
+                TypedValue typedValue = new TypedValue();
+                double actionBarHeight = 0;
+                if (Context.Theme.ResolveAttribute(global::Android.Resource.Attribute.ActionBarSize, typedValue, true))
+                {
+                    actionBarHeight = TypedValue.ComplexToDimensionPixelSize(typedValue.Data, Resources.DisplayMetrics);
+                }
+
+                e.NewElement.Margin = new Thickness
+                {
+                    Bottom = PixelsToDp((float)actionBarHeight)
+                };
             }
         }
 
