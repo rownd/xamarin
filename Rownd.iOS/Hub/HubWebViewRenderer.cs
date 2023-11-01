@@ -14,13 +14,21 @@ namespace Rownd.Xamarin.iOS.Hub
 {
     public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
+        //private readonly NSObject notification;
         private WKUserContentController userController;
-        private NSObject notification;
+
+        public override UIView InputAccessoryView
+        {
+            get
+            {
+                return null;
+            }
+        }
 
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
         {
             CustomUserAgent = Constants.DEFAULT_WEB_USER_AGENT;
-            notification = UIKeyboard.Notifications.ObserveDidShow((sender, args) =>
+            UIKeyboard.Notifications.ObserveDidShow((sender, args) =>
             {
                 ((HubWebView)Element).HandleKeyboardStateChange(true);
             });
@@ -34,6 +42,7 @@ namespace Rownd.Xamarin.iOS.Hub
             {
                 // Override the WKNavigationDelegate for the WKWebView
                 NavigationDelegate = new WebNavigationDelegate(NavigationDelegate, this);
+                ScrollView.ScrollEnabled = false;
             }
         }
 
