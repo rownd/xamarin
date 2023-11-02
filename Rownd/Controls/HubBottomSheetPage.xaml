@@ -10,7 +10,6 @@
 
     x:Name="BottomSheetRef"
     x:DataType="controls:HubBottomSheetPage"
-    ios:Page.UseSafeArea="true"
 >
 
     <ContentPage.Content>

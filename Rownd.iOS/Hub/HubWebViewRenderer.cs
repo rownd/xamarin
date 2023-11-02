@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Linq;
 using Foundation;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
@@ -25,6 +26,31 @@ namespace Rownd.Xamarin.iOS.Hub
             }
         }
 
+        private UIEdgeInsets ScreenInsets
+        {
+            get
+            {
+                if (Device.Idiom != TargetIdiom.Phone)
+                {
+                    return default;
+                }
+
+                var keyWindow = UIApplication.SharedApplication
+                    .ConnectedScenes
+                    .OfType<UIWindowScene>()
+                    .SelectMany(scene => scene.Windows)
+                    .FirstOrDefault(window => window.IsKeyWindow);
+
+                if (keyWindow == null)
+                {
+                    Console.WriteLine("Did not find the key window");
+                    return default;
+                }
+
+                return keyWindow.SafeAreaInsets;
+            }
+        }
+
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
         {
             CustomUserAgent = Constants.DEFAULT_WEB_USER_AGENT;
@@ -43,6 +69,12 @@ namespace Rownd.Xamarin.iOS.Hub
                 // Override the WKNavigationDelegate for the WKWebView
                 NavigationDelegate = new WebNavigationDelegate(NavigationDelegate, this);
                 ScrollView.ScrollEnabled = false;
+
+                var bottomPadding = ScreenInsets.Bottom == 0 ? 40 : ScreenInsets.Bottom * 2;
+                ((HubWebView)e.NewElement).Margin = new Thickness
+                {
+                    Bottom = bottomPadding + ScreenInsets.Top
+                };
             }
         }
 

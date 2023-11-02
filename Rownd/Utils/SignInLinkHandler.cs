@@ -41,37 +41,44 @@ namespace Rownd.Xamarin.Utils
 
         private async Task AuthenticateWithSignInLink(string url)
         {
-            var urlObj = new Uri(url);
-            if (urlObj.Fragment != null)
+            try
             {
-                url = url.Replace($"#{urlObj.Fragment}", "");
-            }
-
-            var apiClient = ApiClient.Get();
-            var request = new RestRequest(url);
-            var response = await apiClient.Client.ExecuteGetAsync<AuthState>(request);
-
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-            {
-                return;
-            }
-
-            if (response?.Data?.AccessToken == null)
-            {
-                return;
-            }
-
-            var stateRepo = StateRepo.Get();
-            Device.BeginInvokeOnMainThread(() =>
-                stateRepo.Store.Dispatch(new StateActions.SetAuthState()
+                var urlObj = new Uri(url);
+                if (urlObj.Fragment != null)
                 {
-                    AuthState = new AuthState
+                    url = url.Replace($"#{urlObj.Fragment}", "");
+                }
+
+                var apiClient = ApiClient.Get();
+                var request = new RestRequest(url);
+                var response = await apiClient.Client.ExecuteGetAsync<AuthState>(request);
+
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    return;
+                }
+
+                if (response?.Data?.AccessToken == null)
+                {
+                    return;
+                }
+
+                var stateRepo = StateRepo.Get();
+                Device.BeginInvokeOnMainThread(() =>
+                    stateRepo.Store.Dispatch(new StateActions.SetAuthState()
                     {
-                        AccessToken = response.Data.AccessToken,
-                        RefreshToken = response.Data.RefreshToken
-                    }
-                })
-            );
+                        AuthState = new AuthState
+                        {
+                            AccessToken = response.Data.AccessToken,
+                            RefreshToken = response.Data.RefreshToken
+                        }
+                    })
+                );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed handling sign-in link '{url}'. Exception: {ex}");
+            }
         }
     }
 }

@@ -5,6 +5,8 @@ using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
 using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.Xaml;
 
 namespace Rownd.Controls
@@ -264,12 +266,13 @@ namespace Rownd.Controls
             }
 
             await AnimateOut();
-            await Application.Current.MainPage.Navigation.PopModalAsync(false);
+            await global::Xamarin.Forms.Application.Current.MainPage.Navigation.PopModalAsync(false);
         }
 
         private double GetProportionCoordinate(double proportion)
         {
-            return proportion * Height;
+            var insets = On<iOS>().SafeAreaInsets();
+            return proportion * (Height - insets.Top);
         }
 
         /**
