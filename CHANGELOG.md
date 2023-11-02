@@ -1,5 +1,13 @@
 
 
+## [1.5.6](https://github.com/rownd/xamarin/compare/1.5.5...1.5.6) (2023-11-02)
+
+
+### Bug Fixes
+
+* **ios:** disable input accessory and scrollview ([2551111](https://github.com/rownd/xamarin/commit/2551111feeaf7d64f3aaf1285fc44db559272d4c))
+* **ios:** insets for hub profile form ([3a9e4ae](https://github.com/rownd/xamarin/commit/3a9e4ae9fe6f1fb492d747ecfb4e92e1710951b8))
+
 ## [1.5.5](https://github.com/rownd/xamarin/compare/1.5.4...1.5.5) (2023-11-01)
 
 
