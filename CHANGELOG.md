@@ -1,5 +1,12 @@
 
 
+## [1.5.7](https://github.com/rownd/xamarin/compare/1.5.6...1.5.7) (2023-11-07)
+
+
+### Bug Fixes
+
+* webview input inconsistencies ([e5a1078](https://github.com/rownd/xamarin/commit/e5a107852717f26f94592faa5c791c34283aad88))
+
 ## [1.5.6](https://github.com/rownd/xamarin/compare/1.5.5...1.5.6) (2023-11-02)
 
 
