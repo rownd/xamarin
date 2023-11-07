@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using Rownd.Xamarin.Controls;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
-using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
+using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.Xaml;
 
@@ -152,6 +152,7 @@ namespace Rownd.Controls
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            this.UseWindowSoftInputModeAdjust(WindowSoftInputModeAdjust.Resize);
             BackgroundColor = new Color(0, 0, 0, 0.01);
 
             _ = AnimateIn();
@@ -160,6 +161,7 @@ namespace Rownd.Controls
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
+            this.ResetWindowSoftInputModeAdjust();
             OnDismiss(this, null);
         }
 

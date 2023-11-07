@@ -119,7 +119,8 @@ namespace Rownd.Xamarin
                 await GetAccessToken();
                 var hubOpts = opts != null ? new RowndSignInJsOptions
                 {
-                    VisibleProfileFields = opts.VisibleProfileFields
+                    VisibleProfileFields = opts.VisibleProfileFields,
+                    AutoFocusField = opts.AutoFocusField
                 } : null;
                 DisplayHub(HubPageSelector.Profile, hubOpts);
             });

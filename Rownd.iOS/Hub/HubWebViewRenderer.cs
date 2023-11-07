@@ -15,7 +15,6 @@ namespace Rownd.Xamarin.iOS.Hub
 {
     public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
-        //private readonly NSObject notification;
         private WKUserContentController userController;
 
         public override UIView InputAccessoryView
@@ -57,6 +56,7 @@ namespace Rownd.Xamarin.iOS.Hub
             UIKeyboard.Notifications.ObserveDidShow((sender, args) =>
             {
                 ((HubWebView)Element).HandleKeyboardStateChange(true);
+                EvaluateJavaScriptAsync("window.scrollTo(0,0)");
             });
         }
 
@@ -70,11 +70,17 @@ namespace Rownd.Xamarin.iOS.Hub
                 NavigationDelegate = new WebNavigationDelegate(NavigationDelegate, this);
                 ScrollView.ScrollEnabled = false;
 
+                if (ScrollView.PinchGestureRecognizer != null)
+                {
+                    ScrollView.PinchGestureRecognizer.Enabled = false;
+                }
+
                 var bottomPadding = ScreenInsets.Bottom == 0 ? 40 : ScreenInsets.Bottom * 2;
                 ((HubWebView)e.NewElement).Margin = new Thickness
                 {
                     Bottom = bottomPadding + ScreenInsets.Top
                 };
+                e.NewElement.Focus();
             }
         }
 

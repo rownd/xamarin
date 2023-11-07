@@ -116,6 +116,10 @@ namespace Rownd.Xamarin.Models.Repos
                     {
                         var result = await MakeRefreshTokenRequest();
 
+                        // Replace in-memory tokens for immediate use, but still dispatch
+                        stateRepo.Store.State.Auth.AccessToken = result.AccessToken;
+                        stateRepo.Store.State.Auth.RefreshToken = result.RefreshToken;
+
                         Device.BeginInvokeOnMainThread(() =>
                             stateRepo.Store.Dispatch(new StateActions.SetAuthState()
                             {

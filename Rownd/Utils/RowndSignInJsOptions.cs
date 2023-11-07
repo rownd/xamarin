@@ -33,6 +33,9 @@ namespace Rownd.Xamarin.Utils
         [JsonProperty("visible_profile_fields")]
         public string[] VisibleProfileFields { get; set; }
 
+        [JsonProperty("auto_focus_field")]
+        public string AutoFocusField { get; set; }
+
         public string ToJsonString()
         {
             return JsonConvert.SerializeObject(this, new JsonSerializerSettings

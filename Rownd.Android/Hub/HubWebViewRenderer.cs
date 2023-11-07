@@ -37,6 +37,8 @@ namespace Rownd.Xamarin.Android.Hub
                 Control.Settings.SetSupportMultipleWindows(false);
                 Control.AddJavascriptInterface(new JSBridge(this), "rowndAndroidSDK");
                 Control.Settings.UserAgentString = Constants.DEFAULT_WEB_USER_AGENT;
+                //Control.Focusable = true;
+                //Control.RequestFocus();
 
                 // Listen for layout changes like the soft keyboard opening
                 var rootView = XEssentials.Platform.CurrentActivity.Window.DecorView.RootView;
