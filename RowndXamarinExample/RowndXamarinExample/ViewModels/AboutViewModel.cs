@@ -32,7 +32,8 @@ namespace RowndXamarinExample.ViewModels
 
             EditProfile = new Command(() => Rownd.ManageAccount(new Rownd.Xamarin.Utils.RowndManageAccountOpts
             {
-                VisibleProfileFields = new string[] { "phone_number" }
+                VisibleProfileFields = new string[] { "phone_number" },
+                AutoFocusField = "phone_number"
             }));
 
             UpdateName = new Command(async () =>
