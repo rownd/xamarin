@@ -171,6 +171,12 @@ namespace Rownd.Controls
 
         public async void OnBottomSheetPan(object sender, PanUpdatedEventArgs e)
         {
+            if (!IsDismissable)
+            {
+                await Shake();
+                return;
+            }
+
             try
             {
                 switch (e.StatusType)

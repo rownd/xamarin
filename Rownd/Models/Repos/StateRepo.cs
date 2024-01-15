@@ -75,7 +75,7 @@ namespace Rownd.Xamarin.Models.Repos
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                Console.WriteLine($"Error getting existing state. This is expected on first run. {ex}");
                 InitializeStore();
                 return;
             }

@@ -12,7 +12,7 @@ namespace Rownd.Xamarin.Core
         {
             var stateRepo = StateRepo.Get();
 
-            if (stateRepo.Store.State.Auth.IsAuthenticated && !(request.Resource.Contains("/token") || request.Resource.Contains("/app-config")))
+            if (stateRepo?.Store?.State?.Auth?.IsAuthenticated == true && !(request.Resource.Contains("/token") || request.Resource.Contains("/app-config")))
             {
                 var accessToken = await AuthRepo.Get().GetAccessToken();
                 request.AddHeader(KnownHeaders.Authorization, $"Bearer {accessToken}");

@@ -41,16 +41,15 @@ namespace Rownd.Xamarin.Core
 
         private static bool ProcessRule(AutomationRuleBase rule, Dictionary<string, dynamic> automationMeta, GlobalState state)
         {
-            if (rule is AutomationOrRule)
+            if (rule is AutomationOrRule aRule1)
             {
-                return ((AutomationOrRule)rule).Or.Any(rule => ProcessRule(rule, automationMeta, state));
+                return aRule1.Or.Any(rule => ProcessRule(rule, automationMeta, state));
             }
 
             var aRule = (AutomationRule)rule;
 
             var data = aRule.EntityType == "user_data" ? state.User.Data : automationMeta;
-            dynamic value;
-            data.TryGetValue(aRule.Attribute, out value);
+            data.TryGetValue(aRule.Attribute, out var value);
 
             switch (aRule.Condition)
             {
@@ -85,7 +84,7 @@ namespace Rownd.Xamarin.Core
         {
             return new Dictionary<string, dynamic>
             {
-                { "is_authenticated", !string.IsNullOrWhiteSpace(state.Auth.AccessToken) && state.Auth.IsAccessTokenValid },
+                { "is_authenticated", !string.IsNullOrWhiteSpace(state.Auth?.AccessToken) && state.Auth?.IsAccessTokenValid == true },
             };
         }
     }

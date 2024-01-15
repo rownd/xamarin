@@ -19,7 +19,7 @@ namespace Rownd.Xamarin
     public class RowndInstance : IRowndInstance
     {
         private HubBottomSheetPage hubBottomSheet = null;
-        internal static RowndInstance inst;
+        private static RowndInstance inst;
 
         internal StateRepo State { get; private set; }
         internal AuthRepo Auth { get; private set; }
@@ -39,6 +39,7 @@ namespace Rownd.Xamarin
 
         private RowndInstance(Application app, Config config = null)
         {
+            inst = this;
             Shared.Init(this, app, config);
             Config = Shared.ServiceProvider.GetService<Config>();
             State = StateRepo.Get();

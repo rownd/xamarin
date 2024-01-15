@@ -48,7 +48,12 @@ namespace Rownd.Xamarin.Models.Repos
         {
             var authState = stateRepo.Store.State.Auth;
 
-            if (!authState.IsAccessTokenValid)
+            if (authState?.AccessToken == null)
+            {
+                throw new RowndException("No access token available. Request a sign in first.");
+            }
+
+            if (authState?.IsAccessTokenValid == false)
             {
                 authState = await RefreshToken();
             }
@@ -132,7 +137,7 @@ namespace Rownd.Xamarin.Models.Repos
                     catch (RefreshTokenExpiredException ex)
                     {
                         Console.WriteLine($"Failed to refresh token. It was likely expired. User will be signed out. Reason: {ex}");
-                        Device.BeginInvokeOnMainThread(() => stateRepo.Store.Dispatch(new StateActions.SetAuthState()));
+                        Device.BeginInvokeOnMainThread(() => Shared.Rownd.SignOut());
                         return null;
                     }
                     catch (Exception ex)
@@ -177,7 +182,7 @@ namespace Rownd.Xamarin.Models.Repos
         {
             var tokenResp = await GetAccessToken(data.Token);
 
-            RowndInstance.inst.RequestSignIn(new RowndSignInJsOptions
+            Shared.Rownd.RequestSignIn(new RowndSignInJsOptions
             {
                 SignInStep = SignInStep.Success,
                 Intent = data.Intent,
