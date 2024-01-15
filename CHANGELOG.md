@@ -1,5 +1,12 @@
 
 
+## [1.5.8](https://github.com/rownd/xamarin/compare/1.5.7...1.5.8) (2024-01-15)
+
+
+### Bug Fixes
+
+* various bug fixes ([f2f87f2](https://github.com/rownd/xamarin/commit/f2f87f27d8e20c64e44aac0028a83e31268fcfc9))
+
 ## [1.5.7](https://github.com/rownd/xamarin/compare/1.5.6...1.5.7) (2023-11-07)
 
 
