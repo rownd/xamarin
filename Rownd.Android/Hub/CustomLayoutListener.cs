@@ -18,7 +18,7 @@ namespace Rownd.Xamarin.Android.Hub
         {
             var rootView = XEssentials.Platform.CurrentActivity.Window.DecorView.RootView;
             var isKeyboardOpen = ViewCompat.GetRootWindowInsets(rootView)?.IsVisible(WindowInsetsCompat.Type.Ime()) ?? true;
-            ((Rownd.Xamarin.Hub.HubWebView)renderer.Element)?.HandleKeyboardStateChange(isKeyboardOpen);
+            ((Rownd.Xamarin.Hub.HubWebView)renderer.Element)?.HandleKeyboardStateChange(isKeyboardOpen, 0);
         }
     }
 }

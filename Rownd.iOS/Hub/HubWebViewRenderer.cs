@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Design;
+using System.Drawing;
 using System.Linq;
 using Foundation;
 using Rownd.Xamarin.Core;
@@ -16,6 +17,7 @@ namespace Rownd.Xamarin.iOS.Hub
     public class HubWebViewRenderer : WkWebViewRenderer, IWKScriptMessageHandler
     {
         private WKUserContentController userController;
+        private bool isKeyboardStateChanging = false;
 
         public override UIView InputAccessoryView
         {
@@ -53,10 +55,30 @@ namespace Rownd.Xamarin.iOS.Hub
         public HubWebViewRenderer() : this(new WKWebViewConfiguration())
         {
             CustomUserAgent = Constants.DEFAULT_WEB_USER_AGENT;
+
+            // Handle keyboard showing notifications
+            UIKeyboard.Notifications.ObserveWillShow((sender, args) =>
+            {
+                isKeyboardStateChanging = true;
+                var keyboardBounds = UIKeyboard.BoundsFromNotification(args.Notification);
+                _ = ((HubWebView)Element).HandleKeyboardStateChange(true, keyboardBounds.Size.Height);
+            });
+
             UIKeyboard.Notifications.ObserveDidShow((sender, args) =>
             {
-                ((HubWebView)Element).HandleKeyboardStateChange(true);
-                EvaluateJavaScriptAsync("window.scrollTo(0,0)");
+                isKeyboardStateChanging = false;
+            });
+
+            // Handle keyboard hide notifications
+            UIKeyboard.Notifications.ObserveWillHide((sender, args) =>
+            {
+                isKeyboardStateChanging = true;
+                _ = ((HubWebView)Element).HandleKeyboardStateChange(false, 0);
+            });
+
+            UIKeyboard.Notifications.ObserveDidHide((sender, args) =>
+            {
+                isKeyboardStateChanging = false;
             });
         }
 
@@ -69,6 +91,7 @@ namespace Rownd.Xamarin.iOS.Hub
                 // Override the WKNavigationDelegate for the WKWebView
                 NavigationDelegate = new WebNavigationDelegate(NavigationDelegate, this);
                 ScrollView.ScrollEnabled = false;
+                ScrollView.Delegate = new ScrollDelegate(this);
 
                 if (ScrollView.PinchGestureRecognizer != null)
                 {
@@ -93,6 +116,33 @@ namespace Rownd.Xamarin.iOS.Hub
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
         {
             ((HubWebView)Element).HandleHubMessage(message.Body.ToString());
+        }
+
+        private class ScrollDelegate : UIScrollViewDelegate
+        {
+            private HubWebViewRenderer _renderer;
+
+            public ScrollDelegate(HubWebViewRenderer renderer)
+            {
+                _renderer = renderer;
+            }
+
+            public override void Scrolled(UIScrollView scrollView)
+            {
+                if (!_renderer.isKeyboardStateChanging)
+                {
+                    return;
+                }
+
+                if (scrollView.ContentOffset.Y != 0)
+                {
+                    scrollView.ContentOffset = new CoreGraphics.CGPoint
+                    {
+                        Y = 0,
+                        X = scrollView.ContentOffset.X
+                    };
+                }
+            }
         }
 
         #region WKNavigationDelegate

@@ -233,9 +233,9 @@ namespace Rownd.Controls
         }
 
         // open sheet to 95% of the view
-        public void Expand()
+        public async Task Expand()
         {
-            RequestHeight(GetProportionCoordinate(.95));
+            await RequestHeight(GetProportionCoordinate(.95));
         }
 
         /**
@@ -243,26 +243,16 @@ namespace Rownd.Controls
          * Request a height for the sheet in device-independent pixels.
          * </summary>
          * <param name="height">A positive number to which the sheet height should adjust.</param>
+         * <returns>A Task indicating when the height request has been fulfilled.</returns>
          * */
-        public void RequestHeight(double height)
+        public async Task RequestHeight(double height)
         {
             if (isPanning)
             {
                 return;
             }
 
-            height = NormalizeHeight(height);
-
-            // Ignore small, negative adjustments in height
-            var heightDifference = Math.Abs(height - Math.Abs(currentPosition));
-            if (heightDifference < 50)
-            {
-                return;
-            }
-
-            detentPoint = -height;
-
-            _ = AnimateTo(-height);
+            await AnimateTo(-height);
         }
 
         public async Task Dismiss()
@@ -289,7 +279,7 @@ namespace Rownd.Controls
          * </summary>
          * <param name="height">A positive number that will cap at the max height of the screen.</param>
          * */
-        private double NormalizeHeight(double height)
+        private double LimitYCoordToScreenMax(double height)
         {
             height = Math.Abs(height);
 
@@ -307,9 +297,27 @@ namespace Rownd.Controls
             return Math.Abs(GetProportionCoordinate(.95));
         }
 
+        /**
+         * <summary>Animates the sheet to a given Y-coordinate.</summary>
+         * <param name="position">A negative value indicating the Y-coordinate to antimate to.</param>
+         * <param name="easing">An optional Easing to control how the animation occurs. Defaults to `Easing.SpringOut`.</param>
+         * <returns>A Task that will complete with the animation.</returns>
+         * 
+         */
         public async Task AnimateTo(double position, Easing easing = null)
         {
             easing ??= Easing.SpringOut;
+
+            position = -LimitYCoordToScreenMax(position - Webview.KeyboardHeight);
+
+            // Ignore small, negative adjustments in height
+            var heightDifference = Math.Abs(Math.Abs(position) - Math.Abs(currentPosition));
+            if (heightDifference < 50)
+            {
+                return;
+            }
+
+            detentPoint = position;
 
             await Sheet.TranslateTo(Sheet.X, position, duration, easing);
             currentPosition = Sheet.TranslationY;
