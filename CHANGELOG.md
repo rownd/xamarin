@@ -1,5 +1,12 @@
 
 
+## [1.5.9](https://github.com/rownd/xamarin/compare/1.5.8...1.5.9) (2024-01-29)
+
+
+### Bug Fixes
+
+* bottom sheet hiding behind ios keyboard ([#5](https://github.com/rownd/xamarin/issues/5)) ([8d9535d](https://github.com/rownd/xamarin/commit/8d9535d675325100c4c27f5af4a2813c9d881db2))
+
 ## [1.5.8](https://github.com/rownd/xamarin/compare/1.5.7...1.5.8) (2024-01-15)
 
 
