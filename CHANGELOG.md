@@ -1,5 +1,12 @@
 
 
+## [1.5.10](https://github.com/rownd/xamarin/compare/1.5.9...1.5.10) (2024-01-29)
+
+
+### Bug Fixes
+
+* **hub:** missing bottom margin on android ([0fb99a5](https://github.com/rownd/xamarin/commit/0fb99a54dcda6120a8da70c14b408bf3567d35fe))
+
 ## [1.5.9](https://github.com/rownd/xamarin/compare/1.5.8...1.5.9) (2024-01-29)
 
 
