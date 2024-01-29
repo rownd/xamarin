@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Rownd.Xamarin.Controls;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
+using Rownd.Xamarin.Utils;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration;
 using Xamarin.Forms.PlatformConfiguration.AndroidSpecific;
@@ -254,6 +255,7 @@ namespace Rownd.Controls
                 return;
             }
 
+            LastRequestedPosition = height;
             await AnimateTo(-height);
         }
 
@@ -271,7 +273,17 @@ namespace Rownd.Controls
 
         private double GetProportionCoordinate(double proportion)
         {
-            var insets = On<iOS>().SafeAreaInsets();
+            Thickness insets = default;
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                insets = On<iOS>().SafeAreaInsets();
+            }
+            else if (Device.RuntimePlatform == Device.Android)
+            {
+                var platformUtilsSvc = DependencyService.Get<IPlatformUtils>();
+                insets = platformUtilsSvc.GetWindowSafeArea();
+            }
+
             return proportion * (Height - insets.Top);
         }
 
@@ -309,7 +321,6 @@ namespace Rownd.Controls
         {
             easing ??= Easing.SpringOut;
 
-            LastRequestedPosition = position;
             position = -LimitYCoordToScreenMax(position - Webview.KeyboardHeight);
 
             // Ignore small, negative adjustments in height

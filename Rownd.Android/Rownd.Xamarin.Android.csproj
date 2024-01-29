@@ -71,6 +71,7 @@
 		<Compile Include="SignInLinkHandler.cs" />
 		<Compile Include="Boot.cs" />
 		<Compile Include="Hub\CustomLayoutListener.cs" />
+		<Compile Include="PlatformUtils.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="Resources\AboutResources.txt" />
