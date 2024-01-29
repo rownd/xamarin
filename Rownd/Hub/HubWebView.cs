@@ -20,6 +20,7 @@ namespace Rownd.Xamarin.Hub
         private readonly Config config = Shared.ServiceProvider.GetService<Config>();
         private readonly StateRepo stateRepo = StateRepo.Get();
         private HubBottomSheetPage bottomSheet { get; set; }
+        internal double KeyboardHeight { get; private set; } = 0;
         internal RowndSignInJsOptions HubOpts { get; set; } = new RowndSignInJsOptions();
         internal HubPageSelector TargetPage { get; set; } = HubPageSelector.SignIn;
 
@@ -234,14 +235,16 @@ if (typeof rownd !== 'undefined') {{
             });
         }
 
-        public void HandleKeyboardStateChange(bool isKeyboardOpen)
+        public async Task HandleKeyboardStateChange(bool isKeyboardOpen, double keyboardHeight)
         {
+            KeyboardHeight = keyboardHeight;
             if (!isKeyboardOpen)
             {
+                await bottomSheet.RequestHeight(bottomSheet.LastRequestedPosition);
                 return;
             }
 
-            bottomSheet.Expand();
+            await bottomSheet.Expand();
         }
 
         public void OnPageLoaded(object sender, WebNavigatedEventArgs e)

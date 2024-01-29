@@ -6,8 +6,10 @@ namespace Rownd.Xamarin.Android
 {
     public class Boot
     {
-        public static void Init() {
+        public static void Init()
+        {
             DependencyService.Register<ISignInLinkHandler, SignInLinkHandler>();
+            DependencyService.Register<IPlatformUtils, PlatformUtils>();
         }
     }
 }
