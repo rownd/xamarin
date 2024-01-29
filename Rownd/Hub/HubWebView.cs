@@ -240,12 +240,11 @@ if (typeof rownd !== 'undefined') {{
             KeyboardHeight = keyboardHeight;
             if (!isKeyboardOpen)
             {
-                await bottomSheet.RequestHeight(bottomSheet.Height);
+                await bottomSheet.RequestHeight(bottomSheet.LastRequestedPosition);
                 return;
             }
 
             await bottomSheet.Expand();
-            //await EvaluateJavaScriptAsync("window.scrollTo(0,0)");
         }
 
         public void OnPageLoaded(object sender, WebNavigatedEventArgs e)

@@ -169,6 +169,8 @@ namespace Rownd.Controls
         private double currentPosition = 0;
         private double detentPoint = 500;
 
+        internal double LastRequestedPosition { get; private set; } = 250;
+
         public async void OnBottomSheetPan(object sender, PanUpdatedEventArgs e)
         {
             if (!IsDismissable)
@@ -302,12 +304,12 @@ namespace Rownd.Controls
          * <param name="position">A negative value indicating the Y-coordinate to antimate to.</param>
          * <param name="easing">An optional Easing to control how the animation occurs. Defaults to `Easing.SpringOut`.</param>
          * <returns>A Task that will complete with the animation.</returns>
-         * 
          */
         public async Task AnimateTo(double position, Easing easing = null)
         {
             easing ??= Easing.SpringOut;
 
+            LastRequestedPosition = position;
             position = -LimitYCoordToScreenMax(position - Webview.KeyboardHeight);
 
             // Ignore small, negative adjustments in height
