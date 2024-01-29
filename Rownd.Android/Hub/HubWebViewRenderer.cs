@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Util;
+using AndroidX.Core.View;
 using Rownd.Xamarin.Android.Hub;
 using Rownd.Xamarin.Core;
 using Rownd.Xamarin.Hub;
@@ -41,6 +42,14 @@ namespace Rownd.Xamarin.Android.Hub
                 // Listen for layout changes like the soft keyboard opening
                 var rootView = XEssentials.Platform.CurrentActivity.Window.DecorView.RootView;
                 rootView.ViewTreeObserver.AddOnGlobalLayoutListener(new CustomLayoutListener(this));
+
+                // Set bottom margin to prevent system nav overlap
+                var navInsets = ViewCompat.GetRootWindowInsets(rootView)?.GetInsets(WindowInsetsCompat.Type.SystemBars());
+
+                e.NewElement.Margin = new Thickness
+                {
+                    Bottom = PixelsToDp(navInsets.Bottom)
+                };
             }
         }
 
