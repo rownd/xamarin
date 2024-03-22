@@ -1,5 +1,12 @@
 
 
+## [1.5.11](https://github.com/rownd/xamarin/compare/1.5.10...1.5.11) (2024-03-22)
+
+
+### Bug Fixes
+
+* **time:** use internet time for token exp comparisons ([d4fd872](https://github.com/rownd/xamarin/commit/d4fd8722f32346c2f69b45b91615e633cb9934da))
+
 ## [1.5.10](https://github.com/rownd/xamarin/compare/1.5.9...1.5.10) (2024-01-29)
 
 
