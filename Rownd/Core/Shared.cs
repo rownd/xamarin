@@ -18,6 +18,7 @@ namespace Rownd.Xamarin.Core
         public static RowndInstance Rownd { get; private set; }
         public static Application App { get; set; }
         public static IServiceProvider ServiceProvider { get; set; }
+        public static NtpClock NtpClock { get; private set; }
 
         public static void Init(RowndInstance inst, Application app, Config config = null)
         {
@@ -68,9 +69,9 @@ namespace Rownd.Xamarin.Core
             services.AddSingleton<UserRepo>();
             services.AddSingleton<SignInLinkHandler>();
 
-            Task.Run(async () =>
+            Task.Run(() =>
                 {
-                    NtpClock clock = await ntpClient.QueryAsync();
+                    NtpClock = ntpClient.Query();
                 }
             );
         }

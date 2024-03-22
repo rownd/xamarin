@@ -36,9 +36,12 @@ namespace Rownd.Xamarin.Utils
                 var jwtExp = Convert.ToInt64(jwtClaims["exp"]);
                 var jwtExpTime = DateTimeOffset.FromUnixTimeSeconds(jwtExp).DateTime;
                 var ntpClient = Shared.ServiceProvider.GetService<NtpClient>();
-                var currentTime = ntpClient.Last?.UtcNow.UtcDateTime ?? DateTime.UtcNow;
+                var ntpClock = Shared.NtpClock ?? ntpClient.Last;
 
-                return jwtExpTime > currentTime.AddMinutes(1);
+                // Try our best to get internet time, but fallback to local time if we must
+                var currentTime = ntpClock?.UtcNow.UtcDateTime ?? DateTime.UtcNow;
+
+                return jwtExpTime > currentTime.AddMinutes(5);
             }
             catch
             {
