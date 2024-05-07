@@ -1,5 +1,12 @@
 
 
+# [1.6.0](https://github.com/rownd/xamarin/compare/1.5.11...1.6.0) (2024-05-07)
+
+
+### Features
+
+* **auth:** support resuming auth challenges ([#6](https://github.com/rownd/xamarin/issues/6)) ([3d1b073](https://github.com/rownd/xamarin/commit/3d1b073a4919bbe76936e6c7612a285204896a44))
+
 ## [1.5.11](https://github.com/rownd/xamarin/compare/1.5.10...1.5.11) (2024-03-22)
 
 
