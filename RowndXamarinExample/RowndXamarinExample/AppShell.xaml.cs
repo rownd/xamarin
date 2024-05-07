@@ -15,7 +15,5 @@ namespace RowndXamarinExample
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
         }
-
     }
 }
-

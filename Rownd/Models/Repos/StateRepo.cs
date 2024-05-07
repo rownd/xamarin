@@ -55,6 +55,19 @@ namespace Rownd.Xamarin.Models.Repos
                 {
                     GlobalState = Store.State
                 });
+
+                // Check to see if we were handling an existing auth challenge
+                // (maybe the app crashed or got OOM killed)
+                if (Store.State.Auth.ChallengeId != null && Store.State.Auth.UserIdentifier != null)
+                {
+                    Shared.Rownd.RequestSignIn(new RowndSignInJsOptions
+                    {
+                        SignInStep = SignInStep.Completing,
+                        ChallengeId = Store.State.Auth.ChallengeId,
+                        UserIdentifier = Store.State.Auth.UserIdentifier
+                    });
+                }
+
             });
         }
 

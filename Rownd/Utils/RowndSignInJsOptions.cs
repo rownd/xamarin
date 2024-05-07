@@ -36,6 +36,12 @@ namespace Rownd.Xamarin.Utils
         [JsonProperty("auto_focus_field")]
         public string AutoFocusField { get; set; }
 
+        [JsonProperty("request_id")]
+        public string ChallengeId { get; set; }
+
+        [JsonProperty("identifier")]
+        public string UserIdentifier { get; set; }
+
         public string ToJsonString()
         {
             return JsonConvert.SerializeObject(this, new JsonSerializerSettings
