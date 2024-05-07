@@ -13,6 +13,8 @@ namespace Rownd.Xamarin.Models.Domain
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public string ChallengeId { get; set; }
+        public string UserIdentifier { get; set; }
         public UserType UserType { get; set; }
 
         [JsonIgnore]

@@ -43,5 +43,11 @@ namespace Rownd.Xamarin.Hub.HubMessage
 
         [EnumMember(Value = "try_again")]
         TryAgain,
+
+        [EnumMember(Value = "auth_challenge_initiated")]
+        AuthChallengeInitiated,
+
+        [EnumMember(Value = "auth_challenge_cleared")]
+        AuthChallengeCleared,
     }
 }

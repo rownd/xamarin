@@ -72,6 +72,12 @@ namespace Rownd.Xamarin.Hub.HubMessage
                         payload = jo["payload"].ToObject<PayloadEvent>(serializer);
                         break;
                     }
+
+                case MessageType.AuthChallengeInitiated:
+                    {
+                        payload = jo["payload"].ToObject<PayloadAuthChallengeInitiated>(serializer);
+                        break;
+                    }
             }
 
             message.Payload = payload;

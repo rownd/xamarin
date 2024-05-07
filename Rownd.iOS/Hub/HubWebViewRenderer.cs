@@ -111,6 +111,7 @@ namespace Rownd.Xamarin.iOS.Hub
         {
             userController = config.UserContentController;
             userController.AddScriptMessageHandler(this, "rowndIosSDK");
+            userController.AddScriptMessageHandler(new JsLoggingToConsole(), "rowndDeviceLogger");
         }
 
         public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
@@ -120,7 +121,7 @@ namespace Rownd.Xamarin.iOS.Hub
 
         private class ScrollDelegate : UIScrollViewDelegate
         {
-            private HubWebViewRenderer _renderer;
+            private readonly HubWebViewRenderer _renderer;
 
             public ScrollDelegate(HubWebViewRenderer renderer)
             {
@@ -201,5 +202,13 @@ namespace Rownd.Xamarin.iOS.Hub
             }
         }
         #endregion
+    }
+
+    public class JsLoggingToConsole : WkWebViewRenderer, IWKScriptMessageHandler
+    {
+        public void DidReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message)
+        {
+            Console.WriteLine(message.Body.ToString());
+        }
     }
 }
