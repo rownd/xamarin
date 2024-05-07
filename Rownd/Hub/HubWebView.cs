@@ -129,131 +129,131 @@ if (typeof rownd !== 'undefined') {{
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
-            Console.WriteLine($"Received message: {message}");
-            try
-            {
-                var hubMessage = JsonConvert.DeserializeObject<Message>(message, new JsonConverterPayload());
-
-                switch (hubMessage.Type)
+                Console.WriteLine($"Received message: {message}");
+                try
                 {
-                    case MessageType.Authentication:
-                        {
-                            Console.WriteLine($"Received auth payload: {hubMessage.Payload}");
-                            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+                    var hubMessage = JsonConvert.DeserializeObject<Message>(message, new JsonConverterPayload());
+
+                    switch (hubMessage.Type)
+                    {
+                        case MessageType.Authentication:
                             {
-                                AuthState = new AuthState()
+                                Console.WriteLine($"Received auth payload: {hubMessage.Payload}");
+                                stateRepo.Store.Dispatch(new StateActions.SetAuthState
                                 {
-                                    AccessToken = (hubMessage.Payload as PayloadAuthenticated).AccessToken,
-                                    RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
-                                }
-                            });
+                                    AuthState = new AuthState()
+                                    {
+                                        AccessToken = (hubMessage.Payload as PayloadAuthenticated).AccessToken,
+                                        RefreshToken = (hubMessage.Payload as PayloadAuthenticated).RefreshToken
+                                    }
+                                });
 
-                            await UserRepo.GetInstance().FetchUser();
+                                await UserRepo.GetInstance().FetchUser();
 
-                            // Reset last sign in state
-                            stateRepo.Store.Dispatch(new StateActions.SetSignInState { SignInState = new SignInState() });
-                            break;
-                        }
+                                // Reset last sign in state
+                                stateRepo.Store.Dispatch(new StateActions.SetSignInState { SignInState = new SignInState() });
+                                break;
+                            }
 
-                    case MessageType.HubLoaded:
-                        {
-                            await this.FadeTo(1, 500);
-                            bottomSheet.IsLoading = false;
-                            break;
-                        }
-
-                    case MessageType.HubResize:
-                        {
-                            Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
-                            await bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
-                            break;
-                        }
-
-                    case MessageType.CanTouchBackgroundToDismiss:
-                        {
-                            Console.WriteLine($"Hub dismissable change: {hubMessage.Payload}");
-                            bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
-                            break;
-                        }
-
-                    case MessageType.CloseHub:
-                        {
-                            Console.WriteLine($"Hub close request");
-                            bottomSheet.IsDismissable = true;
-                            _ = bottomSheet.Dismiss();
-                            break;
-                        }
-
-                    case MessageType.UserDataUpdate:
-                        {
-                            Console.WriteLine($"User data received: {hubMessage.Payload}");
-                            stateRepo.Store.Dispatch(new StateActions.SetUserState
+                        case MessageType.HubLoaded:
                             {
-                                UserState = new UserState()
+                                await this.FadeTo(1, 500);
+                                bottomSheet.IsLoading = false;
+                                break;
+                            }
+
+                        case MessageType.HubResize:
+                            {
+                                Console.WriteLine($"Hub resize request: {hubMessage.Payload}");
+                                await bottomSheet.RequestHeight((hubMessage.Payload as PayloadHubResize).Height);
+                                break;
+                            }
+
+                        case MessageType.CanTouchBackgroundToDismiss:
+                            {
+                                Console.WriteLine($"Hub dismissable change: {hubMessage.Payload}");
+                                bottomSheet.IsDismissable = (hubMessage.Payload as PayloadCanTouchBackgroundToDismiss).Enable;
+                                break;
+                            }
+
+                        case MessageType.CloseHub:
+                            {
+                                Console.WriteLine($"Hub close request");
+                                bottomSheet.IsDismissable = true;
+                                _ = bottomSheet.Dismiss();
+                                break;
+                            }
+
+                        case MessageType.UserDataUpdate:
+                            {
+                                Console.WriteLine($"User data received: {hubMessage.Payload}");
+                                stateRepo.Store.Dispatch(new StateActions.SetUserState
                                 {
+                                    UserState = new UserState()
+                                    {
+                                        Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
+                                    }
+                                });
+                                Shared.Rownd.FireEvent(new PayloadEvent
+                                {
+                                    Event = "user_data_update",
                                     Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
-                                }
-                            });
-                            Shared.Rownd.FireEvent(new PayloadEvent
+                                });
+                                break;
+                            }
+
+                        case MessageType.TriggerSignInWithApple:
                             {
-                                Event = "user_data_update",
-                                Data = (hubMessage.Payload as PayloadUserDataUpdate).Data
-                            });
-                            break;
-                        }
+                                Shared.Rownd.RequestSignIn(SignInMethod.Apple);
+                                break;
+                            }
 
-                    case MessageType.TriggerSignInWithApple:
-                        {
-                            Shared.Rownd.RequestSignIn(SignInMethod.Apple);
-                            break;
-                        }
-
-                    case MessageType.Event:
-                        {
-                            Shared.Rownd.FireEvent((PayloadEvent)hubMessage.Payload);
-                            break;
-                        }
-
-                    case MessageType.TryAgain:
-                        {
-                            Source = null;
-                            RenderHub();
-                            break;
-                        }
-
-                    case MessageType.AuthChallengeInitiated:
-                        {
-                            var payload = hubMessage.Payload as PayloadAuthChallengeInitiated;
-                            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+                        case MessageType.Event:
                             {
-                                AuthState = new AuthState
+                                Shared.Rownd.FireEvent((PayloadEvent)hubMessage.Payload);
+                                break;
+                            }
+
+                        case MessageType.TryAgain:
+                            {
+                                Source = null;
+                                RenderHub();
+                                break;
+                            }
+
+                        case MessageType.AuthChallengeInitiated:
+                            {
+                                var payload = hubMessage.Payload as PayloadAuthChallengeInitiated;
+                                stateRepo.Store.Dispatch(new StateActions.SetAuthState
                                 {
-                                    ChallengeId = payload.ChallengeId,
-                                    UserIdentifier = payload.UserIdentifier
-                                }
-                            });
-                            break;
-                        }
+                                    AuthState = new AuthState
+                                    {
+                                        ChallengeId = payload.ChallengeId,
+                                        UserIdentifier = payload.UserIdentifier
+                                    }
+                                });
+                                break;
+                            }
 
-                    case MessageType.AuthChallengeCleared:
-                        {
-                            stateRepo.Store.Dispatch(new StateActions.SetAuthState
+                        case MessageType.AuthChallengeCleared:
                             {
-                                AuthState = new AuthState
+                                stateRepo.Store.Dispatch(new StateActions.SetAuthState
                                 {
-                                    AccessToken = stateRepo.Store.State.Auth.AccessToken,
-                                    RefreshToken = stateRepo.Store.State.Auth.RefreshToken,
-                                    UserType = stateRepo.Store.State.Auth.UserType,
-                                }
-                            });
-                            break;
-                        }
+                                    AuthState = new AuthState
+                                    {
+                                        AccessToken = stateRepo.Store.State.Auth.AccessToken,
+                                        RefreshToken = stateRepo.Store.State.Auth.RefreshToken,
+                                        UserType = stateRepo.Store.State.Auth.UserType,
+                                    }
+                                });
+                                break;
+                            }
 
-                    default:
-                        {
-                            Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
-                            break;
-                        }
+                        default:
+                            {
+                                Console.WriteLine($"No handler for message type '{hubMessage.Type}'.");
+                                break;
+                            }
                     }
                 }
                 catch (Exception e)
